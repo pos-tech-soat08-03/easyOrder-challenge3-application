@@ -8,8 +8,8 @@ services:
     ports:
       - "3000:3000"
     links:
-      - easorder_database
-  easorder_database:
+      - easyorder_database
+  easyorder_database:
     image: mysql:5.7
     container_name: easyorder_database
     ports:
