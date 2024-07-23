@@ -25,7 +25,7 @@ Para somente iniciar a aplicação e rodar no servidor, podem ser executados os 
 
 Para desenvolver, você deve iniciar o docker com a aplicação apontando e monitorando para os arquivos locais.
 
-Para não impactar no docker-compose de produção, renomeie o arquivo `docker-compose.override.sample` para `docker-compose.override.yml`.
+Para não impactar no docker-compose de produção, copie o arquivo `docker-compose.override.sample` e renomeie para `docker-compose.override.yml`.
 
 Esse arquivo "override" permite que você altere qualquer configuração somente na sua máquina, sem versionar ou alterar o status de produção.
 
@@ -87,3 +87,7 @@ Para verificar se está funcionando, basta acessar a url [http://localhost:3000/
     - `Hotfix: {NúmeroTask} - {mensagem}` Para bugs
     - `Feature: {NúmeroTask} - {mensagem}` Para implementar funcionalidades
     - `Chore: {NúmeroTask} - {mensagem}` Para alterações que não impactem o uso (débito técnico)
+- O nome da branch deve ser igualmente o prefixo + id da atividade. Ex:
+    - `hotfix/99999`
+    - `feature/99999`
+    - `chore/99999`
