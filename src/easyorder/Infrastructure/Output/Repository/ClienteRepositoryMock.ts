@@ -5,7 +5,7 @@ import { ClienteRepositoryInterface } from "../../../Core/Domain/Output/Reposito
 export class ClienteRepositoryMock implements ClienteRepositoryInterface {
     
     constructor() { 
-        // inicializar um array com dados mockados para testes futuros
+        // inicializar um array com dados mockados 
     }
 
     public listarClientes (): ClienteEntity[] {
@@ -20,7 +20,6 @@ export class ClienteRepositoryMock implements ClienteRepositoryInterface {
     
     buscarClientePorCpf (cpf: string): ClienteEntity | undefined {
         // implementar a lógica de buscar um cliente pelo CPF
-        if (cpf === '000.000.000-00') return;
-        return new ClienteEntity('123.456.789-00', 'Nome Cliente Mock', 'email@example.com');
+        return new ClienteEntity(cpf, 'Nome Cliente Mock', 'email@example.com');
     }
 }
