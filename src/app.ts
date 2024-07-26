@@ -1,5 +1,6 @@
 import express from 'express';
 import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
+import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/exemplo/lista-generica', ListaGenericaEndpoint.handle);
+app.get('/cliente/cadastrar', CadastrarClienteEndpoint.handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
