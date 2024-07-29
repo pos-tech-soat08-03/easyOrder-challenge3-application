@@ -1,19 +1,24 @@
+import { v4 as uuidv4 } from 'uuid';
 
 export class ProdutoEntity {
-    private id: number;
+    private id: string;
     private nome: string;
     private descricao: string;
     private preco: number;
     private categoria: CategoriaEnum;
     private imagemURL: string;
 
- constructor(id: number, nome: string, descricao:string, preco:number,categoria: CategoriaEnum, imagemURL:string) {
-    this.id = id;
+ constructor( nome: string, descricao:string, preco:number,categoria: CategoriaEnum, imagemURL:string, id?: string) {
+   
     this.nome = nome;
     this.descricao = descricao;
     this.preco = preco;
     this.categoria = categoria;
     this.imagemURL = imagemURL;
+    if (!id) {
+      id = uuidv4();
+  }
+  this.id = id;
  }
  public getId(): number {
     return this.id;
