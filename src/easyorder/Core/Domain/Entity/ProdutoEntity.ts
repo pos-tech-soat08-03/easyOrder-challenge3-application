@@ -20,7 +20,7 @@ export class ProdutoEntity {
   }
   this.id = id;
  }
- public getId(): number {
+ public getId(): string {
     return this.id;
  }
  public getNome(): string {
