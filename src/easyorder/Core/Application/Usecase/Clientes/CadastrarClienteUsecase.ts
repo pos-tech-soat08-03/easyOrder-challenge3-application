@@ -1,58 +1,76 @@
 import { ClienteEntity } from "../../../Domain/Entity/ClienteEntity";
 import { ClienteRepositoryInterface } from "../../../Domain/Output/Repository/ClienteRepositoryInterface";
+import { CpfValueObject } from "../../../Domain/ValueObject/CpfValueObject";
+import { EmailValueObject } from "../../../Domain/ValueObject/EmailValueObject";
 
 export class CadastrarClienteUsecaseResponse {
-    protected sucesso_cadastro: boolean;
-    protected cliente_existente: boolean;
-    private cliente: ClienteEntity;
+    private sucesso_cadastro: boolean;
+    private mensagem: string | null = null;
+    private cliente: ClienteEntity | null = null;
 
-    constructor(sucesso_cadastro: boolean, cliente_existente: boolean, cliente: ClienteEntity) { 
-        this.cliente = cliente;
+    constructor(sucesso_cadastro: boolean, message: string | null, cliente?: ClienteEntity | null) {
         this.sucesso_cadastro = sucesso_cadastro;
-        this.cliente_existente = cliente_existente;
-    }
 
-    public getClienteResponse()  {
-        return [ this.cliente.getId(), this.cliente.getNome(), this.cliente.getEmail(), this.cliente.getCpf() ];
+        if (message) {
+            this.mensagem = message;
+        }
+
+        this.cliente = cliente || null;
     }
 
     public getSucessoCadastro() {
         return this.sucesso_cadastro;
-    }    
+    }
 
-    public getClienteExistente() {
-        return this.cliente_existente;
+    public getMensagem() {
+        return this.mensagem;
+    }
+
+    public getCliente() {
+        return this.cliente;
     }
 }
 
 export class CadastrarClienteUsecase {
-     
+
     constructor(
         private readonly clienteRepository: ClienteRepositoryInterface
     ) { }
 
-    public async execute (cpf: string, nome: string, email: string): Promise<CadastrarClienteUsecaseResponse> {
+    public async execute(cpf: string, nome: string, email: string): Promise<CadastrarClienteUsecaseResponse> {
 
-        // Validações iniciais
-        if (!cpf ||!nome ||!email) {
-            return new CadastrarClienteUsecaseResponse(false, false, new ClienteEntity('0', 'Erro', ''));
-        }
-        if (!cpf.match(/^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$/)) {
-            return new CadastrarClienteUsecaseResponse(false, false, new ClienteEntity('0', 'Erro', ''));
-        }
-        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-            return new CadastrarClienteUsecaseResponse(false, false, new ClienteEntity('0', 'Erro', ''));
-        }
+        try {
 
-        // Buscar cliente já cadastrado no sistema
-        const clienteExistente = this.clienteRepository.buscarClientePorCpf(cpf);
-        if (clienteExistente) {
-            return new CadastrarClienteUsecaseResponse(true, true, clienteExistente);
+            if (!cpf) {
+                throw new Error('CPF não informado');
+            }
+
+            if (!nome) {
+                throw new Error('Nome não informado');
+            }
+
+            if (!email) {
+                throw new Error('Email não informado');
+            }
+
+            const cpfValue = new CpfValueObject(cpf);
+            const emailValue = new EmailValueObject(email);
+
+            // Buscar cliente já cadastrado no sistema
+            const clienteExistente = this.clienteRepository.buscarClientePorCpf(cpfValue);
+            if (clienteExistente) {
+                throw new Error('Cliente já cadastrado com esse CPF');
+            }
+
+            // Salvar o cliente no repositório e retornar o resultado
+            const cliente = new ClienteEntity(cpfValue, nome, emailValue);
+            this.clienteRepository.salvarCliente(cliente);
+
+            return new CadastrarClienteUsecaseResponse(true, 'Cliente cadastrado com sucesso', cliente);
+
+        } catch (error: any) {
+            return new CadastrarClienteUsecaseResponse(false, error.message);
         }
-        // Salvar o cliente no repositório e retornar o resultado
-        const cliente = new ClienteEntity(cpf, nome, email);
-        this.clienteRepository.salvarCliente(cliente);
-        return new CadastrarClienteUsecaseResponse(true, false, cliente);
     }
 
 }

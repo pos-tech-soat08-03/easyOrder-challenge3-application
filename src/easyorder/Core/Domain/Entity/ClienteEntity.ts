@@ -1,12 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
+import { CpfValueObject } from '../ValueObject/CpfValueObject';
+import { EmailValueObject } from '../ValueObject/EmailValueObject';
 
 export class ClienteEntity {
     private id: string;
     private nome: string;
-    private cpf: string;
-    private email: string;
+    private cpf: CpfValueObject;
+    private email: EmailValueObject;
 
-    constructor(cpf: string, nome: string, email: string, id?: string) {
+    constructor(cpf: CpfValueObject, nome: string, email: EmailValueObject, id?: string) {
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
@@ -14,22 +16,23 @@ export class ClienteEntity {
         if (!id) {
             id = uuidv4();
         }
+
         this.id = id;
     }
 
-    getId() {
+    getId(): string {
         return this.id;
     }
 
-    getNome() {
+    getNome(): string {
         return this.nome;
     }
 
-    getEmail() {
+    getEmail(): EmailValueObject {
         return this.email;
     }
 
-    getCpf() {
+    getCpf(): CpfValueObject {
         return this.cpf;
     }
 }
