@@ -1,4 +1,4 @@
-enum Categoria {
+enum CategoriaEnum {
     LANCHE,
     BEBIDA,
     SOBREMESA,

@@ -4,10 +4,10 @@ export class ProdutoEntity {
     private nome: string;
     private descricao: string;
     private preco: number;
-    private categoria: Categoria;
+    private categoria: CategoriaEnum;
     private imagemURL: string;
 
- constructor(id: number, nome: string, descricao:string, preco:number,categoria: Categoria, imagemURL:string) {
+ constructor(id: number, nome: string, descricao:string, preco:number,categoria: CategoriaEnum, imagemURL:string) {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;
@@ -30,7 +30,7 @@ export class ProdutoEntity {
     public getImagemURL(): string {
     return this.imagemURL;
  }
- public getCategoria(): Categoria {
+ public getCategoria(): CategoriaEnum {
     return this.categoria;
  }
 
