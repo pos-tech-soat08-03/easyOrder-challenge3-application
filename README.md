@@ -35,6 +35,11 @@ Com o novo arquivo, basta rodar:
 docker-compose up
 ```
 
+Também é necessário renomear o arquivo `.env-sample` para `.env` e incluir as suas configurações de desenvolvimento.
+
+*Para obter as informações de desenvolvimento, entre em contato com a equipe*
+
+
 ### Verificar se está funcionando
 
 Para verificar se está funcionando, basta acessar a url [http://localhost:3000/](http://localhost:3000/)
