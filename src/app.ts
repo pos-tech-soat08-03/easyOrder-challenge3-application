@@ -4,6 +4,7 @@ import swaggerOutput from "./swagger-output.json";
 import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
+import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 
 const app = express();
 const port = 3000;
@@ -21,6 +22,8 @@ app.get('/exemplo/lista-generica', ListaGenericaEndpoint.handle);
 app.post('/cliente/cadastrar', CadastrarClienteEndpoint.handle);
 
 app.delete('/produto/remover', RemoverProdutoEndpoint.handle);
+
+app.post('/pedido/cadastrar', CadastrarPedidoEndpoint.handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

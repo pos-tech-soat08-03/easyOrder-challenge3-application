@@ -14,5 +14,6 @@ dist/
 local/
 .vscode*
 
-# Docker developer files
+# Definições de execução local
 docker-compose.override.yml
+*.fake.*
