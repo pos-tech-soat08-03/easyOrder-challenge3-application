@@ -175,6 +175,77 @@
           }
         }
       }
+    },
+    "/pedido/cancelar/{pedidoId}": {
+      "post": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Cancelar um pedido",
+        "description": "Endpoint para cancelamento de um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido cancelado com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido cadastrado com sucesso"
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

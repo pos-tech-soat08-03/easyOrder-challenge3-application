@@ -66,4 +66,25 @@ export class PedidoEntity {
     public getStatusPagamento(): StatusPagamentoEnum {
         return this.statusPagamento;
     }
+
+    public setStatusPedido(status: StatusPedidoValueObject): void {
+        if (!status) {
+            throw new Error('Status do pedido não informado');
+        }
+
+        if (status.getValue() === StatusPedidoEnum.CANCELADO) {
+            const statusPermitidos = [
+                StatusPedidoEnum.RASCUNHO,
+                StatusPedidoEnum.EM_ABERTO,
+                StatusPedidoEnum.AGUARDANDO_PAGAMENTO,
+            ];
+
+            if (!statusPermitidos.includes(this.statusPedido.getValue())) {
+                throw new Error('Status do pedido não permite cancelamento');
+            }
+
+        }
+
+        this.statusPedido = status;
+    }
 }

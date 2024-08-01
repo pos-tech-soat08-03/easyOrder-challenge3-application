@@ -1,57 +1,49 @@
 
 import { Request, Response } from 'express';
-import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryMock } from '../../../Output/Repository/PedidoRepositoryMock';
+import { CancelarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CancelarPedidoUsecase';
 
-export class CadastrarPedidoEndpoint {
+export class CancelarPedidoEndpoint {
 
     public static async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
+            #swagger.path = '/pedidos/cancelar/{pedidoId}'
             #swagger.method = 'post'
-            #swagger.summary = 'Cadastrar novo pedido'
-            #swagger.description = 'Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing'
+            #swagger.summary = 'Cancelar um pedido'
+            #swagger.description = 'Endpoint para cancelamento de um pedido'
             #swagger.produces = ["application/json"]
-            #swagger.parameters['body'] = { 
-                in: 'body', 
-                '@schema': { 
-                    "required": ["clientId"], 
-                    "properties": { 
-                        "clientId": { 
-                            "type": "string", 
-                            "minLength": 36, 
-                            "maxLength": 36,
-                            "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307" 
-                        }
-                    }
-                }
+            #swagger.parameters['pedidoId'] = {
+                in: 'path',
+                description: 'ID do pedido',
+                required: true,
+                type: 'string',
+                example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
             }
         */
         try {
 
             const pedidoRepository = new PedidoRepositoryMock();
 
-            const usecase = new CadastrarPedidoUsecase(
+            const usecase = new CancelarPedidoUsecase(
                 pedidoRepository
             );
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado enviado.');
+            const pedidoId: string = req.params.pedidoId;
+
+            if (!pedidoId) {
+                throw new Error('Pedido não informado');
             }
 
-            const clienteId: string = req.body.clienteId;
+            const result = await usecase.execute(pedidoId);
 
-            const result = await usecase.execute(clienteId);
-
-            if (!result.getSucessoCadastro()) {
+            if (!result.getSucessoCancelamento()) {
                 throw new Error(result.getMensagem());
             }
 
-
             /**
             #swagger.responses[200] = {
-                'description': 'Pedido cadastrado com sucesso',
+                'description': 'Pedido cancelado com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {

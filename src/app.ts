@@ -5,6 +5,7 @@ import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
+import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
 
 const app = express();
 const port = 3000;
@@ -24,6 +25,8 @@ app.post('/cliente/cadastrar', CadastrarClienteEndpoint.handle);
 app.delete('/produto/remover', RemoverProdutoEndpoint.handle);
 
 app.post('/pedido/cadastrar', CadastrarPedidoEndpoint.handle);
+
+app.post('/pedido/cancelar/:pedidoId', CancelarPedidoEndpoint.handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
