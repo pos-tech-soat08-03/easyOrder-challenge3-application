@@ -2,7 +2,8 @@ import express from 'express';
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
 import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
-import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
+import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
+import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
 
 const app = express();
@@ -18,7 +19,8 @@ app.get('/', (req, res) => {
 
 app.get('/exemplo/lista-generica', ListaGenericaEndpoint.handle);
 
-app.post('/cliente/cadastrar', CadastrarClienteEndpoint.handle);
+app.post('/clientes/cadastrar', CadastrarClienteEndpoint.handle);
+app.get('/clientes/listar', ListarClientesEndpoint.handle);
 
 app.delete('/produto/remover', RemoverProdutoEndpoint.handle);
 

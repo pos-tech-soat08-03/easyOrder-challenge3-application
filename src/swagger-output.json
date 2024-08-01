@@ -31,10 +31,10 @@
         }
       }
     },
-    "/cliente/cadastrar": {
+    "/clientes/cadastrar": {
       "post": {
-        "summary": "Cadastrar novo cliente",
-        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "summary": "Cadastrar Cliente do Restaurante",
+        "description": "O cadastro Clientes é utilizado para inserir as informações básicas de um novo Cliente no Sistema do Restaurante.  O cadastro irá permitir a posterior identificação do Cliente e a utilização dos dados por sistemas externos de Marketing.",
         "parameters": [
           {
             "name": "body",
@@ -55,6 +55,20 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/clientes/listar": {
+      "get": {
+        "summary": "Listar Cliente do Restaurante",
+        "description": "A listagem de cliente é uma função de administração, para uso de sistemas externos.",
         "responses": {
           "200": {
             "description": "OK"
