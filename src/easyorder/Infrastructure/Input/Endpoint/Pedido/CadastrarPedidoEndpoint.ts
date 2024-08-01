@@ -100,7 +100,7 @@ export class CadastrarPedidoEndpoint {
 
         } catch (error: any) {
             /**
-            #swagger.responses[500] = {
+            #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
                     'properties': {

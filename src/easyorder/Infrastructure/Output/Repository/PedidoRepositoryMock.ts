@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import { PedidoEntity } from "../../../Core/Domain/Entity/PedidoEntity";
-import { PedidoRepositoryInterface } from "../../../Core/Domain/Output/Repository/PedidoRepositoryInterface";
+import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from "../../../Core/Domain/Output/Repository/PedidoRepositoryInterface";
 import { StatusPedidoValueObject } from '../../../Core/Domain/ValueObject/StatusPedidoValueObject';
 
 export class PedidoRepositoryMock implements PedidoRepositoryInterface {
@@ -49,8 +49,26 @@ export class PedidoRepositoryMock implements PedidoRepositoryInterface {
         return pedido;
     }
 
-    listarPedidosPorStatus(status: StatusPedidoValueObject): PedidoEntity[] {
-        return this.pedidos.filter(p => p.getStatusPedido().getValue() === status.getValue());
+    listarPedidosPorStatus(status: StatusPedidoValueObject, filter: PedidoRepositoryInterfaceFilter): PedidoEntity[] {
+        const filtered: PedidoEntity[] = this.pedidos.filter(p => p.getStatusPedido().getValue() === status.getValue());
+
+        switch (filter.orderField) {
+            case PedidoRepositoryInterfaceFilterOrderField.DATA_CADASTRO:
+                filtered.sort((a, b) => {
+                    if (filter.orderDirection === PedidoRepositoryInterfaceFilterOrderDirection.ASC) {
+                        return a.getDataPedido().getTime() - b.getDataPedido().getTime();
+                    } else {
+                        return b.getDataPedido().getTime() - a.getDataPedido().getTime();
+                    }
+                });
+                break;
+            default:
+                throw new Error('Campo de ordenação inválido');
+        }
+
+        const start = (filter.page - 1) * filter.limit;
+        const end = start + filter.limit;
+        return filtered.slice(start, end);
     }
 
     buscaPedidoPorId(id: string): PedidoEntity | null {
