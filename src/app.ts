@@ -20,13 +20,17 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.get('/', (req, res) => {
-  res.send('Olá, mundo com Express e TypeScript!');
+  res.send('Tudo ok por aqui. Pode seguir viajem!');
 });
 
-app.get('/exemplo/lista-generica', new ListaGenericaEndpoint().handle);
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'UP'
+  });
+});
 
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
 
