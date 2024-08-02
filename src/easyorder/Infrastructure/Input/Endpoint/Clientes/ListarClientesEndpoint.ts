@@ -1,8 +1,7 @@
+
 import express from "express";
 import { ListarClientesUsecase } from '../../../../Core/Application/Usecase/Clientes/ListarClientesUsecase';
 import { ClienteRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
-import { ClienteRepositoryMock } from '../../../Output/Repository/ClienteRepositoryMock';
-import { json } from "stream/consumers";
 
 export class ListarClientesEndpoint {
 
@@ -12,41 +11,91 @@ export class ListarClientesEndpoint {
         this.handle = this.handle.bind(this);
     }
 
-
     public async handle(req: express.Request, res: express.Response): Promise<void> {
 
         /**
-            #swagger.summary = 'Listar Cliente do Restaurante'
-            #swagger.description = 'A listagem de cliente é uma função de administração, para uso de sistemas externos.'
             #swagger.tags = ['Clientes']
-
+            #swagger.path = '/cliente/listar'
+            #swagger.method = 'get'
+            #swagger.summary = 'Listar clientes'
+            #swagger.description = 'Endpoint para listar todos os clientes cadastrados'
+            #swagger.produces = ["application/json"]  
         */
 
-        // instanciando o Repositório Mock - TODO: refatorar para escolher o repositório de acordo com variáveis de ambiente
         const usecase = new ListarClientesUsecase(
-            new ClienteRepositoryMock()
+            this.clienteRepository
         );
 
-        try { 
+        try {
 
-        const result = await usecase.execute();
+            const result = await usecase.execute();
 
-        res.json({
-            mensagem: result.getMensagem(),
-            clientes: result.getClientes()?.map(cliente => {
-                return ( {
-                    id: cliente.getId(),
-                    cpf: cliente.getCpf().getValue(),
-                    nome: cliente.getNome(),
-                    email: cliente.getEmail().getValue()
-                } )
-            })
-        });
+            /**
+                #swagger.responses[200] = {
+                    'description': 'Clientes listados com sucesso',
+                    '@schema': {
+                        properties: {
+                            mensagem: {
+                                type: 'string',
+                                example: 'Clientes listados com sucesso'
+                            },
+                            clientes: {
+                                type: 'array',
+                                items: {
+                                    properties: {
+                                        id: {
+                                            type: 'string',
+                                            example: '1'
+                                        },
+                                        cpf: {
+                                            type: 'string',
+                                            example: '000.000.000-00'
+                                        },
+                                        nome: {
+                                            type: 'string',
+                                            example: 'Fulano de Tal'
+                                        },
+                                        email: {
+                                            type: 'string',
+                                            example: 'teste@teste.com'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            */
+            res.json({
+                mensagem: result.getMensagem(),
+                clientes: result.getClientes()?.map(cliente => {
+                    return ({
+                        id: cliente.getId(),
+                        cpf: cliente.getCpf().getValue(),
+                        nome: cliente.getNome(),
+                        email: cliente.getEmail().getValue()
+                    })
+                })
+            });
 
         }
         catch (error: any) {
+            /**
+            #swagger.responses[400] = {
+                'description': 'Ocorreu um erro inesperado',
+                '@schema': {
+                    'properties': {
+                        mensagem: {
+                            type: 'string',
+                            example: 'Ocorreu um erro inesperado: Pedido não encontrado'
+                        }
+                    }
+                }
+            }
+            */
+            console.log(error);
             res.status(400).json({
-                mensagem: error.message(),
+                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
             });
             return;
         }

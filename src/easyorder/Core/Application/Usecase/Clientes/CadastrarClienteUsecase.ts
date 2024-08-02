@@ -57,14 +57,14 @@ export class CadastrarClienteUsecase {
             const emailValue = new EmailValueObject(email);
 
             // Buscar cliente já cadastrado no sistema
-            const clienteExistente = this.clienteRepository.buscarClientePorCpf(cpfValue);
+            const clienteExistente = await this.clienteRepository.buscarClientePorCpf(cpfValue);
             if (clienteExistente !== undefined) {
                 throw new Error('Cliente já cadastrado com esse CPF');
             }
 
             // Salvar o cliente no repositório e retornar o resultado
             const cliente = new ClienteEntity(cpfValue, nome, emailValue);
-            this.clienteRepository.adicionarCliente(cliente);
+            await this.clienteRepository.adicionarCliente(cliente);
 
             return new CadastrarClienteUsecaseResponse(true, 'Cliente cadastrado com sucesso', cliente);
 

@@ -11,13 +11,31 @@ import { ListarPedidosPorStatusEndpoint } from './easyorder/Infrastructure/Input
 import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
 import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
+import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
+import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
 
-const clienteRepository = new ClienteRepositoryMock();
+console.log('Iniciando aplicação...', process.env);
+
+// const clienteRepository = new ClienteRepositoryMock();
+const clienteRepository = new ClienteRepositoryMySQL(
+  process.env.DATABASE_HOST || 'ERROR',
+  Number(process.env.DATABASE_PORT || '0'),
+  process.env.DATABASE_NAME || 'ERROR',
+  process.env.DATABASE_USER || 'ERROR',
+  process.env.DATABASE_PASS || 'ERROR'
+);
 const produtoRepository = new RemoverProdutoRepositoryMock();
-const pedidoRepository = new PedidoRepositoryMock();
+// const pedidoRepository = new PedidoRepositoryMock();
+const pedidoRepository = new PedidoRepositoryMySQL(
+  process.env.DATABASE_HOST || 'ERROR',
+  Number(process.env.DATABASE_PORT || '0'),
+  process.env.DATABASE_NAME || 'ERROR',
+  process.env.DATABASE_USER || 'ERROR',
+  process.env.DATABASE_PASS || 'ERROR'
+);
 
 const app = express();
-const port = 3000;
+const port = Number(process.env.SERVER_PORT || '3000');
 
 app.use(express.json());
 
@@ -34,6 +52,7 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
+
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
 app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
 

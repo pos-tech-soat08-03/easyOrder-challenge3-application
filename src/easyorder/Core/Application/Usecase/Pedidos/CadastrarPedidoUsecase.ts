@@ -36,7 +36,7 @@ export class CadastrarPedidoUsecase {
         try {
             const pedido = new PedidoEntity(clientId);
 
-            const pedidoSalvo = this.pedidoRepository.salvarPedido(pedido)
+            const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
 
             if (!pedidoSalvo) {
                 throw new Error('Erro ao salvar pedido');

@@ -35,7 +35,7 @@ export class CancelarPedidoUsecase {
     public async execute(pedidoId: string): Promise<CancelarPedidoUsecaseResponse> {
 
         try {
-            const pedido = this.pedidoRepository.buscaPedidoPorId(pedidoId);
+            const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
 
             if (!pedido) {
                 throw new Error('Pedido não encontrado');
@@ -43,7 +43,7 @@ export class CancelarPedidoUsecase {
 
             pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO));
 
-            const pedidoSalvo = this.pedidoRepository.salvarPedido(pedido)
+            const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
 
             if (!pedidoSalvo) {
                 throw new Error('Erro ao salvar pedido');
