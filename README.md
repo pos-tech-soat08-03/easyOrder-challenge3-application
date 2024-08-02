@@ -44,6 +44,9 @@ Também é necessário renomear o arquivo `.env-sample` para `.env` e incluir as
 
 Para verificar se está funcionando, basta acessar a url [http://localhost:3000/](http://localhost:3000/)
 
+### Acesso à Documentação do Swagger
+
+Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/api-docs/](http://localhost:3000/api-docs/)
 
 # Arquitetura e estrutura de pastas
 

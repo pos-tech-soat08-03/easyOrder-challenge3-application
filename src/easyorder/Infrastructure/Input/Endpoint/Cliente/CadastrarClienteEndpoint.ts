@@ -1,14 +1,24 @@
 import express from "express";
-
 import { CadastrarClienteUsecase } from '../../../../Core/Application/Usecase/Clientes/CadastrarClienteUsecase';
-import { ClienteRepositoryMock } from '../../../Output/Repository/ClienteRepositoryMock';
+import { ClienteRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
 
 export class CadastrarClienteEndpoint {
 
-    public static async handle(req: express.Request, res: express.Response): Promise<void> {
+    constructor(
+        private clienteRepository: ClienteRepositoryInterface
+    ) {
+        this.handle = this.handle.bind(this);
+    }
+
+    public async handle(req: express.Request, res: express.Response): Promise<void> {
+
+        /**
+            #swagger.summary = 'Cadastrar novo cliente'
+            #swagger.description = 'Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing'
+        */
 
         const usecase = new CadastrarClienteUsecase(
-            new ClienteRepositoryMock()
+            this.clienteRepository
         );
 
         if (req.body === undefined || Object.keys(req.body).length === 0) {
