@@ -1,15 +1,12 @@
 import express from 'express';
-<<<<<<< HEAD
 import { BeansManager } from './BeansManager';
-import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
-import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarProdutoEndpoint';
-import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
-import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMock';
-=======
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
 import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
+import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarProdutoEndpoint';
+import { ListaGenericaEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Exemplo/ListaGenericaEndpoint';
+import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMock';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
@@ -21,7 +18,6 @@ import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Reposito
 const clienteRepository = new ClienteRepositoryMock();
 const produtoRepository = new RemoverProdutoRepositoryMock();
 const pedidoRepository = new PedidoRepositoryMock();
->>>>>>> main
 
 const app = express();
 const port = 3000;
@@ -52,11 +48,4 @@ app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedid
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
-<<<<<<< HEAD
 });
-
-const beansManger = new BeansManager();
-beansManger.addSingleton<CadastrarProdutoEndpoint>(CadastrarClienteEndpoint, ProdutoRepositoryMock);
-=======
-});
->>>>>>> main
