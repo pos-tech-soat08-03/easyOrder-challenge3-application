@@ -13,6 +13,11 @@ import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
+import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/CategoriaRepositoryMock';
+import { ListaCategoriasEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarCategoriasEndpoint';
+
+
+
 
 console.log('Iniciando aplicação...', process.env);
 
@@ -33,6 +38,10 @@ const pedidoRepository = new PedidoRepositoryMySQL(
   process.env.DATABASE_USER || 'ERROR',
   process.env.DATABASE_PASS || 'ERROR'
 );
+
+// Instanciar o mock e o use case para categorias
+const categoriaRepositoryMock = new CategoriaRepositoryMock();
+const listaCategoriasEndpoint = new ListaCategoriasEndpoint(categoriaRepositoryMock);
 
 const app = express();
 const port = Number(process.env.SERVER_PORT || '3000');
@@ -63,6 +72,10 @@ app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).hand
 app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
+
+app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
+app.get('/categoria/listar', listaCategoriasEndpoint.handle);
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

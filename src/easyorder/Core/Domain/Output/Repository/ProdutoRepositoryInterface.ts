@@ -1,4 +1,5 @@
 import { ProdutoEntity } from "../../Entity/ProdutoEntity";
+import { CategoriaEnum } from "../../ValueObject/CategoriaEnum";
 
 export interface ProdutoRepositoryInterface {
     listarProduto (): ProdutoEntity[];
