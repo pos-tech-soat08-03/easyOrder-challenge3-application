@@ -43,6 +43,7 @@ export class PedidoEntity {
         this.dataPedido = dataPedido;
         this.clienteId = clienteId;
         this.statusPedido = statusPedido;
+        this.setStatusPedido(statusPedido);
         this.statusPagamento = statusPagamento;
         this.id = id;
     }
@@ -104,6 +105,12 @@ export class PedidoEntity {
         if (status.getValue() === StatusPedidoEnum.PRONTO) {
             if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_PREPARACAO) {
                 throw new Error('Status do pedido não permite finalização de preparação');
+            }
+        }
+
+        if (status.getValue() === StatusPedidoEnum.FINALIZADO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.PRONTO) {
+                throw new Error('Status do pedido não permite entrega');
             }
         }
 

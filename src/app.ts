@@ -17,6 +17,7 @@ import { FecharPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/
 import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
 import { IniciarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/IniciarPreparacaoPedidoEndpoint';
 import { FinalizarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FinalizarPreparacaoPedidoEndpoint';
+import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/EntregarPedidoEndpoint';
 
 // const clienteRepository = new ClienteRepositoryMock();
 const clienteRepository = new ClienteRepositoryMySQL(
@@ -74,6 +75,8 @@ app.get('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepositor
 app.get('/pedido/iniciar-preparacao/:pedidoId', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/finalizar-preparacao/:pedidoId', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/entregar/:pedidoId', new EntregarPedidoEndpoint(pedidoRepository).handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
