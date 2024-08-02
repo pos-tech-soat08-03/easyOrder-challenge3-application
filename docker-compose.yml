@@ -5,6 +5,14 @@ services:
     build: .
     image: easyorder:1.0.0
     container_name: easyorder
+    environment:
+      NODE_ENV: "development"
+      SERVER_PORT: "3000"
+      DATABASE_HOST: "easyorder_database"
+      DATABASE_PORT: "3306"
+      DATABASE_NAME: "easyorder_database_schema"
+      DATABASE_USER: "easyorder_database_username"
+      DATABASE_PASS: "easyorder_database_password"
     ports:
       - "3000:3000"
     links:
@@ -18,9 +26,11 @@ services:
     expose:
       - '3306'
     volumes:
-      - /local/database:/var/lib/mysql
+      - /local/easyorder-database:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: 'easyorder'
-      MYSQL_USER: 'easyorder'
-      MYSQL_PASSWORD: 'easyorder_senha_super_segura'
+      MYSQL_DATABASE: 'easyorder_database_schema'
+      MYSQL_USER: 'easyorder_database_username'
+      MYSQL_PASSWORD: 'easyorder_database_password'
       MYSQL_ROOT_PASSWORD: 'root'
+volumes:
+  easyorder-database:

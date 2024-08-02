@@ -15,7 +15,7 @@ export class ListarClientesUsecaseResponse {
 
         this.clientes = clientes || null;
     }
-    
+
     public getMensagem() {
         return this.mensagem;
     }
@@ -35,7 +35,7 @@ export class ListarClientesUsecase {
 
         try {
 
-            const lista_clientes: ClienteEntity[] = this.clienteRepository.listarClientes();
+            const lista_clientes: ClienteEntity[] = await this.clienteRepository.listarClientes();
             if (lista_clientes === undefined) {
                 throw new Error('Não foi possível obter lista de clientes.');
             }
