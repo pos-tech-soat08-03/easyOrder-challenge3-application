@@ -12,14 +12,15 @@ services:
   easyorder_database:
     image: mysql:5.7
     container_name: easyorder_database
+    restart: always
     ports:
-      - "3306:3306"
+      - '3306:3306'
     expose:
-      - "3306"
+      - '3306'
     volumes:
-      - ./local/database/:/var/lib/mysql
+      - /local/database:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: easyorder
-      MYSQL_USER: easyorder
-      MYSQL_PASSWORD: easyorder_senha_super_segura
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: 'easyorder'
+      MYSQL_USER: 'easyorder'
+      MYSQL_PASSWORD: 'easyorder_senha_super_segura'
+      MYSQL_ROOT_PASSWORD: 'root'

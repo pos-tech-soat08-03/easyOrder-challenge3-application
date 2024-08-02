@@ -10,10 +10,12 @@ import { ListarPedidosPorStatusEndpoint } from './easyorder/Infrastructure/Input
 import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
 import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
+import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 
 const clienteRepository = new ClienteRepositoryMock();
 const produtoRepository = new RemoverProdutoRepositoryMock();
-const pedidoRepository = new PedidoRepositoryMock();
+// const pedidoRepository = new PedidoRepositoryMock();
+const pedidoRepository = new PedidoRepositoryMySQL();
 
 const app = express();
 const port = 3000;
