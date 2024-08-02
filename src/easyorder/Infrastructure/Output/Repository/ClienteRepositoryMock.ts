@@ -1,3 +1,4 @@
+import { Console } from "console";
 import { ClienteEntity } from "../../../Core/Domain/Entity/ClienteEntity";
 import { ClienteRepositoryInterface } from "../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
 import { CpfValueObject } from "../../../Core/Domain/ValueObject/CpfValueObject";
@@ -23,9 +24,10 @@ export class ClienteRepositoryMock implements ClienteRepositoryInterface {
     }
 
     public buscarClientePorCpf(cpf: CpfValueObject): ClienteEntity | undefined {
-        return this.clientes.find(cliente => { 
-            cliente.getCpf().getValue() == cpf.getValue();
-        });
+        for (let cliente of this.clientes) { 
+            if(cliente.getCpf().getValue() === cpf.getValue()) return cliente; 
+        }
+        return undefined;
     }
 
     public adicionarCliente(cliente: ClienteEntity): boolean {

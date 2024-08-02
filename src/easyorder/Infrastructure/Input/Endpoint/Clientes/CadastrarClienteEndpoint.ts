@@ -13,10 +13,10 @@ export class CadastrarClienteEndpoint {
     public async handle(req: express.Request, res: express.Response): Promise<void> {
 
         /**
-            #swagger.summary = 'Cadastrar Cliente do Restaurante'
+            #swagger.summary = 'Cadastrar novo Cliente'
             #swagger.description = 'O cadastro Clientes é utilizado para inserir as informações básicas de um novo Cliente no Sistema do Restaurante.
                 O cadastro irá permitir a posterior identificação do Cliente e a utilização dos dados por sistemas externos de Marketing.'
-
+            #swagger.tags = ['Clientes']
         */
 
         // instanciando o Repositório Mock - TODO: refatorar para escolher o repositório de acordo com variáveis de ambiente
@@ -32,18 +32,6 @@ export class CadastrarClienteEndpoint {
             }
     
             const { cpf, nome, email } = req.body;
-
-            if (!cpf) {
-                throw new Error('CPF não informado.');
-            }
-
-            if (!nome) {
-                throw new Error('Nome não informado.');
-            }
-
-            if (!email) {
-                throw new Error('Email não informado.');
-            }
 
         const result = await usecase.execute(cpf, nome, email);
 

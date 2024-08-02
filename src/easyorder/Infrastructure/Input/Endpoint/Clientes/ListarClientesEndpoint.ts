@@ -1,16 +1,24 @@
 import express from "express";
 import { ListarClientesUsecase } from '../../../../Core/Application/Usecase/Clientes/ListarClientesUsecase';
-
+import { ClienteRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
 import { ClienteRepositoryMock } from '../../../Output/Repository/ClienteRepositoryMock';
 import { json } from "stream/consumers";
 
 export class ListarClientesEndpoint {
 
-    public static async handle(req: express.Request, res: express.Response): Promise<void> {
+    constructor(
+        private clienteRepository: ClienteRepositoryInterface
+    ) {
+        this.handle = this.handle.bind(this);
+    }
+
+
+    public async handle(req: express.Request, res: express.Response): Promise<void> {
 
         /**
             #swagger.summary = 'Listar Cliente do Restaurante'
             #swagger.description = 'A listagem de cliente é uma função de administração, para uso de sistemas externos.'
+            #swagger.tags = ['Clientes']
 
         */
 

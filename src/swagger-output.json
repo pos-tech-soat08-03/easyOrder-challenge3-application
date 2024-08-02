@@ -21,7 +21,7 @@
         }
       }
     },
-    "/exemplo/lista-generica": {
+    "/health": {
       "get": {
         "description": "",
         "responses": {
@@ -31,9 +31,12 @@
         }
       }
     },
-    "/clientes/cadastrar": {
+    "/cliente/cadastrar": {
       "post": {
-        "summary": "Cadastrar Cliente do Restaurante",
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Cadastrar novo Cliente",
         "description": "O cadastro Clientes é utilizado para inserir as informações básicas de um novo Cliente no Sistema do Restaurante.  O cadastro irá permitir a posterior identificação do Cliente e a utilização dos dados por sistemas externos de Marketing.",
         "parameters": [
           {
@@ -65,8 +68,11 @@
         }
       }
     },
-    "/clientes/listar": {
+    "/cliente/listar": {
       "get": {
+        "tags": [
+          "Clientes"
+        ],
         "summary": "Listar Cliente do Restaurante",
         "description": "A listagem de cliente é uma função de administração, para uso de sistemas externos.",
         "responses": {
@@ -75,6 +81,20 @@
           },
           "400": {
             "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/cliente/buscar": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Buscar/Identificar Cliente do Restaurante por CPF",
+        "description": "A busca de Cliente por CPF permite que o Cliente seja identificado para próximas etapas na sua jornada.",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
