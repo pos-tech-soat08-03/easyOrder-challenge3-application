@@ -101,6 +101,12 @@ export class PedidoEntity {
             }
         }
 
+        if (status.getValue() === StatusPedidoEnum.PRONTO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_PREPARACAO) {
+                throw new Error('Status do pedido não permite finalização de preparação');
+            }
+        }
+
         this.statusPedido = status;
     }
 }
