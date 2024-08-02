@@ -5,7 +5,11 @@ import { EmailServiceMock } from '../../../Output/Service/EmailServiceMock';
 
 export class ListaGenericaEndpoint {
 
-    public static async handle(request: express.Request, response: express.Response) {
+    constructor() {
+        this.handle = this.handle.bind(this);
+    }
+
+    public async handle(request: express.Request, response: express.Response) {
 
         const usecase = new ListaGenericaUsecase(
             new ExemploRepositoryMock([

@@ -1,15 +1,18 @@
 
 import { Request, Response } from 'express';
-import { PedidoRepositoryMock } from '../../../Output/Repository/PedidoRepositoryMock';
-import { CancelarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CancelarPedidoUsecase';
-import { PedidoEntity } from '../../../../Core/Domain/Entity/PedidoEntity';
 import { ListarPedidosPorStatusUsecase } from '../../../../Core/Application/Usecase/Pedidos/ListarPedidosPorStatusUsecase';
 import { StatusPedidoEnum, StatusPedidoValueObject } from '../../../../Core/Domain/ValueObject/StatusPedidoValueObject';
-import { PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
+import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 
 export class ListarPedidosPorStatusEndpoint {
 
-    public static async handle(req: Request, res: Response): Promise<void> {
+    constructor(
+        private pedidoRepository: PedidoRepositoryInterface
+    ) {
+        this.handle = this.handle.bind(this);
+    }
+
+    public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido/listar/:statusPedido'
@@ -77,8 +80,6 @@ export class ListarPedidosPorStatusEndpoint {
         */
         try {
 
-            const pedidoRepository = new PedidoRepositoryMock();
-
             const statusPedido: string = req.params.statusPedido;
 
             if (!statusPedido) {
@@ -91,7 +92,7 @@ export class ListarPedidosPorStatusEndpoint {
             const paramOrderDirection = req.query.orderDirection ? req.query.orderDirection as string : 'DESC';
 
             const usecase = new ListarPedidosPorStatusUsecase(
-                pedidoRepository
+                this.pedidoRepository
             );
 
             const result = await usecase.execute(
@@ -205,7 +206,6 @@ export class ListarPedidosPorStatusEndpoint {
             res.status(400).json({
                 mensagem: 'Ocorreu um erro inesperado: ' + error.message,
             });
-            throw error;
         }
 
     }

@@ -7,6 +7,13 @@ import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
 import { ListarPedidosPorStatusEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/ListarPedidosPorStatusEndpoint';
+import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
+import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
+import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
+
+const clienteRepository = new ClienteRepositoryMock();
+const produtoRepository = new RemoverProdutoRepositoryMock();
+const pedidoRepository = new PedidoRepositoryMock();
 
 const app = express();
 const port = 3000;
@@ -19,17 +26,17 @@ app.get('/', (req, res) => {
   res.send('Olá, mundo com Express e TypeScript!');
 });
 
-app.get('/exemplo/lista-generica', ListaGenericaEndpoint.handle);
+app.get('/exemplo/lista-generica', new ListaGenericaEndpoint().handle);
 
-app.post('/cliente/cadastrar', CadastrarClienteEndpoint.handle);
+app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
 
-app.delete('/produto/remover', RemoverProdutoEndpoint.handle);
+app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
-app.post('/pedido/cadastrar', CadastrarPedidoEndpoint.handle);
+app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 
-app.post('/pedido/cancelar/:pedidoId', CancelarPedidoEndpoint.handle);
+app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
 
-app.get('/pedido/listar/:statusPedido', ListarPedidosPorStatusEndpoint.handle);
+app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

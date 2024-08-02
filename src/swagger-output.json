@@ -111,10 +111,10 @@
             "in": "body",
             "schema": {
               "required": [
-                "clientId"
+                "clienteId"
               ],
               "properties": {
-                "clientId": {
+                "clienteId": {
                   "type": "string",
                   "minLength": 36,
                   "maxLength": 36,

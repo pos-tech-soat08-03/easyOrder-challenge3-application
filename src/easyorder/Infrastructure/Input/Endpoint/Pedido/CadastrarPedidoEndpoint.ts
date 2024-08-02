@@ -1,11 +1,17 @@
 
 import { Request, Response } from 'express';
 import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
-import { PedidoRepositoryMock } from '../../../Output/Repository/PedidoRepositoryMock';
+import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 
 export class CadastrarPedidoEndpoint {
 
-    public static async handle(req: Request, res: Response): Promise<void> {
+    constructor(
+        private pedidoRepository: PedidoRepositoryInterface
+    ) {
+        this.handle = this.handle.bind(this);
+    }
+
+    public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
             #swagger.method = 'post'
@@ -15,9 +21,9 @@ export class CadastrarPedidoEndpoint {
             #swagger.parameters['body'] = { 
                 in: 'body', 
                 '@schema': { 
-                    "required": ["clientId"], 
+                    "required": ["clienteId"], 
                     "properties": { 
-                        "clientId": { 
+                        "clienteId": { 
                             "type": "string", 
                             "minLength": 36, 
                             "maxLength": 36,
@@ -30,10 +36,8 @@ export class CadastrarPedidoEndpoint {
         */
         try {
 
-            const pedidoRepository = new PedidoRepositoryMock();
-
             const usecase = new CadastrarPedidoUsecase(
-                pedidoRepository
+                this.pedidoRepository
             );
 
             if (req.body === undefined || Object.keys(req.body).length === 0) {
@@ -47,7 +51,6 @@ export class CadastrarPedidoEndpoint {
             if (!result.getSucessoCadastro()) {
                 throw new Error(result.getMensagem());
             }
-
 
             /**
             #swagger.responses[200] = {
@@ -115,7 +118,6 @@ export class CadastrarPedidoEndpoint {
             res.status(400).json({
                 mensagem: 'Ocorreu um erro inesperado: ' + error.message,
             });
-            throw error;
         }
 
         return;
