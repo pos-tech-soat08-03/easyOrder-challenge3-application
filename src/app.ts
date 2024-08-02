@@ -3,6 +3,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
+import { BuscarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/BuscarClienteEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
@@ -53,6 +54,7 @@ app.get('/health', (req, res) => {
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
 
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
+app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 

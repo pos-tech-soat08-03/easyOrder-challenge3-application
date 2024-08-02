@@ -41,6 +41,18 @@ export class CadastrarClienteUsecase {
 
         try {
 
+            if (!cpf) {
+                throw new Error('CPF não informado.');
+            }
+
+            if (!nome) {
+                throw new Error('Nome não informado.');
+            }
+
+            if (!email) {
+                throw new Error('Email não informado.');
+            }
+
             const cpfValue = new CpfValueObject(cpf);
             const emailValue = new EmailValueObject(email);
 

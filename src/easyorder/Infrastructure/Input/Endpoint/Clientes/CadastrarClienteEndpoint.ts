@@ -60,19 +60,7 @@ export class CadastrarClienteEndpoint {
 
             const { cpf, nome, email } = req.body;
 
-            if (!cpf) {
-                throw new Error('CPF não informado.');
-            }
-
-            if (!nome) {
-                throw new Error('Nome não informado.');
-            }
-
-            if (!email) {
-                throw new Error('Email não informado.');
-            }
-
-            const result = await usecase.execute(cpf, nome, email);
+        const result = await usecase.execute(cpf, nome, email);
 
             /**
                 #swagger.responses[200] = {
