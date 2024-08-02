@@ -89,6 +89,12 @@ export class PedidoEntity {
             }
         }
 
+        if (status.getValue() === StatusPedidoEnum.PAGO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
+                throw new Error('Status do pedido não permite pagamento');
+            }
+        }
+
         if (status.getValue() === StatusPedidoEnum.EM_PREPARACAO) {
             if (this.statusPedido.getValue() !== StatusPedidoEnum.PAGO) {
                 throw new Error('Status do pedido não permite início de preparação');

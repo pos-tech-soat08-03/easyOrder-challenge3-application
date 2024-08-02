@@ -15,6 +15,7 @@ import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Reposit
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
 import { IniciarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/IniciarPreparacaoPedidoEndpoint';
 import { FecharPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FecharPedidoEndpoint';
+import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
 
 // const clienteRepository = new ClienteRepositoryMock();
 const clienteRepository = new ClienteRepositoryMySQL(
@@ -67,6 +68,8 @@ app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedid
 app.get('/pedido/iniciar-preparacao/:pedidoId', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

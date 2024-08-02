@@ -1,9 +1,9 @@
 
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
-import { FecharPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/FecharPedidoUsecase';
+import { CheckoutPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CheckoutPedidoUsecase';
 
-export class FecharPedidoEndpoint {
+export class CheckoutPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -14,10 +14,10 @@ export class FecharPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/fechar/{pedidoId}'
+            #swagger.path = '/pedidos/checkout/{pedidoId}'
             #swagger.method = 'post'
-            #swagger.summary = 'Fechar pedido'
-            #swagger.description = 'Endpoint para fechar um pedido'
+            #swagger.summary = 'Checkout/Pagamento de um pedido'
+            #swagger.description = 'Endpoint para efetuar o pagamento de um pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -29,7 +29,7 @@ export class FecharPedidoEndpoint {
         */
         try {
 
-            const usecase = new FecharPedidoUsecase(
+            const usecase = new CheckoutPedidoUsecase(
                 this.pedidoRepository
             );
 
@@ -47,12 +47,12 @@ export class FecharPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                'description': 'Pedido fechado com sucesso. Aguardando pagamento.',
+                'description': 'Pedido pago com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Pedido fechado com sucesso. Aguardando pagamento.'
+                            example: 'Pedido pago com sucesso'
                         },
                         pedido: {
                             type: 'object',
