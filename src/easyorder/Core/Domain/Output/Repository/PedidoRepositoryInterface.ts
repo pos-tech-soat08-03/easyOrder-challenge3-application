@@ -19,7 +19,7 @@ export class PedidoRepositoryInterfaceFilter {
 }
 
 export interface PedidoRepositoryInterface {
-    salvarPedido(pedido: PedidoEntity): PedidoEntity | null;
-    listarPedidosPorStatus(status: StatusPedidoValueObject, filter: PedidoRepositoryInterfaceFilter): PedidoEntity[];
-    buscaPedidoPorId(id: string): PedidoEntity | null;
+    salvarPedido(pedido: PedidoEntity): Promise<PedidoEntity | null>;
+    listarPedidosPorStatus(status: StatusPedidoValueObject, filter: PedidoRepositoryInterfaceFilter): Promise<PedidoEntity[]>;
+    buscaPedidoPorId(id: string): Promise<PedidoEntity | null>;
 }
