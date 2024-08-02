@@ -38,6 +38,8 @@ app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).h
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
+app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
+
 app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 
 app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);

@@ -21,7 +21,7 @@
         }
       }
     },
-    "/exemplo/lista-generica": {
+    "/health": {
       "get": {
         "description": "",
         "responses": {
@@ -91,6 +91,46 @@
           },
           "500": {
             "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/produto/cadastrar": {
+      "post": {
+        "summary": "Cadastrar novo cliente",
+        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "descricao": {
+                  "example": "any"
+                },
+                "preco": {
+                  "example": "any"
+                },
+                "categoria": {
+                  "example": "any"
+                },
+                "imagemURL": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
           }
         }
       }

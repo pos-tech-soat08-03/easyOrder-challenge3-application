@@ -4,22 +4,25 @@ import { CadastrarProdutoUsecase } from "../../../../Core/Application/Usecase/Pr
 
 
 export class CadastrarProdutoEndpoint {
-
-    repository: ProdutoRepositoryInterface;
-
-    constructor(repository: ProdutoRepositoryInterface) {
-        this.repository = repository;
+    public constructor(
+        private repository: ProdutoRepositoryInterface
+    ) {
+        this.handle = this.handle.bind(this);
     }
 
     public async handle(req: express.Request, res: express.Response): Promise<void> {
 
+        /**
+            #swagger.summary = 'Cadastrar novo produto'
+            #swagger.description = 'Endpoint para cadastro de novo produto para adicionar ao catalogo'
+        */
         const usecase = new CadastrarProdutoUsecase(this.repository);
 
         if (req.body === undefined || Object.keys(req.body).length === 0) {
             res.status(400).json({
                 resultado_cadastro: false,
                 mensagem: 'Nenhum dado enviado.',
-                cliente: null
+                produto: null
             });
             return;
         }
