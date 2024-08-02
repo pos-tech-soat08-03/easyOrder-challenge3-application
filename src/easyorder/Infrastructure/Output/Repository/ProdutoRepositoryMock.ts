@@ -16,7 +16,7 @@ export class ProdutoRepositoryMock implements ProdutoRepositoryInterface {
        
         return  new Array<ProdutoEntity>();
     }
-    buscarProdutoPorId(id: number): ProdutoEntity {
+    buscarProdutoPorId(id: string): ProdutoEntity {
         return new ProdutoEntity(
             '1',
             'Nome Produto Mock',
@@ -26,8 +26,8 @@ export class ProdutoRepositoryMock implements ProdutoRepositoryInterface {
             'https://example.com/imagem.jpg'
         );
     }
-    removerPorId(id: number): void {
-       
+    removerPorId(id: string): void {
+       console.log("Removido{}",id);
     }
 
 
