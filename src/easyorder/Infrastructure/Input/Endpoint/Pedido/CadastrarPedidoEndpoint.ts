@@ -48,7 +48,7 @@ export class CadastrarPedidoEndpoint {
 
             const result = await usecase.execute(clienteId);
 
-            if (!result.getSucessoCadastro()) {
+            if (!result.getSucessoExecucao()) {
                 throw new Error(result.getMensagem());
             }
 
