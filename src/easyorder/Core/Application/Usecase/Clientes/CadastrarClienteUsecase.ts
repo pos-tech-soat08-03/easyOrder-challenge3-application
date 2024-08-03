@@ -42,29 +42,29 @@ export class CadastrarClienteUsecase {
         try {
 
             if (!cpf) {
-                throw new Error('CPF não informado');
+                throw new Error('CPF não informado.');
             }
 
             if (!nome) {
-                throw new Error('Nome não informado');
+                throw new Error('Nome não informado.');
             }
 
             if (!email) {
-                throw new Error('Email não informado');
+                throw new Error('Email não informado.');
             }
 
             const cpfValue = new CpfValueObject(cpf);
             const emailValue = new EmailValueObject(email);
 
             // Buscar cliente já cadastrado no sistema
-            const clienteExistente = this.clienteRepository.buscarClientePorCpf(cpfValue);
-            if (clienteExistente) {
+            const clienteExistente = await this.clienteRepository.buscarClientePorCpf(cpfValue);
+            if (clienteExistente !== undefined) {
                 throw new Error('Cliente já cadastrado com esse CPF');
             }
 
             // Salvar o cliente no repositório e retornar o resultado
             const cliente = new ClienteEntity(cpfValue, nome, emailValue);
-            this.clienteRepository.salvarCliente(cliente);
+            await this.clienteRepository.adicionarCliente(cliente);
 
             return new CadastrarClienteUsecaseResponse(true, 'Cliente cadastrado com sucesso', cliente);
 

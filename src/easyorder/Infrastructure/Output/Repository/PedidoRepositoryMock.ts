@@ -38,7 +38,7 @@ export class PedidoRepositoryMock implements PedidoRepositoryInterface {
         fs.writeFileSync(this.filePath, data, 'utf-8');
     }
 
-    salvarPedido(pedido: PedidoEntity): PedidoEntity | null {
+    async salvarPedido(pedido: PedidoEntity): Promise<PedidoEntity | null> {
         const index = this.pedidos.findIndex(p => p.getId() === pedido.getId());
         if (index !== -1) {
             this.pedidos[index] = pedido;
@@ -49,7 +49,7 @@ export class PedidoRepositoryMock implements PedidoRepositoryInterface {
         return pedido;
     }
 
-    listarPedidosPorStatus(status: StatusPedidoValueObject, filter: PedidoRepositoryInterfaceFilter): PedidoEntity[] {
+    async listarPedidosPorStatus(status: StatusPedidoValueObject, filter: PedidoRepositoryInterfaceFilter): Promise<PedidoEntity[]> {
         const filtered: PedidoEntity[] = this.pedidos.filter(p => p.getStatusPedido().getValue() === status.getValue());
 
         switch (filter.orderField) {
@@ -71,7 +71,7 @@ export class PedidoRepositoryMock implements PedidoRepositoryInterface {
         return filtered.slice(start, end);
     }
 
-    buscaPedidoPorId(id: string): PedidoEntity | null {
+    async buscaPedidoPorId(id: string): Promise<PedidoEntity | null> {
         const pedido = this.pedidos.find(p => p.getId() === id);
         return pedido || null;
     }
