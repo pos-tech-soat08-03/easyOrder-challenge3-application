@@ -228,6 +228,46 @@
         }
       }
     },
+    "/produto/cadastrar": {
+      "post": {
+        "summary": "Cadastrar novo produto",
+        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "descricao": {
+                  "example": "any"
+                },
+                "preco": {
+                  "example": "any"
+                },
+                "categoria": {
+                  "example": "any"
+                },
+                "imagemURL": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/pedido/cadastrar": {
       "post": {
         "tags": [
@@ -874,6 +914,25 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/categoria/listar": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          },
+          "default": {
+            "description": ""
           }
         }
       }
