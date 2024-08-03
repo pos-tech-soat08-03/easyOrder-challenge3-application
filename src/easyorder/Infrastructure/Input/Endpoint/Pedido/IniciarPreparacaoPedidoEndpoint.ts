@@ -1,9 +1,9 @@
 
 import { Request, Response } from 'express';
-import { CancelarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CancelarPedidoUsecase';
+import { IniciarPreparacaoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/IniciarPreparacaoPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 
-export class CancelarPedidoEndpoint {
+export class IniciarPreparacaoPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -14,10 +14,10 @@ export class CancelarPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/cancelar/{pedidoId}'
+            #swagger.path = '/pedidos/iniciar-preparacao/{pedidoId}'
             #swagger.method = 'post'
-            #swagger.summary = 'Cancelar um pedido'
-            #swagger.description = 'Endpoint para cancelamento de um pedido'
+            #swagger.summary = 'Iniciar preparação de um pedido'
+            #swagger.description = 'Endpoint para iniciar a preparação de um pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -29,7 +29,7 @@ export class CancelarPedidoEndpoint {
         */
         try {
 
-            const usecase = new CancelarPedidoUsecase(
+            const usecase = new IniciarPreparacaoPedidoUsecase(
                 this.pedidoRepository
             );
 
@@ -47,12 +47,12 @@ export class CancelarPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                'description': 'Pedido cancelado com sucesso',
+                'description': 'Preparação do pedido iniciada com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Pedido cadastrado com sucesso'
+                            example: 'Preparação do pedido iniciada com sucesso'
                         },
                         pedido: {
                             type: 'object',

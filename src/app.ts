@@ -3,9 +3,14 @@ import { BeansManager } from './BeansManager';
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
 
+
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarClienteEndpoint';
 import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Cliente/CadastrarProdutoEndpoint';
 import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMock';
+
+
+import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
+import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
 
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
@@ -15,13 +20,14 @@ import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
 import { ListarPedidosPorStatusEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/ListarPedidosPorStatusEndpoint';
-import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
 import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
-import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
-
-console.log('Iniciando aplicação...', process.env);
+import { FecharPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FecharPedidoEndpoint';
+import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
+import { IniciarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/IniciarPreparacaoPedidoEndpoint';
+import { FinalizarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FinalizarPreparacaoPedidoEndpoint';
+import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/EntregarPedidoEndpoint';
 
 // const clienteRepository = new ClienteRepositoryMock();
 const clienteRepository = new ClienteRepositoryMySQL(
@@ -61,6 +67,7 @@ app.get('/health', (req, res) => {
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
 
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
+
 app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
@@ -72,6 +79,16 @@ app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).hand
 app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/iniciar-preparacao/:pedidoId', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/finalizar-preparacao/:pedidoId', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/entregar/:pedidoId', new EntregarPedidoEndpoint(pedidoRepository).handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

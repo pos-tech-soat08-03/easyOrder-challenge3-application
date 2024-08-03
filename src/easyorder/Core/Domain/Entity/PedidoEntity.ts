@@ -20,7 +20,7 @@ export class PedidoEntity {
         if (!id) {
             id = uuidv4();
             dataPedido = new Date();
-            statusPedido = new StatusPedidoValueObject(StatusPedidoEnum.RASCUNHO);
+            statusPedido = new StatusPedidoValueObject(StatusPedidoEnum.EM_ABERTO);
             statusPagamento = StatusPagamentoEnum.PENDENTE;
         }
 
@@ -43,6 +43,7 @@ export class PedidoEntity {
         this.dataPedido = dataPedido;
         this.clienteId = clienteId;
         this.statusPedido = statusPedido;
+        this.setStatusPedido(statusPedido);
         this.statusPagamento = statusPagamento;
         this.id = id;
     }
@@ -74,7 +75,6 @@ export class PedidoEntity {
 
         if (status.getValue() === StatusPedidoEnum.CANCELADO) {
             const statusPermitidos = [
-                StatusPedidoEnum.RASCUNHO,
                 StatusPedidoEnum.EM_ABERTO,
                 StatusPedidoEnum.AGUARDANDO_PAGAMENTO,
             ];
@@ -82,7 +82,36 @@ export class PedidoEntity {
             if (!statusPermitidos.includes(this.statusPedido.getValue())) {
                 throw new Error('Status do pedido não permite cancelamento');
             }
+        }
 
+        if (status.getValue() === StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {
+                throw new Error('Status do pedido não permite pagamento');
+            }
+        }
+
+        if (status.getValue() === StatusPedidoEnum.PAGO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
+                throw new Error('Status do pedido não permite pagamento');
+            }
+        }
+
+        if (status.getValue() === StatusPedidoEnum.EM_PREPARACAO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.PAGO) {
+                throw new Error('Status do pedido não permite início de preparação');
+            }
+        }
+
+        if (status.getValue() === StatusPedidoEnum.PRONTO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_PREPARACAO) {
+                throw new Error('Status do pedido não permite finalização de preparação');
+            }
+        }
+
+        if (status.getValue() === StatusPedidoEnum.FINALIZADO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.PRONTO) {
+                throw new Error('Status do pedido não permite entrega');
+            }
         }
 
         this.statusPedido = status;
