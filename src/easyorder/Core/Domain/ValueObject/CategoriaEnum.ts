@@ -1,6 +1,6 @@
-enum CategoriaEnum {
-    LANCHE,
-    BEBIDA,
-    SOBREMESA,
-    ACOMPANHAMENTO
-  }
+export enum CategoriaEnum {
+    LANCHE = 'LANCHE',
+    BEBIDA = 'BEBIDA',
+    SOBREMESA = 'SOBREMESA',
+    ACOMPANHAMENTO = 'ACOMPANHAMENTO'
+}
