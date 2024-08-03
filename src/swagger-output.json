@@ -230,8 +230,8 @@
     },
     "/produto/cadastrar": {
       "post": {
-        "summary": "Cadastrar novo cliente",
-        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "summary": "Cadastrar novo produto",
+        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
         "parameters": [
           {
             "name": "body",
@@ -914,6 +914,25 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/categoria/listar": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          },
+          "default": {
+            "description": ""
           }
         }
       }

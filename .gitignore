@@ -1,4 +1,4 @@
-git # Node dependency directory
+# Node dependency directory
 node_modules/
 
 # Environment files
@@ -14,5 +14,6 @@ dist/
 local/
 .vscode*
 
-# Docker developer files
+# Definições de execução local
 docker-compose.override.yml
+*.fake.*
