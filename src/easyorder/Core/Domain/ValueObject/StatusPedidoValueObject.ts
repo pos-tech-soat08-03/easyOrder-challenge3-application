@@ -1,6 +1,5 @@
 
 export enum StatusPedidoEnum {
-  RASCUNHO = "RASCUNHO",
   EM_ABERTO = "EM_ABERTO",
   AGUARDANDO_PAGAMENTO = "AGUARDANDO_PAGAMENTO",
   PAGO = "PAGO",

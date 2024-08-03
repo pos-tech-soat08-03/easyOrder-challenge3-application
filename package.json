@@ -17,6 +17,8 @@
   "dependencies": {
     "dotenv-cli": "^7.4.1",
     "express": "^4.19.2",
+    "mysql2": "^3.11.0",
+    "sequelize": "^6.37.3",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {

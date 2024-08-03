@@ -32,7 +32,7 @@ export class ListarPedidosPorStatusUsecase {
     ): Promise<ListarPedidosPorStatusUsecaseResponse> {
 
         try {
-            const pedidos = this.pedidoRepository.listarPedidosPorStatus(pedidoStatus, filter);
+            const pedidos = await this.pedidoRepository.listarPedidosPorStatus(pedidoStatus, filter);
 
             if (!pedidos) {
                 throw new Error('Erro ao listar pedidos');

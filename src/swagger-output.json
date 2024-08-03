@@ -33,23 +33,42 @@
     },
     "/cliente/cadastrar": {
       "post": {
-        "summary": "Cadastrar novo cliente",
-        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Cadastrar cliente",
+        "description": "Endpoint para cadastrar um novo cliente",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
+              "required": [
+                "cpf",
+                "nome",
+                "email"
+              ],
               "properties": {
                 "cpf": {
-                  "example": "any"
+                  "type": "string",
+                  "minLength": 14,
+                  "maxLength": 14,
+                  "example": "000.000.000-00"
                 },
                 "nome": {
-                  "example": "any"
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "example": "João da Silva"
                 },
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "example": "teste@teste.com"
                 }
               }
             }
@@ -57,10 +76,124 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente cadastrado com sucesso",
+            "schema": {
+              "properties": {
+                "resultado_cadastro": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Cliente cadastrado com sucesso"
+                },
+                "cliente": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "João da Silva"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "example": "12345678901"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "teste@teste.com"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Solicitação Inválida"
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cliente/listar": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Listar clientes",
+        "description": "Endpoint para listar todos os clientes cadastrados",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Clientes listados com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Clientes listados com sucesso"
+                },
+                "clientes": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "example": "000.000.000-00"
+                      },
+                      "nome": {
+                        "type": "string",
+                        "example": "Fulano de Tal"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "teste@teste.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cliente/buscar": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Buscar/Identificar Cliente do Restaurante por CPF",
+        "description": "A busca de Cliente por CPF permite que o Cliente seja identificado para próximas etapas na sua jornada.",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -423,6 +556,361 @@
                 "pedidos": {
                   "type": "array",
                   "items": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/fechar/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Fechar pedido",
+        "description": "Endpoint para fechar um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido fechado com sucesso. Aguardando pagamento.",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido fechado com sucesso. Aguardando pagamento."
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/checkout/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Checkout/Pagamento de um pedido",
+        "description": "Endpoint para efetuar o pagamento de um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido pago com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido pago com sucesso"
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/iniciar-preparacao/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Iniciar preparação de um pedido",
+        "description": "Endpoint para iniciar a preparação de um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Preparação do pedido iniciada com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Preparação do pedido iniciada com sucesso"
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/finalizar-preparacao/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Finalizar preparação de um pedido",
+        "description": "Endpoint para finalizar a preparação de um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Preparação do pedido finalizada com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Preparação do pedido finalizada com sucesso"
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/entregar/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Entregar um pedido",
+        "description": "Endpoint para entregar um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido entregue com sucesso.",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido entregue com sucesso."
+                },
+                "pedido": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2021-10-10T15:00:00.000Z"
+                    },
+                    "clienteId": {
+                      "type": "string",
+                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "RASCUNHO"
+                    },
+                    "pagamentoStatus": {
+                      "type": "string",
+                      "example": "PENDENTE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
                 }
               }
             }
