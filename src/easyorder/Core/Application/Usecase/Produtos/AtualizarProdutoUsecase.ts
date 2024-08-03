@@ -11,9 +11,11 @@ export class CadastrarProdutoUsecase {
     public async execute(nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<CadastrarProdutoUsecaseResponse> {
 
         try {
-           
+
+
+            // Salvar o produto no repositório e retornar o resultado
             const produto = new ProdutoEntity(nome, descricao, preco, categoria, imagemURL);
-            await this.produtoRepository.salvarProduto(produto);
+            this.produtoRepository.salvarProduto(produto);
 
             return new CadastrarProdutoUsecaseResponse(true, 'Produto cadastrado com sucesso', produto);
 

@@ -1,19 +1,18 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { RemoverProdutoUsecase } from '../../../../Core/Application/Usecase/Produtos/RemoverProdutosUseCase';
-import { RemoverProdutoRepositoryMock } from '../../../Output/Repository/RemoverProdutoRepositoryMock';
+import { RemoverProdutoRepositoryMock } from '../../../Output/Repository/Mock/RemoverProdutoRepositoryMock';
+import { ProdutoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface';
 
 export class RemoverProdutoEndpoint {
 
-    public constructor(
-        private removerProdutoRepository: RemoverProdutoRepositoryMock
-    ) {
+    public constructor(private produtoRepository: ProdutoRepositoryInterface) {
         this.handle = this.handle.bind(this);
     }
 
 
     public async handle(req: Request, res: Response): Promise<void> {
-        const removerProdutoUsecase = new RemoverProdutoUsecase(this.removerProdutoRepository);
+        const removerProdutoUsecase = new RemoverProdutoUsecase(this.produtoRepository);
 
         const id = req.params.id as string;
 

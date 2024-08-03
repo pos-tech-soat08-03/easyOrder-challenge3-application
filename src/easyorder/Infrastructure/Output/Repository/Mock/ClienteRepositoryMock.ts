@@ -1,8 +1,8 @@
 import { Console } from "console";
-import { ClienteEntity } from "../../../Core/Domain/Entity/ClienteEntity";
-import { ClienteRepositoryInterface } from "../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
-import { CpfValueObject } from "../../../Core/Domain/ValueObject/CpfValueObject";
-import { EmailValueObject } from "../../../Core/Domain/ValueObject/EmailValueObject";
+import { ClienteEntity } from "../../../../Core/Domain/Entity/ClienteEntity";
+import { ClienteRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ClienteRepositoryInterface";
+import { CpfValueObject } from "../../../../Core/Domain/ValueObject/CpfValueObject";
+import { EmailValueObject } from "../../../../Core/Domain/ValueObject/EmailValueObject";
 
 
 

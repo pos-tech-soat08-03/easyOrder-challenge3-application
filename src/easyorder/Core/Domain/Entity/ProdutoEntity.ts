@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { CategoriaEnum } from '../ValueObject/CategoriaEnum';
 
 export class ProdutoEntity {
     private id: string;

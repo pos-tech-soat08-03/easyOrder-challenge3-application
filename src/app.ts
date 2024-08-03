@@ -2,11 +2,11 @@ import express from 'express';
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
 
-import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMock';
-import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
-import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
-import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/CategoriaRepositoryMock';
-import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
+import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ProdutoRepositoryMock';
+import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ClienteRepositoryMock';
+import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/PedidoRepositoryMock';
+import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/CategoriaRepositoryMock';
+import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/RemoverProdutoRepositoryMock';
 
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
@@ -28,6 +28,7 @@ import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 
 import { ListaCategoriasEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarCategoriasEndpoint';
 import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
+import { ProdutoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMySQL';
 
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
@@ -36,7 +37,15 @@ const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_USER || 'ERROR',
   process.env.DATABASE_PASS || 'ERROR'
 );
-const produtoRepository = new RemoverProdutoRepositoryMock();
+
+const produtoRepository = new ProdutoRepositoryMySQL(
+  process.env.DATABASE_HOST || 'ERROR',
+  Number(process.env.DATABASE_PORT || '0'),
+  process.env.DATABASE_NAME || 'ERROR',
+  process.env.DATABASE_USER || 'ERROR',
+  process.env.DATABASE_PASS || 'ERROR'
+);
+
 
 const pedidoRepository = new PedidoRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',

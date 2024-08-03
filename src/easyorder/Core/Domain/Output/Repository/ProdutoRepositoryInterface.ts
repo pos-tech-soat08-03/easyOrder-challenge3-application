@@ -1,11 +1,12 @@
+import { promises } from "dns";
 import { ProdutoEntity } from "../../Entity/ProdutoEntity";
 import { CategoriaEnum } from "../../ValueObject/CategoriaEnum";
 
 export interface ProdutoRepositoryInterface {
-    listarProduto (): ProdutoEntity[];
-    listarProdutoCategoria(categoria: CategoriaEnum): ProdutoEntity[];
-    salvarProduto (produto: ProdutoEntity): void;
-    buscarProdutoPorId (id: string): ProdutoEntity;
-    removerPorId (id: string): void;
+    listarProduto (): Promise<ProdutoEntity[]>;
+    listarProdutoCategoria(categoria: CategoriaEnum): Promise<ProdutoEntity[]>;
+    salvarProduto (produto: ProdutoEntity):Promise <void>;
+    buscarProdutoPorId (id: string): Promise<ProdutoEntity>;
+    removerPorId (id: string): Promise<void>;
 
 }
