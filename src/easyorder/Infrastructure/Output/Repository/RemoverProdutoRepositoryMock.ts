@@ -1,5 +1,6 @@
 import { ProdutoEntity } from '../../../Core/Domain/Entity/ProdutoEntity';
 import { ProdutoRepositoryInterface } from '../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface';
+import { CategoriaEnum } from '../../../Core/Domain/ValueObject/CategoriaEnum';
 
 
 export class RemoverProdutoRepositoryMock implements ProdutoRepositoryInterface {

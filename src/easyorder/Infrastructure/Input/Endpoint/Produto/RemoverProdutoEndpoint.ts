@@ -23,7 +23,8 @@ export class RemoverProdutoEndpoint {
             if (req.body.id === id) {
                 res.status(200).json({ sucesso: true, mensagem: `Produto com ID ${id} removido com sucesso.` });
             } else {
-                res.status(404).json({ sucesso: false, mensagem: 'Erro' });
+                // Atualizacao na mensagem de erro
+                res.status(404).json({ sucesso: false, mensagem: 'Erro na remoção do produto.' });
             }
         } catch (error) {
             // Em caso de erro inesperado, enviar um erro genérico
