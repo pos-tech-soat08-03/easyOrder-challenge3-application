@@ -1,6 +1,8 @@
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger-output.json";
+import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
+import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
 import { BuscarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/BuscarClienteEndpoint';
@@ -8,18 +10,16 @@ import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { CadastrarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint';
 import { CancelarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CancelarPedidoEndpoint';
 import { ListarPedidosPorStatusEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/ListarPedidosPorStatusEndpoint';
-import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMock';
 import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/RemoverProdutoRepositoryMock';
-import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMock';
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
 import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/CategoriaRepositoryMock';
 import { ListaCategoriasEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarCategoriasEndpoint';
-
-
-
-
-console.log('Iniciando aplicação...', process.env);
+import { FecharPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FecharPedidoEndpoint';
+import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
+import { IniciarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/IniciarPreparacaoPedidoEndpoint';
+import { FinalizarPreparacaoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/FinalizarPreparacaoPedidoEndpoint';
+import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/EntregarPedidoEndpoint';
 
 // const clienteRepository = new ClienteRepositoryMock();
 const clienteRepository = new ClienteRepositoryMySQL(
@@ -63,6 +63,7 @@ app.get('/health', (req, res) => {
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
 
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
+
 app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
@@ -73,9 +74,19 @@ app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoReposito
 
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
 
-app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
-app.get('/categoria/listar', listaCategoriasEndpoint.handle);
+app.get('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
 
+app.get('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/iniciar-preparacao/:pedidoId', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/finalizar-preparacao/:pedidoId', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/pedido/entregar/:pedidoId', new EntregarPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
+
+app.get('/categoria/listar', listaCategoriasEndpoint.handle);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
