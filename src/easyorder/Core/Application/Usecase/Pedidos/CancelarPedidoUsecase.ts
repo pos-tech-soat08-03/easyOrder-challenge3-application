@@ -3,18 +3,18 @@ import { PedidoRepositoryInterface } from "../../../Domain/Output/Repository/Ped
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../../../Domain/ValueObject/StatusPedidoValueObject";
 
 export class CancelarPedidoUsecaseResponse {
-    private sucesso_cancelamento: boolean;
+    private sucesso_execucao: boolean;
     private mensagem: string;
     private pedido: PedidoEntity | null = null;
 
-    constructor(sucesso_cancelamento: boolean, mensagem: string, pedido?: PedidoEntity | null) {
-        this.sucesso_cancelamento = sucesso_cancelamento;
+    constructor(sucesso_execucao: boolean, mensagem: string, pedido?: PedidoEntity | null) {
+        this.sucesso_execucao = sucesso_execucao;
         this.mensagem = mensagem;
         this.pedido = pedido || null;
     }
 
-    public getSucessoCancelamento(): boolean {
-        return this.sucesso_cancelamento;
+    public getSucessoExecucao(): boolean {
+        return this.sucesso_execucao;
     }
 
     public getMensagem(): string {
