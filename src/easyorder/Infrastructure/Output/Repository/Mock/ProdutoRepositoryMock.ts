@@ -1,5 +1,6 @@
 import { ProdutoEntity } from "../../../../Core/Domain/Entity/ProdutoEntity";
 import { ProdutoRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface";
+import { CategoriaEnum } from "../../../../Core/Domain/ValueObject/CategoriaEnum";
 import { CpfValueObject } from "../../../../Core/Domain/ValueObject/CpfValueObject";
 import { EmailValueObject } from "../../../../Core/Domain/ValueObject/EmailValueObject";
 
@@ -9,31 +10,34 @@ export class ProdutoRepositoryMock implements ProdutoRepositoryInterface {
     constructor() {
         // inicializar um array com dados mockados 
     }
-    listarProduto(): ProdutoEntity[] {
-        return new Array<ProdutoEntity>();
-    }
-    listarProdutoCategoria(categoria: CategoriaEnum): ProdutoEntity[] {
-       
-        return  new Array<ProdutoEntity>();
-    }
-    buscarProdutoPorId(id: string): ProdutoEntity {
-        return new ProdutoEntity(
-            '1',
-            'Nome Produto Mock',
-            10.00,
-            CategoriaEnum.BEBIDA,
-            'Descrição Produto Mock',
-            'https://example.com/imagem.jpg'
-        );
-    }
-    removerPorId(id: string): void {
-       console.log("Removido{}",id);
+
+    public async buscarProdutoPorId(id: string): Promise<ProdutoEntity> {
+        throw new Error('Method not implemented.');
     }
 
+    private produtos: Map<string, ProdutoEntity> = new Map();
 
-    public salvarProduto(cliente: ProdutoEntity): void {
-        // implementar a lógica de salvar um novo cliente
-        return;
+    public async listarProduto(): Promise<ProdutoEntity[]> {
+        return Promise.resolve(Array.from(this.produtos.values()));
+    }
+
+    public async listarProdutoCategoria(categoria: CategoriaEnum): Promise<ProdutoEntity[]> {
+        return Promise.resolve(Array.from(this.produtos.values()).filter(produto => produto.getCategoria() === categoria));
+    }
+
+    public async salvarProduto(produto: ProdutoEntity): Promise<void> {
+        this.produtos.set(produto.getId(), produto);
+        return Promise.resolve();
+    }
+
+    public async removerPorId(id: string): Promise<void> {
+        this.produtos.delete(id);
+        return Promise.resolve();
+    }
+
+    public async limpar(): Promise<void> {
+        this.produtos.clear();
+        return Promise.resolve();
     }
 
 }
