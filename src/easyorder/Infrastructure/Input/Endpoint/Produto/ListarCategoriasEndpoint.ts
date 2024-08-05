@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { CategoriaRepositoryMock } from '../../../Output/Repository/CategoriaRepositoryMock';
+import { CategoriaRepositoryMock } from '../../../Output/Repository/Mock/CategoriaRepositoryMock';
 import { ListarCategoriasUsecase } from '../../../../Core/Application/Usecase/Produtos/ListarCategoriasUsecase';
 
 
