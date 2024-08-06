@@ -12,6 +12,7 @@ import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Reposi
 
 import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/CadastrarProdutoEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
+import { BuscarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/BuscarProdutoEndpoint';
 
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
@@ -88,6 +89,10 @@ app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).han
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
+app.get('/produto/listar', listaCategoriasEndpoint.handle);
+
+app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
+
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
@@ -112,9 +117,8 @@ app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint
 
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
-app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 
-app.get('/categoria/listar', listaCategoriasEndpoint.handle);
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
