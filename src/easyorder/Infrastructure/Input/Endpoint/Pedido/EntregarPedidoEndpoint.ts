@@ -56,29 +56,7 @@ export class EntregarPedidoEndpoint {
                             example: 'Pedido entregue com sucesso.'
                         },
                         pedido: {
-                            type: 'object',
-                            properties: {
-                                id: {
-                                    type: 'string',
-                                    example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
-                                },
-                                data: {
-                                    type: 'string',
-                                    example: '2021-10-10T15:00:00.000Z'
-                                },
-                                clienteId: {
-                                    type: 'string',
-                                    example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
-                                },
-                                status: {
-                                    type: 'string',
-                                    example: 'RASCUNHO'
-                                },
-                                pagamentoStatus: {
-                                    type: 'string',
-                                    example: 'PENDENTE'
-                                }
-                            }
+                            $ref: '#/definitions/PedidoResponse'
                         }
                     }
                 }

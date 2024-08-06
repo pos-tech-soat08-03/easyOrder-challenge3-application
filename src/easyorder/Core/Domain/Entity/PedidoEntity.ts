@@ -2,6 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { StatusPagamentoEnum } from '../ValueObject/StatusPagamentoEnum';
 import { StatusPedidoEnum, StatusPedidoValueObject } from '../ValueObject/StatusPedidoValueObject';
+import { PedidoComboEntity } from './PedidoComboEntity';
 
 export class PedidoEntity {
     private id: string;
@@ -9,13 +10,14 @@ export class PedidoEntity {
     private clienteId: string;
     private statusPedido: StatusPedidoValueObject;
     private statusPagamento: StatusPagamentoEnum;
+    private combos: PedidoComboEntity[] = [];
 
     constructor(
         clienteId: string,
         dataPedido?: Date,
         statusPedido?: StatusPedidoValueObject,
         statusPagamento?: StatusPagamentoEnum,
-        id?: string
+        id?: string,
     ) {
         if (!id) {
             id = uuidv4();
@@ -115,5 +117,21 @@ export class PedidoEntity {
         }
 
         this.statusPedido = status;
+    }
+
+    public getCombos(): PedidoComboEntity[] {
+        return this.combos;
+    }
+
+    public adicionarCombos(combos: PedidoComboEntity[]): boolean {
+        if (!combos || combos.length === 0) {
+            throw new Error('Combos não informados');
+        }
+
+        combos.forEach(combo => {
+            this.combos.push(combo);
+        });
+
+        return true;
     }
 }

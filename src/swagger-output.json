@@ -300,37 +300,15 @@
         ],
         "responses": {
           "200": {
-            "description": "Pedido cadastrado com sucesso",
+            "description": "Pedido cadastrado com sucesso2",
             "schema": {
               "properties": {
                 "mensagem": {
                   "type": "string",
-                  "example": "Pedido cadastrado com sucesso"
+                  "example": "Pedido cadastrado com sucesso3"
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -379,29 +357,7 @@
                   "example": "Pedido cadastrado com sucesso"
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -439,7 +395,6 @@
             "description": "Status do pedido",
             "example": "RASCUNHO",
             "enum": [
-              "RASCUNHO",
               "EM_ABERTO",
               "AGUARDANDO_PAGAMENTO",
               "PAGO",
@@ -506,29 +461,7 @@
                 "pedidos": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                      },
-                      "data": {
-                        "type": "string",
-                        "example": "2021-10-10T15:00:00.000Z"
-                      },
-                      "clienteId": {
-                        "type": "string",
-                        "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                      },
-                      "status": {
-                        "type": "string",
-                        "example": "RASCUNHO"
-                      },
-                      "pagamentoStatus": {
-                        "type": "string",
-                        "example": "PENDENTE"
-                      }
-                    }
+                    "$ref": "#/definitions/PedidoResponse"
                   }
                 }
               }
@@ -593,29 +526,7 @@
                   "example": "Pedido fechado com sucesso. Aguardando pagamento."
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -664,29 +575,7 @@
                   "example": "Pedido pago com sucesso"
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -735,29 +624,7 @@
                   "example": "Preparação do pedido iniciada com sucesso"
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -806,29 +673,7 @@
                   "example": "Preparação do pedido finalizada com sucesso"
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -877,29 +722,98 @@
                   "example": "Pedido entregue com sucesso."
                 },
                 "pedido": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "data": {
-                      "type": "string",
-                      "example": "2021-10-10T15:00:00.000Z"
-                    },
-                    "clienteId": {
-                      "type": "string",
-                      "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "RASCUNHO"
-                    },
-                    "pagamentoStatus": {
-                      "type": "string",
-                      "example": "PENDENTE"
-                    }
-                  }
+                  "$ref": "#/definitions/PedidoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/{pedidoId}/combo/adicionar": {
+      "post": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Adicionar combo ao pedido",
+        "description": "Endpoint para adicionar um combo ao pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "lancheId",
+                "bebidaId",
+                "sobremesaId",
+                "acompanhamentoId"
+              ],
+              "properties": {
+                "lancheId": {
+                  "type": 0,
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                },
+                "bebidaId": {
+                  "type": 0,
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                },
+                "sobremesaId": {
+                  "type": 0,
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                },
+                "acompanhamentoId": {
+                  "type": 0,
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Combo adicionado ao pedido com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Combo adicionado ao pedido com sucesso"
+                },
+                "pedido": {
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
@@ -922,17 +836,310 @@
       "get": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          },
           "default": {
             "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ID": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "string"
+        },
+        "minLength": {
+          "type": "number",
+          "example": 36
+        },
+        "maxLength": {
+          "type": "number",
+          "example": 36
+        },
+        "format": {
+          "type": "string",
+          "example": "uuid"
+        },
+        "example": {
+          "type": "string",
+          "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+        }
+      }
+    },
+    "PedidoResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/ID"
+            }
+          }
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "string"
+            },
+            "example": {
+              "type": "string",
+              "example": "2021-10-10T15:00:00.000Z"
+            }
+          }
+        },
+        "clienteId": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/ID"
+            }
+          }
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "string"
+            },
+            "example": {
+              "type": "string",
+              "example": "RASCUNHO"
+            }
+          }
+        },
+        "pagamentoStatus": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "string"
+            },
+            "example": {
+              "type": "string",
+              "example": "PENDENTE"
+            }
+          }
+        },
+        "combos": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "array"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "lanche": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "object",
+                              "properties": {
+                                "schema": {
+                                  "$ref": "#/definitions/ID"
+                                }
+                              }
+                            },
+                            "nome": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                },
+                                "example": {
+                                  "type": "string",
+                                  "example": "X-Bacon"
+                                }
+                              }
+                            },
+                            "preco": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                },
+                                "example": {
+                                  "type": "number",
+                                  "example": 20
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "bebida": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "object",
+                              "properties": {
+                                "schema": {
+                                  "$ref": "#/definitions/ID"
+                                }
+                              }
+                            },
+                            "nome": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                },
+                                "example": {
+                                  "type": "string",
+                                  "example": "Coca-Cola"
+                                }
+                              }
+                            },
+                            "preco": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                },
+                                "example": {
+                                  "type": "number",
+                                  "example": 5
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "sobremesa": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "object",
+                              "properties": {
+                                "schema": {
+                                  "$ref": "#/definitions/ID"
+                                }
+                              }
+                            },
+                            "nome": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                },
+                                "example": {
+                                  "type": "string",
+                                  "example": "Sorvete"
+                                }
+                              }
+                            },
+                            "preco": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                },
+                                "example": {
+                                  "type": "number",
+                                  "example": 10
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "acompanhamento": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "object",
+                              "properties": {
+                                "schema": {
+                                  "$ref": "#/definitions/ID"
+                                }
+                              }
+                            },
+                            "nome": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                },
+                                "example": {
+                                  "type": "string",
+                                  "example": "Batata Frita"
+                                }
+                              }
+                            },
+                            "preco": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                },
+                                "example": {
+                                  "type": "number",
+                                  "example": 15
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
