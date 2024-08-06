@@ -91,8 +91,6 @@ app.get('/produto/listar', listaCategoriasEndpoint.handle);
 
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 
-//app.get('/produto/buscar/:categoria', new BuscarProdutoEndpoint(produtoRepository).handle);
-
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
