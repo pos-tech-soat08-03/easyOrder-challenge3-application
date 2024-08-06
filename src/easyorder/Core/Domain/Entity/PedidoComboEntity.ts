@@ -4,7 +4,7 @@ import { CategoriaEnum } from '../ValueObject/CategoriaEnum';
 export class PedidoComboEntity {
    private id: string;
    private lancheId: string | null;
-   private bebibdaId: string | null;
+   private bebidaId: string | null;
    private sobremesaId: string | null;
    private acompanhamentoId: string | null;
 
@@ -16,7 +16,7 @@ export class PedidoComboEntity {
       id?: string
    ) {
       this.lancheId = lancheId || null;
-      this.bebibdaId = bebibdaId || null;
+      this.bebidaId = bebibdaId || null;
       this.sobremesaId = sobremesaId || null;
       this.acompanhamentoId = acompanhamentoId || null;
       this.id = id || uuidv4();
@@ -30,8 +30,8 @@ export class PedidoComboEntity {
       return this.lancheId;
    }
 
-   public getBebibdaId(): string | null {
-      return this.bebibdaId;
+   public getBebidaId(): string | null {
+      return this.bebidaId;
    }
 
    public getSobremesaId(): string | null {

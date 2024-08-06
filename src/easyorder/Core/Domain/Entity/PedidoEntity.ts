@@ -124,13 +124,29 @@ export class PedidoEntity {
     }
 
     public adicionarCombos(combos: PedidoComboEntity[]): boolean {
-        if (!combos || combos.length === 0) {
+        if (!combos) {
             throw new Error('Combos não informados');
         }
 
         combos.forEach(combo => {
             this.combos.push(combo);
         });
+
+        return true;
+    }
+
+    public removerCombo(comboId: string): boolean {
+        if (!comboId) {
+            throw new Error('Combo não informado');
+        }
+
+        const index = this.combos.findIndex(combo => combo.getId() === comboId);
+
+        if (index === -1) {
+            throw new Error('Combo não encontrado');
+        }
+
+        this.combos.splice(index, 1);
 
         return true;
     }

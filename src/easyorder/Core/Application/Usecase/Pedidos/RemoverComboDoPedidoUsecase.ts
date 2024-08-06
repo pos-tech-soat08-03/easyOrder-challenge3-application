@@ -3,7 +3,7 @@ import { PedidoComboEntity } from "../../../Domain/Entity/PedidoComboEntity";
 import { PedidoEntity } from "../../../Domain/Entity/PedidoEntity";
 import { PedidoRepositoryInterface } from "../../../Domain/Output/Repository/PedidoRepositoryInterface";
 
-export class AdicionarComboAoPedidoUsecaseResponse {
+export class RemoverComboDoPedidoUsecaseResponse {
     private sucesso_execucao: boolean;
     private mensagem: string;
     private pedido: PedidoEntity | null = null;
@@ -27,7 +27,7 @@ export class AdicionarComboAoPedidoUsecaseResponse {
     }
 }
 
-export class AdicionarComboAoPedidoUsecase {
+export class RemoverComboDoPedidoUsecase {
 
     constructor(
         private readonly pedidoRepository: PedidoRepositoryInterface
@@ -35,20 +35,10 @@ export class AdicionarComboAoPedidoUsecase {
 
     public async execute(
         pedidoId: string,
-        lancheId: string | null,
-        bebidaId: string | null,
-        sobremesaId: string | null,
-        acompanhamentoId: string | null
-    ): Promise<AdicionarComboAoPedidoUsecaseResponse> {
+        comboId: string,
+    ): Promise<RemoverComboDoPedidoUsecaseResponse> {
 
         try {
-
-            const pedidoCombo = new PedidoComboEntity(
-                lancheId,
-                bebidaId,
-                sobremesaId,
-                acompanhamentoId,
-            );
 
             const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
 
@@ -56,15 +46,15 @@ export class AdicionarComboAoPedidoUsecase {
                 throw new Error('Pedido não encontrado');
             }
 
-            pedido.adicionarCombos([pedidoCombo]);
+            pedido.removerCombo(comboId);
 
             await this.pedidoRepository.salvarPedido(pedido);
 
             const pedidoSalvo = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
 
-            return new AdicionarComboAoPedidoUsecaseResponse(true, 'Combo adicionado com sucesso', pedidoSalvo);
+            return new RemoverComboDoPedidoUsecaseResponse(true, 'Combo removido com sucesso', pedidoSalvo);
         } catch (error: any) {
-            return new AdicionarComboAoPedidoUsecaseResponse(false, error.message);
+            return new RemoverComboDoPedidoUsecaseResponse(false, error.message);
         }
 
     }

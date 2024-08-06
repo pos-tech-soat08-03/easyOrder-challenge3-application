@@ -109,7 +109,15 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                     p.id,
                 );
 
-                pedido.adicionarCombos(p.combos as PedidoComboEntity[]);
+                pedido.adicionarCombos(p.combos.map((combo: any) => {
+                    return new PedidoComboEntity(
+                        combo.lanche,
+                        combo.bebida,
+                        combo.sobremesa,
+                        combo.acompanhamento,
+                        combo.id,
+                    );
+                }));
                 return pedido;
             });
         });
@@ -128,7 +136,15 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                     pedido.statusPagamento as StatusPagamentoEnum,
                     pedido.id,
                 );
-                pedidoEntity.adicionarCombos(pedido.combos as PedidoComboEntity[]);
+                pedidoEntity.adicionarCombos(pedido.combos.map((combo: any) => {
+                    return new PedidoComboEntity(
+                        combo.lanche,
+                        combo.bebida,
+                        combo.sobremesa,
+                        combo.acompanhamento,
+                        combo.id,
+                    );
+                }));
             }
         });
         return pedidoEntity;

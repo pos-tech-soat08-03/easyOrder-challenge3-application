@@ -18,6 +18,7 @@ const doc = {
       example: '29a81eeb-d16d-4d6c-a86c-e13597667307',
     },
     PedidoResponse: {
+      required: ['id', 'data', 'clienteId', 'status', 'pagamentoStatus'],
       id: {
         schema: {
           $ref: '#/definitions/ID',

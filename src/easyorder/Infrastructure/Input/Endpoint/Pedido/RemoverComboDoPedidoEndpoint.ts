@@ -1,10 +1,9 @@
 
 import { Request, Response } from 'express';
-import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
-import { AdicionarComboAoPedidoUsecase, AdicionarComboAoPedidoUsecaseResponse } from '../../../../Core/Application/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
+import { RemoverComboDoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/RemoverComboDoPedidoUsecase';
 
-export class AdicionarComboAoPedidoEndpoint {
+export class RemoverComboDoPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -15,9 +14,9 @@ export class AdicionarComboAoPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.method = 'post'
-            #swagger.summary = 'Adicionar combo ao pedido'
-            #swagger.description = 'Endpoint para adicionar um combo ao pedido'
+            #swagger.method = 'delete'
+            #swagger.summary = 'Remover combo do pedido'
+            #swagger.description = 'Endpoint para remover um combo do pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -26,61 +25,26 @@ export class AdicionarComboAoPedidoEndpoint {
                 type: 'string',
                 example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
             }
-            #swagger.parameters['body'] = { 
-                in: 'body', 
-                '@schema': { 
-                    "required": ["lancheId", "bebidaId", "sobremesaId", "acompanhamentoId"],
-                    "properties": { 
-                        "lancheId": { 
-                            "type": "string" | "null",
-                            "minLength": 36,
-                            "maxLength": 36,
-                            "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                        },
-                        "bebidaId": { 
-                            "type": "string" | "null",
-                            "minLength": 36,
-                            "maxLength": 36,
-                            "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                        },
-                        "sobremesaId": { 
-                            "type": "string" | "null",
-                            "minLength": 36,
-                            "maxLength": 36,
-                            "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                        },
-                        "acompanhamentoId": { 
-                            "type": "string" | "null",
-                            "minLength": 36,
-                            "maxLength": 36,
-                            "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                        },
-                    }
-                }
+            #swagger.parameters['comboId'] = {
+                in: 'path',
+                description: 'ID do combo',
+                required: true,
+                type: 'string',
+                example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
             }
         */
         try {
 
-            const usecase = new AdicionarComboAoPedidoUsecase(
+            const usecase = new RemoverComboDoPedidoUsecase(
                 this.pedidoRepository
             );
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado enviado.');
-            }
-
             const pedidoId = req.params.pedidoId;
+            const comboId = req.params.comboId;
 
             const result = await usecase.execute(
                 pedidoId,
-                req.body.lancheId,
-                req.body.bebidaId,
-                req.body.sobremesaId,
-                req.body.acompanhamentoId,
+                comboId,
             );
 
             if (!result.getSucessoExecucao()) {
@@ -89,12 +53,12 @@ export class AdicionarComboAoPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                description: 'Combo adicionado ao pedido com sucesso',
+                description: 'Combo removido do pedido com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Combo adicionado ao pedido com sucesso'
+                            example: 'Combo removido do pedido com sucesso'
                         },
                         pedido: {
                             $ref: '#/definitions/PedidoResponse'

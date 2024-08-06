@@ -832,10 +832,76 @@
         }
       }
     },
+    "/pedido/{pedidoId}/combo/{comboId}": {
+      "delete": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Remover combo do pedido",
+        "description": "Endpoint para remover um combo do pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
+          },
+          {
+            "name": "comboId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do combo",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Combo removido do pedido com sucesso",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Combo removido do pedido com sucesso"
+                },
+                "pedido": {
+                  "$ref": "#/definitions/PedidoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/categoria/listar": {
       "get": {
         "description": "",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          },
           "default": {
             "description": ""
           }
@@ -872,6 +938,19 @@
     "PedidoResponse": {
       "type": "object",
       "properties": {
+        "required": {
+          "type": "array",
+          "example": [
+            "id",
+            "data",
+            "clienteId",
+            "status",
+            "pagamentoStatus"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
         "id": {
           "type": "object",
           "properties": {
