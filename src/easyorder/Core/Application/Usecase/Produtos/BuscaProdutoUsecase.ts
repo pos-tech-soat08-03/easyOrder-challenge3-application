@@ -15,37 +15,17 @@ export class BuscarProdutoPorIdUseCase {
             if (!id) {
                 throw new Error("ID inválido");
             }
-            const produto = this.produtoRepository.buscarProdutoPorId(id);
+
+
+            const produto = await this.produtoRepository.buscarProdutoPorId(id);
+
+
             if (!produto) {
-                throw new Error(`Produto com ID ${id} não encontrado`);
+                return null;
             }
+
+
             return produto;
-        } catch (error) {
-
-            throw error;
-        }
-    }
-}
-
-
-
-export class BuscaProdutoUsecase {
-    private produtoRepository: ProdutoRepositoryInterface;
-
-    constructor(produtoRepository: ProdutoRepositoryInterface) {
-        this.produtoRepository = produtoRepository;
-    }
-
-    public async execute(categoria: CategoriaEnum): Promise<ProdutoEntity[]> {
-        try {
-            if (!Object.values(CategoriaEnum).includes(categoria)) {
-                throw new Error(`Categoria ${categoria} não encontrada`);
-            }
-            const produtos = await this.produtoRepository.listarProdutoCategoria(categoria);
-            if (produtos.length === 0) {
-                throw new Error(`Nenhum produto encontrado para a categoria ${categoria}`);
-            }
-            return produtos;
         } catch (error) {
 
             throw error;

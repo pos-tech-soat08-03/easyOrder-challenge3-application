@@ -87,9 +87,11 @@ app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).han
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
+app.get('/produto/listar', listaCategoriasEndpoint.handle);
+
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 
-app.get('/produto/buscar/:categoria', new BuscarProdutoEndpoint(produtoRepository).handle);
+//app.get('/produto/buscar/:categoria', new BuscarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
 
@@ -113,9 +115,8 @@ app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint
 
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
-app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 
-app.get('/categoria/listar', listaCategoriasEndpoint.handle);
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
