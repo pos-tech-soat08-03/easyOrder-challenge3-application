@@ -259,6 +259,36 @@
         }
       }
     },
+    "/produto/buscar/{id}": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Buscar um produto no Catalogo por ID.",
+        "description": "A busca por ID permite que o produto seja encontrado facilmente.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do Produto",
+            "example": "c9d16e90-40b4-4d5b-9d8f-8f1c1a9e4b3b"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/pedido/cadastrar": {
       "post": {
         "tags": [

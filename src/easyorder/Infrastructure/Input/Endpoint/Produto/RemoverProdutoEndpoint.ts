@@ -1,7 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { RemoverProdutoUsecase } from '../../../../Core/Application/Usecase/Produtos/RemoverProdutosUseCase';
-import { RemoverProdutoRepositoryMock } from '../../../Output/Repository/Mock/RemoverProdutoRepositoryMock';
 import { ProdutoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface';
 
 export class RemoverProdutoEndpoint {

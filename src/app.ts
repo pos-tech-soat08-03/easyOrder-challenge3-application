@@ -13,6 +13,7 @@ import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Reposi
 
 import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/CadastrarProdutoEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
+import { BuscarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/BuscarProdutoEndpoint';
 
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
@@ -85,6 +86,10 @@ app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle)
 app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
+
+app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
+
+app.get('/produto/buscar/:categoria', new BuscarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
 
