@@ -31,6 +31,142 @@
         }
       }
     },
+    "/produto/buscar/{id}": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Buscar um produto no Catalogo por ID.",
+        "description": "A busca por ID permite que o produto seja encontrado facilmente.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do Produto",
+            "example": "c9d16e90-40b4-4d5b-9d8f-8f1c1a9e4b3b"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/produto/listar": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Listar categorias dos produtos.",
+        "description": "Endpoint para listar as categoria disponiveis dos produtos.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "categorias": "categorias",
+            "in": "path",
+            "type": "string",
+            "description": "Categorias dos produtos",
+            "example": "LANCHE, BEBIDA, SOBREMESA, ACOMPANHAMENTO"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/produto/cadastrar": {
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Cadastrar novo produto",
+        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "XBACON"
+                },
+                "descricao": {
+                  "example": "Sem tomate"
+                },
+                "preco": {
+                  "example": "25.00"
+                },
+                "categoria": {
+                  "example": "Lanche"
+                },
+                "imagemURL": {
+                  "example": "XBACON.JPEG"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/produto/remover": {
+      "delete": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Remover um produto",
+        "description": "Endpoint para exclusão de um produto",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "Informar o ID do Produto"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
     "/cliente/cadastrar": {
       "post": {
         "tags": [
@@ -177,76 +313,6 @@
             "type": "string",
             "description": "CPF do Cliente sem pontuação",
             "example": "00000000000"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/produto/remover": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/produto/cadastrar": {
-      "post": {
-        "summary": "Cadastrar novo produto",
-        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "nome": {
-                  "example": "any"
-                },
-                "descricao": {
-                  "example": "any"
-                },
-                "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
-                },
-                "imagemURL": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {

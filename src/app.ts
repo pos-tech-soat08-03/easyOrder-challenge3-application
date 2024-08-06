@@ -6,13 +6,13 @@ import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Reposit
 import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ClienteRepositoryMock';
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/PedidoRepositoryMock';
 import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/CategoriaRepositoryMock';
-//import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/RemoverProdutoRepositoryMock';
 
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
 
 import { CadastrarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/CadastrarProdutoEndpoint';
 import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/RemoverProdutoEndpoint';
+import { BuscarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/BuscarProdutoEndpoint';
 
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
@@ -29,6 +29,8 @@ import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { ListaCategoriasEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarCategoriasEndpoint';
 import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
 import { ProdutoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMySQL';
+import { AtualizarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/AtualizarProdutoEndpoint';
+
 import { AdicionarComboAoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/AdicionarComboAoPedidoEndpoint';
 import { RemoverComboDoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/RemoverComboDoPedidoEndpoint';
 
@@ -61,6 +63,7 @@ const pedidoRepository = new PedidoRepositoryMySQL(
 const categoriaRepositoryMock = new CategoriaRepositoryMock();
 const listaCategoriasEndpoint = new ListaCategoriasEndpoint(categoriaRepositoryMock);
 
+
 const app = express();
 const port = Number(process.env.SERVER_PORT || '3000');
 
@@ -86,7 +89,13 @@ app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).han
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
+app.get('/produto/listar', listaCategoriasEndpoint.handle);
+
+app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
+
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
+
+app.post('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 
@@ -108,9 +117,8 @@ app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint
 
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
-app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 
-app.get('/categoria/listar', listaCategoriasEndpoint.handle);
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
