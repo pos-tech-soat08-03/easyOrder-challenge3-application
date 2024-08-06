@@ -42,15 +42,15 @@ export class CadastrarClienteUsecase {
         try {
 
             if (!cpf) {
-                throw new Error('CPF não informado.');
+                throw new Error('Dados incorretos: CPF não informado.');
             }
 
             if (!nome) {
-                throw new Error('Nome não informado.');
+                throw new Error('Dados incorretos: Nome não informado.');
             }
 
             if (!email) {
-                throw new Error('Email não informado.');
+                throw new Error('Dados incorretos: Email não informado.');
             }
 
             const cpfValue = new CpfValueObject(cpf);
@@ -66,7 +66,7 @@ export class CadastrarClienteUsecase {
             const cliente = new ClienteEntity(cpfValue, nome, emailValue);
             await this.clienteRepository.adicionarCliente(cliente);
 
-            return new CadastrarClienteUsecaseResponse(true, 'Cliente cadastrado com sucesso', cliente);
+            return new CadastrarClienteUsecaseResponse(true, 'Cliente cadastrado com sucesso.', cliente);
 
         } catch (error: any) {
             return new CadastrarClienteUsecaseResponse(false, error.message);

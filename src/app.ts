@@ -6,7 +6,7 @@ import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Reposit
 import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ClienteRepositoryMock';
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/PedidoRepositoryMock';
 import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/CategoriaRepositoryMock';
-import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/RemoverProdutoRepositoryMock';
+//import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/RemoverProdutoRepositoryMock';
 
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
@@ -67,7 +67,7 @@ app.use(express.json());
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.get('/', (req, res) => {
-  res.send('Tudo ok por aqui. Pode seguir viajem!');
+  res.send('Tudo ok por aqui. Pode seguir viagem!');
 });
 
 app.get('/health', (req, res) => {
@@ -80,7 +80,7 @@ app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).h
 
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
 
-app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
+app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 

@@ -11,25 +11,33 @@ export class BuscarClienteEndpoint {
     }
 
     public async handle(req: express.Request, res: express.Response): Promise<void> {
-
         /**
-            #swagger.summary = 'Buscar/Identificar Cliente do Restaurante por CPF'
+            #swagger.summary = 'Buscar Cliente do Restaurante por CPF. Utiliza esta informação para identificar um Cliente.'
             #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado para próximas etapas na sua jornada.
             #swagger.tags = ['Clientes']
+            #swagger.path = '/cliente/buscar/{cpf}'
+            #swagger.method = 'get'
+            #swagger.produces = ["application/json"]
+            #swagger.parameters['cpf'] = {
+                in: 'path',
+                description: 'CPF do Cliente sem pontuação',
+                required: true,
+                type: 'string',
+                example: '00000000000'
+            }
         */
 
-        // instanciando o Repositório Mock - TODO: refatorar para escolher o repositório de acordo com variáveis de ambiente
         const usecase = new BuscarClienteUsecase(
             this.clienteRepository
         );
 
         try { 
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado informado.');
+            const cpf: string = req.params.cpf;
+
+            if (!cpf) {
+                throw new Error('CPF não informado');
             }
-    
-            const cpf = req.body.cpf;
 
             const result = await usecase.execute(cpf);
 
@@ -37,7 +45,7 @@ export class BuscarClienteEndpoint {
                 mensagem: result.getMensagem(),
                 cliente: result.getCliente() ? {
                     id: result.getCliente()?.getId(),
-                    cpf: result.getCliente()?.getCpf().getValue(),
+                    cpf: result.getCliente()?.getCpf().getFormatado(),
                     nome: result.getCliente()?.getNome(),
                     email: result.getCliente()?.getEmail().getValue()
                 } : null

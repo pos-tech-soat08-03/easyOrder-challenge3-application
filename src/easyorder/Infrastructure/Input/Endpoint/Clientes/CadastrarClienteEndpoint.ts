@@ -16,8 +16,8 @@ export class CadastrarClienteEndpoint {
             #swagger.tags = ['Clientes']
             #swagger.path = '/cliente/cadastrar'
             #swagger.method = 'post'
-            #swagger.summary = 'Cadastrar cliente'
-            #swagger.description = 'Endpoint para cadastrar um novo cliente'
+            #swagger.summary = 'Cadastro de Novo Cliente'
+            #swagger.description = 'Este endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Todos os campos são obrigatórios. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
             #swagger.produces = ["application/json"]  
             #swagger.parameters['body'] = { 
                 in: 'body', 
@@ -26,9 +26,9 @@ export class CadastrarClienteEndpoint {
                     "properties": { 
                         "cpf": { 
                             "type": "string", 
-                            "minLength": 14,
-                            "maxLength": 14,
-                            "example": "000.000.000-00"
+                            "minLength": 11,
+                            "maxLength": 11,
+                            "example": "00000000000"
                         },
                         "nome": { 
                             "type": "string",
@@ -88,7 +88,7 @@ export class CadastrarClienteEndpoint {
                                     },
                                     cpf: {
                                         type: 'string',
-                                        example: '12345678901'
+                                        example: '123.456.789-01'
                                     },
                                     email: {
                                         type: 'string',
@@ -100,13 +100,14 @@ export class CadastrarClienteEndpoint {
                     }
                 }
             */
+
             res.json({
                 resultado_cadastro: result.getSucessoCadastro(),
                 mensagem: result.getMensagem(),
                 cliente: result.getSucessoCadastro() ? {
                     id: result.getCliente()?.getId(),
                     nome: result.getCliente()?.getNome(),
-                    cpf: result.getCliente()?.getCpf().getValue(),
+                    cpf: result.getCliente()?.getCpf().getFormatado(),
                     email: result.getCliente()?.getEmail().getValue()
                 } : null
             });
@@ -120,7 +121,7 @@ export class CadastrarClienteEndpoint {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Ocorreu um erro inesperado: Pedido não encontrado'
+                            example: 'Erro inesperado: Não foi possível cadastrar o cliente'
                         }
                     }
                 }
