@@ -2,7 +2,7 @@
 import { ProdutoEntity } from "../../../Core/Domain/Entity/ProdutoEntity";
 import { ProdutoRepositoryInterface } from "../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface";
 import { CategoriaEnum } from "../../../Core/Domain/ValueObject/CategoriaEnum";
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, Model, DataTypes, where } from 'sequelize';
 
 class LocalModel extends Model{
     public id!: string;
@@ -45,7 +45,7 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
                 type: DataTypes.STRING,
             },
             preco: {
-                type: DataTypes.DECIMAL,
+                type: DataTypes.DOUBLE,
             },
             categoria: {
                 type: DataTypes.STRING,
@@ -59,7 +59,9 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
             tableName: 'produtos',
             timestamps: false,
         });
-        this.sequelize.sync();
+        this.sequelize.sync({
+            alter:true
+        });
 
 
     }
@@ -72,15 +74,26 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
        
         return  new Array<ProdutoEntity>();
     }
-    public  async  buscarProdutoPorId(id: string): Promise<ProdutoEntity> {
+    public  async  buscarProdutoPorId(id: string): Promise<ProdutoEntity | undefined>  {
+        const produto = await LocalModel.findOne({
+            where: {
+                id: id
+            }
+    });
+            if(!produto){
+            return undefined;
+        }
         return new ProdutoEntity(
-            '1',
-            'Nome Produto Mock',
-            10.00,
-            CategoriaEnum.BEBIDA,
-            'Descrição Produto Mock',
-            'https://example.com/imagem.jpg'
-        );
+            produto.nome,
+            produto.descricao,
+            produto.preco,
+            produto.categoria as CategoriaEnum,
+            produto.imagemURL,
+            produto.id
+
+        )
+
+
     }
     public    async   removerPorId(id: string): Promise<void> {
        console.log("Removido{}",id);

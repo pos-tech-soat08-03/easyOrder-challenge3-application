@@ -6,7 +6,6 @@ import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Reposit
 import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ClienteRepositoryMock';
 import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/PedidoRepositoryMock';
 import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/CategoriaRepositoryMock';
-import { RemoverProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/RemoverProdutoRepositoryMock';
 
 import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/PedidoRepositoryMySQL';
 import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ClienteRepositoryMySQL';
@@ -29,6 +28,7 @@ import { EntregarPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { ListaCategoriasEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarCategoriasEndpoint';
 import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/CheckoutPedidoEndpoint';
 import { ProdutoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMySQL';
+import { AtualizarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/AtualizarProdutoEndpoint';
 
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
@@ -59,6 +59,7 @@ const pedidoRepository = new PedidoRepositoryMySQL(
 const categoriaRepositoryMock = new CategoriaRepositoryMock();
 const listaCategoriasEndpoint = new ListaCategoriasEndpoint(categoriaRepositoryMock);
 
+
 const app = express();
 const port = Number(process.env.SERVER_PORT || '3000');
 
@@ -85,6 +86,8 @@ app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
+
+app.post('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
 
 app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 
