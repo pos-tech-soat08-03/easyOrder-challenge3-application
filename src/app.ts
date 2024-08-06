@@ -33,6 +33,7 @@ import { AtualizarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpo
 
 import { AdicionarComboAoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/AdicionarComboAoPedidoEndpoint';
 import { RemoverComboDoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/RemoverComboDoPedidoEndpoint';
+import { BuscaProximoPedidoParaPreparacaoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoEndpoint';
 
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
@@ -102,6 +103,8 @@ app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).hand
 app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
+
+app.get('/preparacao/pedido/proximo', new BuscaProximoPedidoParaPreparacaoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
 
