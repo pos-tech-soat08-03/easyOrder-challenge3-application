@@ -1,10 +1,9 @@
 
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
-import { FecharPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/FecharPedidoUsecase';
-import { EntregarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/EntregarPedidoUsecase';
+import { RemoverComboDoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/RemoverComboDoPedidoUsecase';
 
-export class EntregarPedidoEndpoint {
+export class RemoverComboDoPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -15,32 +14,38 @@ export class EntregarPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/entregar/{pedidoId}'
-            #swagger.method = 'post'
-            #swagger.summary = 'Entregar um pedido'
-            #swagger.description = 'Endpoint para entregar um pedido'
+            #swagger.method = 'delete'
+            #swagger.summary = 'Remover combo do pedido'
+            #swagger.description = 'Endpoint para remover um combo do pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
                 description: 'ID do pedido',
                 required: true,
                 type: 'string',
-                example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
+                example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
+            }
+            #swagger.parameters['comboId'] = {
+                in: 'path',
+                description: 'ID do combo',
+                required: true,
+                type: 'string',
+                example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
             }
         */
         try {
 
-            const usecase = new EntregarPedidoUsecase(
+            const usecase = new RemoverComboDoPedidoUsecase(
                 this.pedidoRepository
             );
 
-            const pedidoId: string = req.params.pedidoId;
+            const pedidoId = req.params.pedidoId;
+            const comboId = req.params.comboId;
 
-            if (!pedidoId) {
-                throw new Error('Pedido não informado');
-            }
-
-            const result = await usecase.execute(pedidoId);
+            const result = await usecase.execute(
+                pedidoId,
+                comboId,
+            );
 
             if (!result.getSucessoExecucao()) {
                 throw new Error(result.getMensagem());
@@ -48,12 +53,12 @@ export class EntregarPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                'description': 'Pedido entregue com sucesso.',
+                description: 'Combo removido do pedido com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Pedido entregue com sucesso.'
+                            example: 'Combo removido do pedido com sucesso'
                         },
                         pedido: {
                             $ref: '#/definitions/PedidoResponse'
@@ -70,6 +75,13 @@ export class EntregarPedidoEndpoint {
                     clienteId: result.getPedido()?.getClienteId(),
                     status: result.getPedido()?.getStatusPedido().getValue(),
                     pagamentoStatus: result.getPedido()?.getStatusPagamento(),
+                    combo: result.getPedido()?.getCombos().map(combo => ({
+                        id: combo.getId(),
+                        lanche: combo.getLancheId(),
+                        bebida: combo.getBebidaId(),
+                        sobremesa: combo.getSobremesaId(),
+                        acompanhamento: combo.getAcompanhamentoId(),
+                    }))
                 } : null
             });
 

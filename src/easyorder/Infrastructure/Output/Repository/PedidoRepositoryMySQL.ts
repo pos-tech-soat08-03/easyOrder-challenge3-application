@@ -1,11 +1,11 @@
 
-import fs from 'fs';
 import { PedidoEntity } from "../../../Core/Domain/Entity/PedidoEntity";
 import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from "../../../Core/Domain/Output/Repository/PedidoRepositoryInterface";
 import { StatusPedidoEnum, StatusPedidoValueObject } from '../../../Core/Domain/ValueObject/StatusPedidoValueObject';
 import { Sequelize } from 'sequelize';
 import { Model, DataTypes } from 'sequelize';
 import { StatusPagamentoEnum } from '../../../Core/Domain/ValueObject/StatusPagamentoEnum';
+import { PedidoComboEntity } from "../../../Core/Domain/Entity/PedidoComboEntity";
 
 class LocalModel extends Model {
     public id!: string;
@@ -13,6 +13,7 @@ class LocalModel extends Model {
     public clienteId!: string;
     public statusPedido!: string;
     public statusPagamento!: string;
+    public combos!: object[];
 }
 
 class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
@@ -53,6 +54,10 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            combos: {
+                type: DataTypes.JSON,
+                allowNull: true,
+            },
         }, {
             sequelize: this.sequelize,
             modelName: 'Pedido',
@@ -60,7 +65,7 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
             timestamps: false,
         });
 
-        this.sequelize.sync();
+        this.sequelize.sync({ alter: true });
     }
 
     async salvarPedido(pedido: PedidoEntity): Promise<PedidoEntity | null> {
@@ -70,6 +75,7 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
             clienteId: pedido.getClienteId(),
             statusPedido: pedido.getStatusPedido().getValue(),
             statusPagamento: pedido.getStatusPagamento(),
+            combos: pedido.getCombos(),
         };
 
         await LocalModel.upsert(pedidoData);
@@ -94,13 +100,26 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                 return [];
             }
 
-            pedidosArray = pedidos.map(p => new PedidoEntity(
-                p.clienteId,
-                p.dataPedido,
-                new StatusPedidoValueObject(p.statusPedido as StatusPedidoEnum),
-                p.statusPagamento as StatusPagamentoEnum,
-                p.id
-            ));
+            pedidosArray = pedidos.map(p => {
+                const pedido = new PedidoEntity(
+                    p.clienteId,
+                    p.dataPedido,
+                    new StatusPedidoValueObject(p.statusPedido as StatusPedidoEnum),
+                    p.statusPagamento as StatusPagamentoEnum,
+                    p.id,
+                );
+
+                pedido.adicionarCombos(p.combos.map((combo: any) => {
+                    return new PedidoComboEntity(
+                        combo.lanche,
+                        combo.bebida,
+                        combo.sobremesa,
+                        combo.acompanhamento,
+                        combo.id,
+                    );
+                }));
+                return pedido;
+            });
         });
 
         return pedidosArray;
@@ -115,8 +134,17 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                     pedido.dataPedido,
                     new StatusPedidoValueObject(pedido.statusPedido as StatusPedidoEnum),
                     pedido.statusPagamento as StatusPagamentoEnum,
-                    pedido.id
+                    pedido.id,
                 );
+                pedidoEntity.adicionarCombos(pedido.combos.map((combo: any) => {
+                    return new PedidoComboEntity(
+                        combo.lanche,
+                        combo.bebida,
+                        combo.sobremesa,
+                        combo.acompanhamento,
+                        combo.id,
+                    );
+                }));
             }
         });
         return pedidoEntity;
