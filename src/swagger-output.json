@@ -259,6 +259,49 @@
         }
       }
     },
+    "/produto/atualizar": {
+      "post": {
+        "summary": "Atualizar produto",
+        "description": "Endpoint para atualizar produto do catalogo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "nome": {
+                  "example": "any"
+                },
+                "descricao": {
+                  "example": "any"
+                },
+                "preco": {
+                  "example": "any"
+                },
+                "categoria": {
+                  "example": "any"
+                },
+                "imagemURL": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/pedido/cadastrar": {
       "post": {
         "tags": [
