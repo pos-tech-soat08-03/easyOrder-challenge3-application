@@ -2,8 +2,9 @@
 import { Request, Response } from 'express';
 import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
+import { AdicionarComboAoPedidoUsecase, AdicionarComboAoPedidoUsecaseResponse } from '../../../../Core/Application/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
 
-export class CadastrarPedidoEndpoint {
+export class AdicionarComboAoPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -15,28 +16,56 @@ export class CadastrarPedidoEndpoint {
         /**
             #swagger.tags = ['Pedidos']
             #swagger.method = 'post'
-            #swagger.summary = 'Cadastrar novo pedido'
-            #swagger.description = 'Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing'
+            #swagger.summary = 'Adicionar combo ao pedido'
+            #swagger.description = 'Endpoint para adicionar um combo ao pedido'
             #swagger.produces = ["application/json"]
+            #swagger.parameters['pedidoId'] = {
+                in: 'path',
+                description: 'ID do pedido',
+                required: true,
+                type: 'string',
+                example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
+            }
             #swagger.parameters['body'] = { 
                 in: 'body', 
                 '@schema': { 
-                    "required": ["clienteId"], 
+                    "required": ["lancheId", "bebidaId", "sobremesaId", "acompanhamentoId"],
                     "properties": { 
-                        "clienteId": { 
-                            "type": "string", 
-                            "minLength": 36, 
+                        "lancheId": { 
+                            "type": "string" | "null",
+                            "minLength": 36,
                             "maxLength": 36,
                             "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307" 
-                        }
+                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                        },
+                        "bebidaId": { 
+                            "type": "string" | "null",
+                            "minLength": 36,
+                            "maxLength": 36,
+                            "format": "uuid",
+                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                        },
+                        "sobremesaId": { 
+                            "type": "string" | "null",
+                            "minLength": 36,
+                            "maxLength": 36,
+                            "format": "uuid",
+                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                        },
+                        "acompanhamentoId": { 
+                            "type": "string" | "null",
+                            "minLength": 36,
+                            "maxLength": 36,
+                            "format": "uuid",
+                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+                        },
                     }
                 }
             }
         */
         try {
 
-            const usecase = new CadastrarPedidoUsecase(
+            const usecase = new AdicionarComboAoPedidoUsecase(
                 this.pedidoRepository
             );
 
@@ -44,9 +73,15 @@ export class CadastrarPedidoEndpoint {
                 throw new Error('Nenhum dado enviado.');
             }
 
-            const clienteId: string = req.body.clienteId;
+            const pedidoId = req.params.pedidoId;
 
-            const result = await usecase.execute(clienteId);
+            const result = await usecase.execute(
+                pedidoId,
+                req.body.lancheId,
+                req.body.bebidaId,
+                req.body.sobremesaId,
+                req.body.acompanhamentoId,
+            );
 
             if (!result.getSucessoExecucao()) {
                 throw new Error(result.getMensagem());
@@ -54,12 +89,12 @@ export class CadastrarPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                'description': 'Pedido cadastrado com sucesso2',
+                description: 'Combo adicionado ao pedido com sucesso',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Pedido cadastrado com sucesso3'
+                            example: 'Combo adicionado ao pedido com sucesso'
                         },
                         pedido: {
                             $ref: '#/definitions/PedidoResponse'
@@ -76,6 +111,13 @@ export class CadastrarPedidoEndpoint {
                     clienteId: result.getPedido()?.getClienteId(),
                     status: result.getPedido()?.getStatusPedido().getValue(),
                     pagamentoStatus: result.getPedido()?.getStatusPagamento(),
+                    combo: result.getPedido()?.getCombos().map(combo => ({
+                        id: combo.getId(),
+                        lanche: combo.getLancheId(),
+                        bebida: combo.getBebidaId(),
+                        sobremesa: combo.getSobremesaId(),
+                        acompanhamento: combo.getAcompanhamentoId(),
+                    }))
                 } : null
             });
 

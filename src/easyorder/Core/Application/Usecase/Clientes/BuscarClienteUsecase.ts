@@ -36,17 +36,17 @@ export class BuscarClienteUsecase {
         try {
 
             if (!cpf) {
-                throw new Error('CPF não informado.');
+                throw new Error('Dados incorretos: CPF não informado.');
             }
 
             const cpfValue = new CpfValueObject(cpf);
 
-            const cliente = this.clienteRepository.buscarClientePorCpf(cpfValue);
+            const cliente = await this.clienteRepository.buscarClientePorCpf(cpfValue);
             if (cliente === undefined) {
-                throw new Error('Cliente não existente.');
+                throw new Error('Cadastro de Cliente não encontrado.');
             }
 
-            return new BuscarClientesUsecaseResponse("Cliente identificado", cliente);
+            return new BuscarClientesUsecaseResponse("Cliente identificado com Sucesso.", cliente);
 
         } catch (error: any) {
             return new BuscarClientesUsecaseResponse(error.message, null);

@@ -49,7 +49,7 @@ export class ClienteRepositoryMySQL implements ClienteRepositoryInterface {
             timestamps: false,
         });
 
-        this.sequelize.sync();
+        this.sequelize.sync({alter: true});
 
     }
 

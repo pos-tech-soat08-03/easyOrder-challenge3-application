@@ -71,7 +71,7 @@ export class ListarClientesEndpoint {
                 clientes: result.getClientes()?.map(cliente => {
                     return ({
                         id: cliente.getId(),
-                        cpf: cliente.getCpf().getValue(),
+                        cpf: cliente.getCpf().getFormatado(),
                         nome: cliente.getNome(),
                         email: cliente.getEmail().getValue()
                     })

@@ -30,6 +30,9 @@ import { CheckoutPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { ProdutoRepositoryMySQL } from './easyorder/Infrastructure/Output/Repository/ProdutoRepositoryMySQL';
 import { AtualizarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/AtualizarProdutoEndpoint';
 
+import { AdicionarComboAoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/AdicionarComboAoPedidoEndpoint';
+import { RemoverComboDoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/RemoverComboDoPedidoEndpoint';
+
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
   Number(process.env.DATABASE_PORT || '0'),
@@ -68,7 +71,7 @@ app.use(express.json());
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.get('/', (req, res) => {
-  res.send('Tudo ok por aqui. Pode seguir viajem!');
+  res.send('Tudo ok por aqui. Pode seguir viagem!');
 });
 
 app.get('/health', (req, res) => {
@@ -81,7 +84,7 @@ app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).h
 
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
 
-app.get('/cliente/buscar', new BuscarClienteEndpoint(clienteRepository).handle);
+app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
 
@@ -104,6 +107,10 @@ app.get('/pedido/iniciar-preparacao/:pedidoId', new IniciarPreparacaoPedidoEndpo
 app.get('/pedido/finalizar-preparacao/:pedidoId', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/pedido/entregar/:pedidoId', new EntregarPedidoEndpoint(pedidoRepository).handle);
+
+app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository).handle);
+
+app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
 app.get('/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 

@@ -37,7 +37,7 @@ export class ListarClientesUsecase {
 
             const lista_clientes: ClienteEntity[] = await this.clienteRepository.listarClientes();
             if (lista_clientes === undefined) {
-                throw new Error('Não foi possível obter lista de clientes.');
+                throw new Error('Erro: Não foi possível obter lista de clientes.');
             }
 
             return new ListarClientesUsecaseResponse(`Sucesso. ${lista_clientes.length} clientes retornados.`, lista_clientes);
