@@ -14,8 +14,8 @@ export class CheckoutPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/checkout/{pedidoId}'
-            #swagger.method = 'post'
+            #swagger.path = '/pedido/:pedidoId/checkout'
+            #swagger.method = 'put'
             #swagger.summary = 'Checkout/Pagamento de um pedido'
             #swagger.description = 'Endpoint para efetuar o pagamento de um pedido'
             #swagger.produces = ["application/json"]

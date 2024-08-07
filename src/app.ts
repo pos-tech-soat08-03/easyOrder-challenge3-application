@@ -100,13 +100,13 @@ app.put('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).ha
 app.get('/produto/listar', new ListarProdutoEndpoint(produtoRepository).handle);
 
 // Contexto de pedido
+app.post('/pedido', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
 app.get('/pedido/:pedidoId', new BuscaPedidoPorIdEndpoint(pedidoRepository).handle);
-app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/cancelar', new CancelarPedidoEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/checkout', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/fechar', new FecharPedidoEndpoint(pedidoRepository).handle);
 app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
 // Contexto de preparação

@@ -14,8 +14,8 @@ export class CancelarPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/cancelar/{pedidoId}'
-            #swagger.method = 'post'
+            #swagger.path = '/pedido/:pedidoId/cancelar'
+            #swagger.method = 'put'
             #swagger.summary = 'Cancelar um pedido'
             #swagger.description = 'Endpoint para cancelamento de um pedido'
             #swagger.produces = ["application/json"]

@@ -14,6 +14,7 @@ export class CadastrarPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
+            #swagger.path = '/pedido'
             #swagger.method = 'post'
             #swagger.summary = 'Cadastrar novo pedido'
             #swagger.description = 'Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing'
