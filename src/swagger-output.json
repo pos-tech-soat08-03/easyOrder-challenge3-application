@@ -595,7 +595,7 @@
     "/preparacao/pedido/proximo": {
       "get": {
         "tags": [
-          "Pedidos"
+          "Preparação"
         ],
         "summary": "Busca o próximo pedido para preparação",
         "description": "Endpoint para buscar o próximo pedido para preparação",
@@ -604,12 +604,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Pedidos listados com sucesso",
+            "description": "Pedido encontrado",
             "schema": {
               "properties": {
                 "mensagem": {
                   "type": "string",
-                  "example": "Pedidos listados com sucesso"
+                  "example": "Pedido encontrado"
                 },
                 "pedido": {
                   "$ref": "#/definitions/PedidoResponse"

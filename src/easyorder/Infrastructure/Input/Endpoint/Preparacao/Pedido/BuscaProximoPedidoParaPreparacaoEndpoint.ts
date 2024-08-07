@@ -13,7 +13,7 @@ export class BuscaProximoPedidoParaPreparacaoEndpoint {
 
     public async handle(req: Request, res: Response): Promise<void> {
         /**
-            #swagger.tags = ['Pedidos']
+            #swagger.tags = ['Preparação']
             #swagger.path = '/preparacao/pedido/proximo'
             #swagger.method = 'get'
             #swagger.summary = 'Busca o próximo pedido para preparação'
@@ -56,12 +56,12 @@ export class BuscaProximoPedidoParaPreparacaoEndpoint {
             res.json({
                 /**
                 #swagger.responses[200] = {
-                    'description': 'Pedidos listados com sucesso',
+                    'description': 'Pedido encontrado',
                     '@schema': {
                         'properties': {
                             mensagem: {
                                 type: 'string',
-                                example: 'Pedidos listados com sucesso'
+                                example: 'Pedido encontrado'
                             },
                             pedido: {
                                 $ref: '#/definitions/PedidoResponse'
@@ -71,7 +71,7 @@ export class BuscaProximoPedidoParaPreparacaoEndpoint {
                 }
                 */
                 mensagem: result.getMensagem(),
-                pedidos: {
+                pedido: {
                     id: result.getPedido()?.getId(),
                     data: result.getPedido()?.getDataPedido(),
                     clienteId: result.getPedido()?.getClienteId(),
