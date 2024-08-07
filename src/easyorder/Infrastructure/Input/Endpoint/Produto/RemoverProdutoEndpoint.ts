@@ -11,6 +11,23 @@ export class RemoverProdutoEndpoint {
 
 
     public async handle(req: Request, res: Response): Promise<void> {
+
+        /**
+            #swagger.tags = ['Produtos']
+            #swagger.method = 'delete'
+            #swagger.summary = 'Remover produto'
+            #swagger.description = 'Endpoint para remover um produto'
+            #swagger.produces = ["application/json"]
+            #swagger.parameters['produtoId'] = {
+                in: 'path',
+                description: 'ID do produto',
+                required: true,
+                type: 'string',
+                example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
+            }
+            }
+        */
+
         const removerProdutoUsecase = new RemoverProdutoUsecase(this.produtoRepository);
 
         const id = req.params.id as string;
