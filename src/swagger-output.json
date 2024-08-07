@@ -558,7 +558,6 @@
             "enum": [
               "EM_ABERTO",
               "AGUARDANDO_PAGAMENTO",
-              "PAGO",
               "RECEBIDO",
               "EM_PREPARACAO",
               "PRONTO",
@@ -1013,7 +1012,7 @@
       }
     },
     "/preparacao/pedido/proximo": {
-      "post": {
+      "get": {
         "tags": [
           "Preparação"
         ],
@@ -1063,7 +1062,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/iniciar-preparacao": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],
@@ -1112,7 +1111,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/finalizar-preparacao": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],
@@ -1161,7 +1160,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/entregar": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],

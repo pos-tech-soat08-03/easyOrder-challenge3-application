@@ -15,7 +15,7 @@ export class EntregarPedidoEndpoint {
         /**
             #swagger.tags = ['Preparação']
             #swagger.path = '/preparacao/pedido/:pedidoId/entregar'
-            #swagger.method = 'post'
+            #swagger.method = 'put'
             #swagger.summary = 'Entregar um pedido'
             #swagger.description = 'Endpoint para entregar um pedido'
             #swagger.produces = ["application/json"]

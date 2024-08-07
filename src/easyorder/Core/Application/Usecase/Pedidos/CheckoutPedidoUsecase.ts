@@ -42,7 +42,7 @@ export class CheckoutPedidoUsecase {
                 throw new Error('Pedido não encontrado');
             }
 
-            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.PAGO));
+            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO));
             pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
 
             const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)

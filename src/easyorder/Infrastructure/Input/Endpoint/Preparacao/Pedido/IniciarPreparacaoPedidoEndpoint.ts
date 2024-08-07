@@ -15,7 +15,7 @@ export class IniciarPreparacaoPedidoEndpoint {
         /**
             #swagger.tags = ['Preparação']
             #swagger.path = '/preparacao/pedido/:pedidoId/iniciar-preparacao'
-            #swagger.method = 'post'
+            #swagger.method = 'put'
             #swagger.summary = 'Iniciar preparação de um pedido'
             #swagger.description = 'Endpoint para iniciar a preparação de um pedido'
             #swagger.produces = ["application/json"]

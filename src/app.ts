@@ -110,10 +110,10 @@ app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
 // Contexto de preparação
-app.post('/preparacao/pedido/proximo', new BuscaProximoPedidoParaPreparacaoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/iniciar-preparacao', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/finalizar-preparacao', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/entregar', new EntregarPedidoEndpoint(pedidoRepository).handle);
+app.get('/preparacao/pedido/proximo', new BuscaProximoPedidoParaPreparacaoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/iniciar-preparacao', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/finalizar-preparacao', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/entregar', new EntregarPedidoEndpoint(pedidoRepository).handle);
 
 
 app.listen(port, () => {
