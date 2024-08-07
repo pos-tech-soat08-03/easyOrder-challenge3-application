@@ -1,9 +1,9 @@
 
 import { Request, Response } from 'express';
-import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
-import { FinalizarPreparacaoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/FinalizarPreparacaoPedidoUsecase';
+import { PedidoRepositoryInterface } from '../../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
+import { EntregarPedidoUsecase } from '../../../../../Core/Application/Usecase/Preparacao/Pedido/EntregarPedidoUsecase';
 
-export class FinalizarPreparacaoPedidoEndpoint {
+export class EntregarPedidoEndpoint {
 
     constructor(
         private pedidoRepository: PedidoRepositoryInterface
@@ -13,11 +13,11 @@ export class FinalizarPreparacaoPedidoEndpoint {
 
     public async handle(req: Request, res: Response): Promise<void> {
         /**
-            #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/finalizar-preparacao/{pedidoId}'
+            #swagger.tags = ['Preparação']
+            #swagger.path = '/preparacao/pedido/:pedidoId/entregar'
             #swagger.method = 'post'
-            #swagger.summary = 'Finalizar preparação de um pedido'
-            #swagger.description = 'Endpoint para finalizar a preparação de um pedido'
+            #swagger.summary = 'Entregar um pedido'
+            #swagger.description = 'Endpoint para entregar um pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -29,7 +29,7 @@ export class FinalizarPreparacaoPedidoEndpoint {
         */
         try {
 
-            const usecase = new FinalizarPreparacaoPedidoUsecase(
+            const usecase = new EntregarPedidoUsecase(
                 this.pedidoRepository
             );
 
@@ -47,12 +47,12 @@ export class FinalizarPreparacaoPedidoEndpoint {
 
             /**
             #swagger.responses[200] = {
-                'description': 'Preparação do pedido finalizada com sucesso',
+                'description': 'Pedido entregue com sucesso.',
                 '@schema': {
                     'properties': {
                         mensagem: {
                             type: 'string',
-                            example: 'Preparação do pedido finalizada com sucesso'
+                            example: 'Pedido entregue com sucesso.'
                         },
                         pedido: {
                             $ref: '#/definitions/PedidoResponse'
