@@ -458,46 +458,6 @@
         }
       }
     },
-    "/produto/remover": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/produto/listar": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/produto/listar": {
       "get": {
         "tags": [
@@ -507,116 +467,6 @@
         "description": "Endpoint para listar todos os produtos cadastrados",
         "produces": [
           "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/produto/buscar/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/produto/cadastrar": {
-      "post": {
-        "summary": "Cadastrar novo produto",
-        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "nome": {
-                  "example": "any"
-                },
-                "descricao": {
-                  "example": "any"
-                },
-                "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
-                },
-                "imagemURL": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/produto/atualizar": {
-      "post": {
-        "summary": "Atualizar produto",
-        "description": "Endpoint para atualizar produto do catalogo",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "nome": {
-                  "example": "any"
-                },
-                "descricao": {
-                  "example": "any"
-                },
-                "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
-                },
-                "imagemURL": {
-                  "example": "any"
-                },
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -741,6 +591,66 @@
                 "pedidos": {
                   "type": "array",
                   "items": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Buscar pedido por ID",
+        "description": "Endpoint para buscar um pedido por ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido Encontrado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido Encontrado"
+                },
+                "pedido": {
+                  "$ref": "#/definitions/PedidoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhum pedido encontrado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Nenhum pedido encontrado"
                 }
               }
             }
