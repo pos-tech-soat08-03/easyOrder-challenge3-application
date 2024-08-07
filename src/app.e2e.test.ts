@@ -173,6 +173,8 @@ describe('E2E Test for Order Process', () => {
             expect(response.data.pedido).toHaveProperty('id');
 
             pedidoId = response.data.pedido.id;
+            console.log(`Pedido ID criado: ${pedidoId}`);
+
         } catch (error: any) {
             expect(error.message).toEqual('Falha ao criar pedido');
         }
@@ -231,7 +233,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Fecha pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/fechar`);
+            const response = await axios.post(`${BASE_URL}/pedido/fechar/${pedidoId}`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
@@ -247,7 +249,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Checkout pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/checkout`);
+            const response = await axios.post(`${BASE_URL}/pedido/checkout/${pedidoId}`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('mensagem');
@@ -259,7 +261,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Busca próximo pedido na fila de preparação', async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/preparacao/pedido/proximo`);
+            const response = await axios.post(`${BASE_URL}/preparacao/pedido/proximo`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
@@ -271,7 +273,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Inicia preparação do pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/preparacao/pedido/${pedidoId}/iniciar-preparacao`);
+            const response = await axios.post(`${BASE_URL}/preparacao/pedido/${pedidoId}/iniciar-preparacao`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
@@ -285,7 +287,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Finaliza preparação do pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/preparacao/pedido/${pedidoId}/finalizar-preparacao`);
+            const response = await axios.post(`${BASE_URL}/preparacao/pedido/${pedidoId}/finalizar-preparacao`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
@@ -299,7 +301,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Entrega pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/preparacao/pedido/${pedidoId}/entregar`);
+            const response = await axios.post(`${BASE_URL}/preparacao/pedido/${pedidoId}/entregar`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
