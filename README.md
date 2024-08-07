@@ -1,3 +1,8 @@
+[Documentação do problema](./docs/README-Problema.md)
+
+[Documentação de regras de negócio](./docs/README-Regras-Negocio.md)
+
+
 # Iniciando a aplicação
 
 ### Modo "Produção"
@@ -51,6 +56,11 @@ Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/a
 # Arquitetura e estrutura de pastas
 
 ![](docs/exemplo-hexagonal-01.png)
+
+```mermaid
+
+```
+
 
 #### /src/easyorder/Core
 - Núcleo da aplicação, contém a application e models

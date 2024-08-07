@@ -45,7 +45,6 @@ export class PedidoEntity {
         this.dataPedido = dataPedido;
         this.clienteId = clienteId;
         this.statusPedido = statusPedido;
-        this.setStatusPedido(statusPedido);
         this.statusPagamento = statusPagamento;
         this.id = id;
     }
@@ -88,7 +87,7 @@ export class PedidoEntity {
 
         if (status.getValue() === StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
             if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {
-                throw new Error('Status do pedido não permite pagamento');
+                throw new Error('Status do pedido não permite enviar para pagamento');
             }
         }
 
