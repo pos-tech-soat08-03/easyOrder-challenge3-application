@@ -231,7 +231,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Fecha pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/pedido/fechar/${pedidoId}`);
+            const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/fechar`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
