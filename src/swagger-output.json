@@ -337,10 +337,23 @@
     },
     "/produto/categoria/listar": {
       "get": {
-        "description": "",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Listar todos as categorias",
+        "description": "Endpoint para listar todos as categorias cadastradas",
+        "produces": [
+          "application/json"
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }

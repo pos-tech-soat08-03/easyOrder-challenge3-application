@@ -65,8 +65,6 @@ const pedidoRepository = new PedidoRepositoryMySQL(
 
 // Instanciar o mock e o use case para categorias
 const categoriaRepositoryMock = new CategoriaRepositoryMock();
-const listaCategoriasEndpoint = new ListaCategoriasEndpoint(categoriaRepositoryMock);
-
 
 const app = express();
 const port = Number(process.env.SERVER_PORT || '3000');
@@ -93,7 +91,7 @@ app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).han
 
 // Contexto de produto
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
-app.get('/produto/categoria/listar', listaCategoriasEndpoint.handle);
+app.get('/produto/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
 app.put('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
