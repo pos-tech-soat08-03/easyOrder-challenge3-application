@@ -17,7 +17,7 @@ export class ProdutoRepositoryMock implements ProdutoRepositoryInterface {
 
     private produtos: Map<string, ProdutoEntity> = new Map();
 
-    public async listarProduto(): Promise<ProdutoEntity[]> {
+    public async listarProdutos(): Promise<ProdutoEntity[]> {
         return Promise.resolve(Array.from(this.produtos.values()));
     }
 
