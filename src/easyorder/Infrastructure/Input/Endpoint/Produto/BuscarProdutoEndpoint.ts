@@ -27,6 +27,7 @@ export class BuscarProdutoEndpoint {
                         "id": { 
                             "type": "string", 
                             "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
+                        }    
                     }
                 }
             }

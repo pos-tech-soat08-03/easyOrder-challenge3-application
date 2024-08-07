@@ -361,6 +361,21 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "required": [
+                "Id do Produto"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -417,9 +432,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
           }
         }
       }
