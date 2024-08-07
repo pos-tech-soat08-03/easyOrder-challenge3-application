@@ -35,6 +35,7 @@ import { AtualizarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpo
 import { AdicionarComboAoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/AdicionarComboAoPedidoEndpoint';
 import { RemoverComboDoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/RemoverComboDoPedidoEndpoint';
 import { BuscaProximoPedidoParaPreparacaoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoEndpoint';
+import { ListarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarProdutoEndPoint';
 
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
@@ -91,14 +92,17 @@ app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).han
 
 // Contexto de produto
 app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
-app.get('/produto/listar', listaCategoriasEndpoint.handle);
+app.get('/produto/categoria/listar', listaCategoriasEndpoint.handle);
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
-app.post('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
+
+app.put('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
 
 // Contexto de pedido
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
 app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
+
+app.get('/produto/listar', new ListarProdutoEndpoint(produtoRepository).handle);
 app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
 app.post('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
 app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository).handle);

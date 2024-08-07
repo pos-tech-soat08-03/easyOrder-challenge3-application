@@ -1,7 +1,5 @@
-import express from "express";
 import { ProdutoEntity } from "../../../Domain/Entity/ProdutoEntity";
 import { ProdutoRepositoryInterface } from "../../../Domain/Output/Repository/ProdutoRepositoryInterface";
-import { CategoriaEnum } from "../../../Domain/ValueObject/CategoriaEnum";
 
 export class BuscarProdutoPorIdUseCase {
     private produtoRepository: ProdutoRepositoryInterface;

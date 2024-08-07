@@ -67,8 +67,24 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
     }
 
 
-    public async listarProduto():Promise< ProdutoEntity[]> {
-        return new Array<ProdutoEntity>();
+    public async listarProdutos():Promise< ProdutoEntity[]> {
+        const produtos = await LocalModel.findAll();
+        if(!produtos){
+            return [];
+        }
+
+
+    
+        return produtos.map(produto => {
+            return new ProdutoEntity(            
+            produto.nome,
+            produto.descricao,
+            produto.preco,
+            produto.categoria as CategoriaEnum,
+            produto.imagemURL,
+            produto.id
+            )
+        });
     }
     public async listarProdutoCategoria(categoria: CategoriaEnum):Promise<ProdutoEntity[]> {
        
