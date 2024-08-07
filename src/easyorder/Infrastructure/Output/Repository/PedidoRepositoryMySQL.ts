@@ -111,10 +111,10 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
 
                 pedido.adicionarCombos(p.combos.map((combo: any) => {
                     return new PedidoComboEntity(
-                        combo.lanche,
-                        combo.bebida,
-                        combo.sobremesa,
-                        combo.acompanhamento,
+                        combo.lancheId,
+                        combo.bebidaId,
+                        combo.sobremesaId,
+                        combo.acompanhamentoId,
                         combo.id,
                     );
                 }));
@@ -138,10 +138,10 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                 );
                 pedidoEntity.adicionarCombos(pedido.combos.map((combo: any) => {
                     return new PedidoComboEntity(
-                        combo.lanche,
-                        combo.bebida,
-                        combo.sobremesa,
-                        combo.acompanhamento,
+                        combo.lancheId,
+                        combo.bebidaId,
+                        combo.sobremesaId,
+                        combo.acompanhamentoId,
                         combo.id,
                     );
                 }));
