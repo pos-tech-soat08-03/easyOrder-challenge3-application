@@ -1,5 +1,6 @@
 import { PedidoEntity } from "../../../Domain/Entity/PedidoEntity";
 import { PedidoRepositoryInterface } from "../../../Domain/Output/Repository/PedidoRepositoryInterface";
+import { StatusPagamentoEnum } from "../../../Domain/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../../../Domain/ValueObject/StatusPedidoValueObject";
 
 export class CheckoutPedidoUsecaseResponse {
@@ -42,6 +43,7 @@ export class CheckoutPedidoUsecase {
             }
 
             pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.PAGO));
+            pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
 
             const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
 
