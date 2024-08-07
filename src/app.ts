@@ -15,6 +15,7 @@ import { RemoverProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoin
 import { BuscarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/BuscarProdutoEndpoint';
 
 import { CadastrarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/CadastrarClienteEndpoint';
+import { AtualizarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/AtualizarClienteEndpoint';
 import { ListarClientesEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/ListarClientesEndpoint';
 import { BuscarClienteEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Clientes/BuscarClienteEndpoint';
 
@@ -84,6 +85,7 @@ app.get('/health', (req, res) => {
 
 // Contexto de cliente
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
+app.post('/cliente/atualizar', new AtualizarClienteEndpoint(clienteRepository).handle);
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
 app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 
