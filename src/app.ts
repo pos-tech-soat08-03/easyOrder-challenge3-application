@@ -36,6 +36,7 @@ import { AdicionarComboAoPedidoEndpoint } from './easyorder/Infrastructure/Input
 import { RemoverComboDoPedidoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/RemoverComboDoPedidoEndpoint';
 import { BuscaProximoPedidoParaPreparacaoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoEndpoint';
 import { ListarProdutoEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Produto/ListarProdutoEndPoint';
+import { BuscaPedidoPorIdEndpoint } from './easyorder/Infrastructure/Input/Endpoint/Pedido/BuscaPedidoPorIdEndpoint';
 
 const clienteRepository = new ClienteRepositoryMySQL(
   process.env.DATABASE_HOST || 'ERROR',
@@ -95,25 +96,24 @@ app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).han
 app.get('/produto/categoria/listar', listaCategoriasEndpoint.handle);
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);
-
 app.put('/produto/atualizar', new AtualizarProdutoEndpoint(produtoRepository).handle);
+app.get('/produto/listar', new ListarProdutoEndpoint(produtoRepository).handle);
 
 // Contexto de pedido
+app.post('/pedido', new CadastrarPedidoEndpoint(pedidoRepository).handle);
 app.get('/pedido/listar/:statusPedido', new ListarPedidosPorStatusEndpoint(pedidoRepository).handle);
-app.post('/pedido/cadastrar', new CadastrarPedidoEndpoint(pedidoRepository).handle);
-
-app.get('/produto/listar', new ListarProdutoEndpoint(produtoRepository).handle);
-app.post('/pedido/cancelar/:pedidoId', new CancelarPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/checkout/:pedidoId', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+app.get('/pedido/:pedidoId', new BuscaPedidoPorIdEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/cancelar', new CancelarPedidoEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/checkout', new CheckoutPedidoEndpoint(pedidoRepository).handle);
+app.put('/pedido/:pedidoId/fechar', new FecharPedidoEndpoint(pedidoRepository).handle);
 app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/fechar/:pedidoId', new FecharPedidoEndpoint(pedidoRepository).handle);
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
 // Contexto de preparação
-app.post('/preparacao/pedido/proximo', new BuscaProximoPedidoParaPreparacaoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/iniciar-preparacao', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/finalizar-preparacao', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
-app.post('/preparacao/pedido/:pedidoId/entregar', new EntregarPedidoEndpoint(pedidoRepository).handle);
+app.get('/preparacao/pedido/proximo', new BuscaProximoPedidoParaPreparacaoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/iniciar-preparacao', new IniciarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/finalizar-preparacao', new FinalizarPreparacaoPedidoEndpoint(pedidoRepository).handle);
+app.put('/preparacao/pedido/:pedidoId/entregar', new EntregarPedidoEndpoint(pedidoRepository).handle);
 
 
 app.listen(port, () => {

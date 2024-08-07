@@ -1,5 +1,6 @@
 import { PedidoEntity } from "../../../Domain/Entity/PedidoEntity";
 import { PedidoRepositoryInterface } from "../../../Domain/Output/Repository/PedidoRepositoryInterface";
+import { StatusPagamentoEnum } from "../../../Domain/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../../../Domain/ValueObject/StatusPedidoValueObject";
 
 export class CheckoutPedidoUsecaseResponse {
@@ -41,7 +42,8 @@ export class CheckoutPedidoUsecase {
                 throw new Error('Pedido não encontrado');
             }
 
-            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.PAGO));
+            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO));
+            pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
 
             const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
 

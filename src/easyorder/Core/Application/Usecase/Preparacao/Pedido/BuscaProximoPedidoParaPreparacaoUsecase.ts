@@ -30,7 +30,7 @@ export class BuscaProximoPedidoParaPreparacaoUsecase {
 
         try {
             const pedidos = await this.pedidoRepository.listarPedidosPorStatus(
-                new StatusPedidoValueObject(StatusPedidoEnum.PAGO),
+                new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO),
                 {
                     page: 1,
                     limit: 1,

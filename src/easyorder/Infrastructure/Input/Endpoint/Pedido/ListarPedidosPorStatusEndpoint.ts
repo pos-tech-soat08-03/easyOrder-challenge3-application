@@ -29,7 +29,6 @@ export class ListarPedidosPorStatusEndpoint {
                 enum: [
                     'EM_ABERTO',
                     'AGUARDANDO_PAGAMENTO',
-                    'PAGO',
                     'RECEBIDO',
                     'EM_PREPARACAO',
                     'PRONTO',

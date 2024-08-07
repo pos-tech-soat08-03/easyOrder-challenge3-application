@@ -458,46 +458,6 @@
         }
       }
     },
-    "/produto/remover": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/produto/listar": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/produto/listar": {
       "get": {
         "tags": [
@@ -518,58 +478,31 @@
         }
       }
     },
-    "/produto/buscar/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
-    "/produto/cadastrar": {
+    "/pedido": {
       "post": {
-        "summary": "Cadastrar novo produto",
-        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Cadastrar novo pedido",
+        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
+              "required": [
+                "clienteId"
+              ],
               "properties": {
-                "nome": {
-                  "example": "any"
-                },
-                "descricao": {
-                  "example": "any"
-                },
-                "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
-                },
-                "imagemURL": {
-                  "example": "any"
+                "clienteId": {
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                 }
               }
             }
@@ -577,53 +510,29 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/produto/atualizar": {
-      "post": {
-        "summary": "Atualizar produto",
-        "description": "Endpoint para atualizar produto do catalogo",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
+            "description": "Pedido cadastrado com sucesso2",
             "schema": {
-              "type": "object",
               "properties": {
-                "nome": {
-                  "example": "any"
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido cadastrado com sucesso3"
                 },
-                "descricao": {
-                  "example": "any"
-                },
-                "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
-                },
-                "imagemURL": {
-                  "example": "any"
-                },
-                "id": {
-                  "example": "any"
+                "pedido": {
+                  "$ref": "#/definitions/PedidoResponse"
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "400": {
-            "description": "Solicitação Inválida"
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
           }
         }
       }
@@ -649,7 +558,6 @@
             "enum": [
               "EM_ABERTO",
               "AGUARDANDO_PAGAMENTO",
-              "PAGO",
               "RECEBIDO",
               "EM_PREPARACAO",
               "PRONTO",
@@ -748,44 +656,34 @@
         }
       }
     },
-    "/pedido/cadastrar": {
-      "post": {
+    "/pedido/{pedidoId}": {
+      "get": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Cadastrar novo pedido",
-        "description": "Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing",
+        "summary": "Buscar pedido por ID",
+        "description": "Endpoint para buscar um pedido por ID",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "required": [
-                "clienteId"
-              ],
-              "properties": {
-                "clienteId": {
-                  "type": "string",
-                  "minLength": 36,
-                  "maxLength": 36,
-                  "format": "uuid",
-                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-                }
-              }
-            }
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
           }
         ],
         "responses": {
           "200": {
-            "description": "Pedido cadastrado com sucesso2",
+            "description": "Pedido Encontrado",
             "schema": {
               "properties": {
                 "mensagem": {
                   "type": "string",
-                  "example": "Pedido cadastrado com sucesso3"
+                  "example": "Pedido Encontrado"
                 },
                 "pedido": {
                   "$ref": "#/definitions/PedidoResponse"
@@ -803,12 +701,23 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Nenhum pedido encontrado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Nenhum pedido encontrado"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/pedido/cancelar/{pedidoId}": {
-      "post": {
+    "/pedido/{pedidoId}/cancelar": {
+      "put": {
         "tags": [
           "Pedidos"
         ],
@@ -856,8 +765,8 @@
         }
       }
     },
-    "/pedido/checkout/{pedidoId}": {
-      "post": {
+    "/pedido/{pedidoId}/checkout": {
+      "put": {
         "tags": [
           "Pedidos"
         ],
@@ -884,6 +793,55 @@
                 "mensagem": {
                   "type": "string",
                   "example": "Pedido pago com sucesso"
+                },
+                "pedido": {
+                  "$ref": "#/definitions/PedidoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pedido/{pedidoId}/fechar": {
+      "put": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Fechar pedido",
+        "description": "Endpoint para fechar um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do pedido",
+            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido fechado com sucesso. Aguardando pagamento.",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Pedido fechado com sucesso. Aguardando pagamento."
                 },
                 "pedido": {
                   "$ref": "#/definitions/PedidoResponse"
@@ -996,55 +954,6 @@
         }
       }
     },
-    "/pedido/fechar/{pedidoId}": {
-      "post": {
-        "tags": [
-          "Pedidos"
-        ],
-        "summary": "Fechar pedido",
-        "description": "Endpoint para fechar um pedido",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "pedidoId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "ID do pedido",
-            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pedido fechado com sucesso. Aguardando pagamento.",
-            "schema": {
-              "properties": {
-                "mensagem": {
-                  "type": "string",
-                  "example": "Pedido fechado com sucesso. Aguardando pagamento."
-                },
-                "pedido": {
-                  "$ref": "#/definitions/PedidoResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Ocorreu um erro inesperado",
-            "schema": {
-              "properties": {
-                "mensagem": {
-                  "type": "string",
-                  "example": "Ocorreu um erro inesperado: Pedido não encontrado"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/pedido/{pedidoId}/combo/{comboId}": {
       "delete": {
         "tags": [
@@ -1103,7 +1012,7 @@
       }
     },
     "/preparacao/pedido/proximo": {
-      "post": {
+      "get": {
         "tags": [
           "Preparação"
         ],
@@ -1153,7 +1062,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/iniciar-preparacao": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],
@@ -1202,7 +1111,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/finalizar-preparacao": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],
@@ -1251,7 +1160,7 @@
       }
     },
     "/preparacao/pedido/{pedidoId}/entregar": {
-      "post": {
+      "put": {
         "tags": [
           "Preparação"
         ],

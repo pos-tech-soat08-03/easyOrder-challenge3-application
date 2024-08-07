@@ -65,10 +65,6 @@ export class PedidoEntity {
         return this.statusPedido;
     }
 
-    public getStatusPagamento(): StatusPagamentoEnum {
-        return this.statusPagamento;
-    }
-
     public setStatusPedido(status: StatusPedidoValueObject): void {
         if (!status) {
             throw new Error('Status do pedido não informado');
@@ -91,14 +87,14 @@ export class PedidoEntity {
             }
         }
 
-        if (status.getValue() === StatusPedidoEnum.PAGO) {
+        if (status.getValue() === StatusPedidoEnum.RECEBIDO) {
             if (this.statusPedido.getValue() !== StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
                 throw new Error('Status do pedido não permite pagamento');
             }
         }
 
         if (status.getValue() === StatusPedidoEnum.EM_PREPARACAO) {
-            if (this.statusPedido.getValue() !== StatusPedidoEnum.PAGO) {
+            if (this.statusPedido.getValue() !== StatusPedidoEnum.RECEBIDO) {
                 throw new Error('Status do pedido não permite início de preparação');
             }
         }
@@ -116,6 +112,30 @@ export class PedidoEntity {
         }
 
         this.statusPedido = status;
+    }
+
+    public getStatusPagamento(): StatusPagamentoEnum {
+        return this.statusPagamento;
+    }
+
+    public setStatusPagamento(novoStatus: StatusPagamentoEnum): void {
+        if (!novoStatus) {
+            throw new Error('Status do pagamento não informado');
+        }
+
+        if (novoStatus === StatusPagamentoEnum.PAGO) {
+            if (this.statusPagamento !== StatusPagamentoEnum.PENDENTE) {
+                throw new Error('Somente é possível marcar como pago pedidos com status de pagamento pendente');
+            }
+        }
+
+        if (novoStatus !== StatusPagamentoEnum.PAGO) {
+            if (this.statusPagamento === StatusPagamentoEnum.PAGO) {
+                throw new Error('Não é possível alterar o status de pagamento de um pedido já pago');
+            }
+        }
+
+        this.statusPagamento = novoStatus;
     }
 
     public getCombos(): PedidoComboEntity[] {
