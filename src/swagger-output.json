@@ -310,30 +310,27 @@
     },
     "/produto/remover": {
       "delete": {
-        "description": "",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Remover produto",
+        "description": "Endpoint para remover um produto",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "produtoId",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "type": "string",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -350,7 +347,14 @@
     },
     "/produto/buscar/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Buscar Produto por ID",
+        "description": "Este endpoint é utilizado para buscar um produto pelo seu ID no sistema.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -361,13 +365,58 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Produto localizado:",
+            "schema": {
+              "properties": {
+                "resultado_busca": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Produto localizado:"
+                },
+                "produto": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "X-Bacon"
+                    },
+                    "preco": {
+                      "type": "number",
+                      "example": "20"
+                    },
+                    "categoria": {
+                      "type": "string",
+                      "example": "Lanche"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Solicitação Inválida"
           },
           "404": {
-            "description": "Não Encontrado"
+            "description": "Produto não encontrado",
+            "schema": {
+              "properties": {
+                "resultado_busca": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Produto não encontrado"
+                }
+              }
+            }
           },
           "500": {
             "description": "Erro Interno do Servidor"
@@ -377,72 +426,90 @@
     },
     "/produto/cadastrar": {
       "post": {
-        "summary": "Cadastrar novo produto",
-        "description": "Endpoint para cadastro de novo produto para adicionar ao catalogo",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Cadastro de Novo Produto",
+        "description": "Este endpoint é utilizado para realizar o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "X-Salada"
                 },
                 "descricao": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "sem salada, sem tomate"
                 },
                 "preco": {
-                  "example": "any"
-                },
-                "categoria": {
-                  "example": "any"
+                  "type": "number",
+                  "example": "25"
                 },
                 "imagemURL": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "xsalada.png"
+                },
+                "categoria": {
+                  "type": "string",
+                  "example": "LANCHE"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
+          "default": {
+            "description": ""
           }
         }
       }
     },
     "/produto/atualizar": {
       "put": {
-        "summary": "Atualizar produto",
-        "description": "Endpoint para atualizar produto do catalogo",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Atualização de Produto",
+        "description": "Este endpoint é utilizado para atualizar o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "X-EGG"
                 },
                 "descricao": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Sem cebola, sem tomate"
                 },
                 "preco": {
-                  "example": "any"
+                  "type": "number",
+                  "example": "35"
                 },
                 "categoria": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Lanche"
                 },
                 "imagemURL": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "x-egg.jpeg"
                 },
                 "id": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "0eb3a93d-df52-4f04-a463-389105328855"
                 }
               }
             }
@@ -450,10 +517,63 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Produto atualizado com sucesso:",
+            "schema": {
+              "properties": {
+                "resultado_cadastro": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Produto atualizado com sucesso:"
+                },
+                "produto": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "0eb3a93d-df52-4f04-a463-389105328855"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "X-EGG"
+                    },
+                    "descricao": {
+                      "type": "number",
+                      "example": "Com maionese e muito cheedar"
+                    },
+                    "preco": {
+                      "type": "number",
+                      "example": "30"
+                    },
+                    "categoria": {
+                      "type": "string",
+                      "example": "Lanche"
+                    },
+                    "imagem_url": {
+                      "type": "string",
+                      "example": "x-egg.jpeg"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Solicitação Inválida"
+            "description": "Produto não encontrado",
+            "schema": {
+              "properties": {
+                "resultado_cadastro": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Produto não encontrado, id inexistente"
+                }
+              }
+            }
           }
         }
       }
