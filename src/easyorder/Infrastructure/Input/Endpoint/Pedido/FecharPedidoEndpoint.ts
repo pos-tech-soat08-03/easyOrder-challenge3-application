@@ -14,7 +14,7 @@ export class FecharPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
-            #swagger.path = '/pedidos/fechar/{pedidoId}'
+            #swagger.path = '/pedido/fechar/:pedidoId'
             #swagger.method = 'post'
             #swagger.summary = 'Fechar pedido'
             #swagger.description = 'Endpoint para fechar um pedido'

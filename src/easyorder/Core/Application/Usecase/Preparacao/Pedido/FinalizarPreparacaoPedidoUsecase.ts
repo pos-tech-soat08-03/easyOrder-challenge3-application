@@ -1,8 +1,8 @@
-import { PedidoEntity } from "../../../Domain/Entity/PedidoEntity";
-import { PedidoRepositoryInterface } from "../../../Domain/Output/Repository/PedidoRepositoryInterface";
-import { StatusPedidoEnum, StatusPedidoValueObject } from "../../../Domain/ValueObject/StatusPedidoValueObject";
+import { PedidoEntity } from "../../../../Domain/Entity/PedidoEntity";
+import { PedidoRepositoryInterface } from "../../../../Domain/Output/Repository/PedidoRepositoryInterface";
+import { StatusPedidoEnum, StatusPedidoValueObject } from "../../../../Domain/ValueObject/StatusPedidoValueObject";
 
-export class IniciarPreparacaoPedidoUsecaseResponse {
+export class FinalizarPreparacaoPedidoUsecaseResponse {
     private sucesso_execucao: boolean;
     private mensagem: string;
     private pedido: PedidoEntity | null = null;
@@ -26,13 +26,13 @@ export class IniciarPreparacaoPedidoUsecaseResponse {
     }
 }
 
-export class IniciarPreparacaoPedidoUsecase {
+export class FinalizarPreparacaoPedidoUsecase {
 
     constructor(
         private readonly pedidoRepository: PedidoRepositoryInterface
     ) { }
 
-    public async execute(pedidoId: string): Promise<IniciarPreparacaoPedidoUsecaseResponse> {
+    public async execute(pedidoId: string): Promise<FinalizarPreparacaoPedidoUsecaseResponse> {
 
         try {
             const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
@@ -41,7 +41,7 @@ export class IniciarPreparacaoPedidoUsecase {
                 throw new Error('Pedido não encontrado');
             }
 
-            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.EM_PREPARACAO));
+            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.PRONTO));
 
             const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
 
@@ -49,9 +49,9 @@ export class IniciarPreparacaoPedidoUsecase {
                 throw new Error('Erro ao salvar pedido');
             }
 
-            return new IniciarPreparacaoPedidoUsecaseResponse(true, 'Preparação do pedido iniciada com sucesso', pedidoSalvo);
+            return new FinalizarPreparacaoPedidoUsecaseResponse(true, 'Preparação do pedido finalizada com sucesso', pedidoSalvo);
         } catch (error: any) {
-            return new IniciarPreparacaoPedidoUsecaseResponse(false, error.message);
+            return new FinalizarPreparacaoPedidoUsecaseResponse(false, error.message);
         }
     }
 
