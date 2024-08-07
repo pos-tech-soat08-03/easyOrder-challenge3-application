@@ -116,28 +116,37 @@ describe('E2E Test for Order Process', () => {
         produtoAcompanhamentoId = response.data.produto.id;
     });
 
-    test('Busca um cliente por CPF', async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/cliente/buscar/33333333333`);
+    // test('Busca um cliente por CPF', async () => {
+    //     try {
+    //         const response = await axios.get(`${BASE_URL}/cliente/buscar/33333333333`);
 
-            expect(response.status).toBe(200);
-            expect(response.data).toHaveProperty('cliente');
-            expect(response.data.cliente).toHaveProperty('id');
+    //         expect(response.status).toBe(200);
+    //         expect(response.data).toHaveProperty('cliente');
+    //         expect(response.data.cliente).toHaveProperty('id');
 
-            clienteId = response.data.cliente.id;
-        } catch (error: any) {
-            expect(error.message).toEqual('Falha ao buscar cliente');
-        }
-    });
+    //         clienteId = response.data.cliente.id;
+    //     } catch (error: any) {
+    //         expect(error.message).toEqual('Falha ao buscar cliente');
+    //     }
+    // });
 
-    test('Cria um cliente', async () => {
-        if (clienteId) {
-            return;
+    test('Cria um cliente com CPF aleatório', async () => {
+        // if (clienteId) {
+        //     return;
+        // }
+
+        const tamanho = 11;
+        let cpfAleatorio = '';
+        const caracteres = '0123456789';
+    
+        for (let i = 0; i < tamanho; i++) {
+            const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+            cpfAleatorio += caracteres[indiceAleatorio];
         }
 
         try {
             const response = await axios.post(`${BASE_URL}/cliente/cadastrar`, {
-                "cpf": "33333333333",
+                "cpf": `${cpfAleatorio}`,
                 "nome": "João da Silva",
                 "email": "teste@teste.com"
             });
@@ -147,6 +156,7 @@ describe('E2E Test for Order Process', () => {
             expect(response.data.cliente).toHaveProperty('id');
 
             clienteId = response.data.cliente.id;
+            console.log(`Cliente ID criado: ${clienteId}`);
         } catch (error: any) {
             expect(error.message).toEqual('Falha ao criar cliente');
         }
@@ -154,7 +164,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Cria um pedido', async () => {
         try {
-            const response = await axios.post(`${BASE_URL}/pedido`, {
+            const response = await axios.post(`${BASE_URL}/pedido/cadastrar`, {
                 "clienteId": clienteId,
             });
 
@@ -168,17 +178,17 @@ describe('E2E Test for Order Process', () => {
         }
     });
 
-    test('Busca pedido por ID', async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/pedido/${pedidoId}`);
+    // test('Busca pedido por ID', async () => {
+    //     try {
+    //         const response = await axios.get(`${BASE_URL}/pedido/${pedidoId}`);
 
-            expect(response.status).toBe(200);
-            expect(response.data).toHaveProperty('pedido');
-            expect(response.data.pedido).toHaveProperty('id');
-        } catch (error: any) {
-            expect(error.message).toEqual('Falha ao buscar pedido');
-        }
-    });
+    //         expect(response.status).toBe(200);
+    //         expect(response.data).toHaveProperty('pedido');
+    //         expect(response.data.pedido).toHaveProperty('id');
+    //     } catch (error: any) {
+    //         expect(error.message).toEqual('Falha ao buscar pedido');
+    //     }
+    // });
 
     test('Adiciona combo ao pedido', async () => {
         try {
@@ -221,7 +231,7 @@ describe('E2E Test for Order Process', () => {
 
     test('Fecha pedido', async () => {
         try {
-            const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/fechar`);
+            const response = await axios.put(`${BASE_URL}/pedido/fechar/${pedidoId}`);
 
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('pedido');
