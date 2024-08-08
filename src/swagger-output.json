@@ -126,7 +126,7 @@
       }
     },
     "/cliente/atualizar": {
-      "post": {
+      "put": {
         "tags": [
           "Clientes"
         ],
