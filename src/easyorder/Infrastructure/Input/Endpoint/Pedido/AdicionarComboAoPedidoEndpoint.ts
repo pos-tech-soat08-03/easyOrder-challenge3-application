@@ -3,11 +3,13 @@ import { Request, Response } from 'express';
 import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { AdicionarComboAoPedidoUsecase, AdicionarComboAoPedidoUsecaseResponse } from '../../../../Core/Application/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
+import { ProdutoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface';
 
 export class AdicionarComboAoPedidoEndpoint {
 
     constructor(
-        private pedidoRepository: PedidoRepositoryInterface
+        private pedidoRepository: PedidoRepositoryInterface,
+        private produtoRepository: ProdutoRepositoryInterface
     ) {
         this.handle = this.handle.bind(this);
     }
@@ -66,7 +68,8 @@ export class AdicionarComboAoPedidoEndpoint {
         try {
 
             const usecase = new AdicionarComboAoPedidoUsecase(
-                this.pedidoRepository
+                this.pedidoRepository,
+                this.produtoRepository
             );
 
             if (req.body === undefined || Object.keys(req.body).length === 0) {

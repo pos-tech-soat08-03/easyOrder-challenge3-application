@@ -107,17 +107,16 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                     new StatusPedidoValueObject(p.statusPedido as StatusPedidoEnum),
                     p.statusPagamento as StatusPagamentoEnum,
                     p.id,
+                    p.combos.map((combo: any) => {
+                        return new PedidoComboEntity(
+                            combo.lancheId,
+                            combo.bebidaId,
+                            combo.sobremesaId,
+                            combo.acompanhamentoId,
+                            combo.id,
+                        );
+                    })
                 );
-
-                pedido.adicionarCombos(p.combos.map((combo: any) => {
-                    return new PedidoComboEntity(
-                        combo.lancheId,
-                        combo.bebidaId,
-                        combo.sobremesaId,
-                        combo.acompanhamentoId,
-                        combo.id,
-                    );
-                }));
                 return pedido;
             });
         });
@@ -135,16 +134,16 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
                     new StatusPedidoValueObject(pedido.statusPedido as StatusPedidoEnum),
                     pedido.statusPagamento as StatusPagamentoEnum,
                     pedido.id,
+                    pedido.combos.map((combo: any) => {
+                        return new PedidoComboEntity(
+                            combo.lancheId,
+                            combo.bebidaId,
+                            combo.sobremesaId,
+                            combo.acompanhamentoId,
+                            combo.id,
+                        );
+                    })
                 );
-                pedidoEntity.adicionarCombos(pedido.combos.map((combo: any) => {
-                    return new PedidoComboEntity(
-                        combo.lancheId,
-                        combo.bebidaId,
-                        combo.sobremesaId,
-                        combo.acompanhamentoId,
-                        combo.id,
-                    );
-                }));
             }
         });
         return pedidoEntity;

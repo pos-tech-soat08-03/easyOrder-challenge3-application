@@ -18,6 +18,7 @@ export class PedidoEntity {
         statusPedido?: StatusPedidoValueObject,
         statusPagamento?: StatusPagamentoEnum,
         id?: string,
+        combos?: PedidoComboEntity[]
     ) {
         if (!id) {
             id = uuidv4();
@@ -47,6 +48,8 @@ export class PedidoEntity {
         this.statusPedido = statusPedido;
         this.statusPagamento = statusPagamento;
         this.id = id;
+
+        this.combos = combos || [];
     }
 
     public getId(): string {
@@ -82,6 +85,11 @@ export class PedidoEntity {
         }
 
         if (status.getValue() === StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
+            // RN2. Para fechar um pedido, deve existir ao menos um combo vinculado
+            if (this.combos.length === 0) {
+                throw new Error('Para fechar um pedido, deve existir ao menos um combo selecionado');
+            }
+
             if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {
                 throw new Error('Status do pedido não permite enviar para pagamento');
             }
@@ -143,6 +151,12 @@ export class PedidoEntity {
     }
 
     public adicionarCombos(combos: PedidoComboEntity[]): boolean {
+
+        // RN4. Só podemos adicionar ou remover combos ao pedido se este estiver no status EM_ABERTO
+        if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {
+            throw new Error('Não é possível adicionar combos a um pedido que não está em aberto');
+        }
+
         if (!combos) {
             throw new Error('Combos não informados');
         }
@@ -155,6 +169,12 @@ export class PedidoEntity {
     }
 
     public removerCombo(comboId: string): boolean {
+
+        // RN4. Só podemos adicionar ou remover combos ao pedido se este estiver no status EM_ABERTO
+        if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {
+            throw new Error('Não é possível remover combos de um pedido que não está em aberto');
+        }
+
         if (!comboId) {
             throw new Error('Combo não informado');
         }
