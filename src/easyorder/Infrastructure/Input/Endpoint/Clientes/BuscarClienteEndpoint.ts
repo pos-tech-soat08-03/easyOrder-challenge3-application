@@ -12,8 +12,8 @@ export class BuscarClienteEndpoint {
 
     public async handle(req: express.Request, res: express.Response): Promise<void> {
         /**
-            #swagger.summary = 'Buscar Cliente do Restaurante por CPF. Utiliza esta informação para identificar um Cliente.'
-            #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado para próximas etapas na sua jornada.
+            #swagger.summary = 'Buscar Cliente do Restaurante por CPF.'
+            #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado nas próximas etapas por ID.
             #swagger.tags = ['Clientes']
             #swagger.path = '/cliente/buscar/{cpf}'
             #swagger.method = 'get'

@@ -45,14 +45,6 @@ export class CadastrarClienteUsecase {
                 throw new Error('Dados incorretos: CPF não informado.');
             }
 
-            if (!nome) {
-                throw new Error('Dados incorretos: Nome não informado.');
-            }
-
-            if (!email) {
-                throw new Error('Dados incorretos: Email não informado.');
-            }
-
             const cpfValue = new CpfValueObject(cpf);
             const emailValue = new EmailValueObject(email);
 

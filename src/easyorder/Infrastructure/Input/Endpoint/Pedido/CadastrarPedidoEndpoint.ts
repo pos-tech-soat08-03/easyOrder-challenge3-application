@@ -17,7 +17,7 @@ export class CadastrarPedidoEndpoint {
             #swagger.path = '/pedido'
             #swagger.method = 'post'
             #swagger.summary = 'Cadastrar novo pedido'
-            #swagger.description = 'Endpoint para cadastro de novo cliente para posterior identificação em pedidos e uso em campanhas de marketing'
+            #swagger.description = 'Endpoint para início de novo Pedido. Cliente pode ser identificado por ID obtido através de endpoint (/cliente/buscar{cpf}) ou não ser identificado (utilizar "null")'
             #swagger.produces = ["application/json"]
             #swagger.parameters['body'] = { 
                 in: 'body', 
@@ -29,7 +29,7 @@ export class CadastrarPedidoEndpoint {
                             "minLength": 36, 
                             "maxLength": 36,
                             "format": "uuid",
-                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307" 
+                            "example": "29a81eeb-d16d-4d6c-a86c-e13597667307 ou null" 
                         }
                     }
                 }

@@ -45,14 +45,6 @@ export class AtualizarClienteUsecase {
                 throw new Error('Dados incorretos: CPF não informado.');
             }
 
-            if (!nome) {
-                throw new Error('Dados incorretos: Nome não informado.');
-            }
-
-            if (!email) {
-                throw new Error('Dados incorretos: Email não informado.');
-            }
-
             const cpfValue = new CpfValueObject(cpf);
             const emailValue = new EmailValueObject(email);
 
@@ -62,7 +54,7 @@ export class AtualizarClienteUsecase {
                     throw new Error('Cliente não encontrado.');
             }
             
-            const cliente = new ClienteEntity(cpfValue, nome, emailValue);
+            const cliente = new ClienteEntity(cpfValue, nome, emailValue, clienteExistente.getId());
             const sucesso = await this.clienteRepository.atualizarCliente(clienteExistente, cliente);
 
             if (sucesso) return new AtualizarClienteUsecaseResponse(true, 'Cliente atualizado com sucesso.', cliente);

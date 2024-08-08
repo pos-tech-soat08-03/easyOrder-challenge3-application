@@ -1,8 +1,9 @@
 import axios from "axios";
+import { exit } from "process";
 
 const BASE_URL = "http://localhost:3000";
 
-describe("E2E Test for Order Process", () => {
+describe("Teste Fim-a-fim: Pedido a Produção", () => {
   let produtoLancheId: string;
   let produtoSobremesaId: string;
   let produtoBebidaId: string;
@@ -12,7 +13,24 @@ describe("E2E Test for Order Process", () => {
   let comboId: string;
   let cpfAleatorio: string;
 
-  test("Cria produtos Lanches", async () => {
+  test("(/health) Healthcheck do Serviço", async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/health`,
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.data).toHaveProperty("status");
+      expect(response.data.status).toEqual("UP");
+
+    } catch (error: any) {
+      console.error("Teste interrompido. Falha no healthcheck: "+error.message);
+      exit(1);
+    }
+  });
+
+
+  test("(/produto/cadastrar) Cadastra Lanches para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Hamburger de Frango",
       descricao: "Hamburger de frango com alface, tomate e maionese",
@@ -38,7 +56,7 @@ describe("E2E Test for Order Process", () => {
     produtoLancheId = response.data.produto.id;
   });
 
-  test("Cria produtos Sobremesa", async () => {
+  test("(/produto/cadastrar) Cadastra Sobremesas para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Pudim",
       descricao: "Pudim de leite condensado",
@@ -64,7 +82,7 @@ describe("E2E Test for Order Process", () => {
     produtoSobremesaId = response.data.produto.id;
   });
 
-  test("Cria produtos Bebida", async () => {
+  test("(/produto/cadastrar) Cadastra Bebidas para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Refrigerante",
       descricao: "Refrigerante de cola",
@@ -90,7 +108,7 @@ describe("E2E Test for Order Process", () => {
     produtoBebidaId = response.data.produto.id;
   });
 
-  test("Cria produtos Acompanhamento", async () => {
+  test("(/produto/cadastrar) Cadastra Acompanhamentos para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Batata Frita",
       descricao: "Batata frita com sal",
@@ -116,7 +134,7 @@ describe("E2E Test for Order Process", () => {
     produtoAcompanhamentoId = response.data.produto.id;
   });
 
-  test("Cria um cliente com CPF aleatório", async () => {
+  test("(/cliente/cadastrar) Cria um Novo Cliente com CPF aleatório", async () => {
     cpfAleatorio = "";
     const tamanho = 11;
     const caracteres = "0123456789";
@@ -144,7 +162,26 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Busca cliente por CPF", async () => {
+  test("(/cliente/atualizar) Atualiza Cliente: remove dados de identificação", async () => {
+
+    try {
+      const response = await axios.put(`${BASE_URL}/cliente/atualizar`, {
+        cpf: `${cpfAleatorio}`,
+        nome: "",
+        email: "",
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.data).toHaveProperty("cliente");
+      expect(response.data.cliente).toHaveProperty("id");
+
+    } catch (error: any) {
+      expect(error.message).toEqual("Falha ao atualizar cliente");
+    }
+  });
+
+
+  test("(/cliente/buscar/{cpf}) Busca Cliente por CPF", async () => {
     try {
       const response = await axios.get(
         `${BASE_URL}/cliente/buscar/${cpfAleatorio}`,
@@ -160,7 +197,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Cria um pedido", async () => {
+  test("(/pedido) Cria a etapa inicial do Pedido, cliente identificado", async () => {
     try {
       const response = await axios.post(`${BASE_URL}/pedido`, {
         clienteId: clienteId,
@@ -177,7 +214,23 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Busca pedido por ID", async () => {
+
+  test("(/pedido) Alternativa: Cria a etapa inicial do Pedido, cliente não identificado", async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/pedido`, {
+        clienteId: "null",
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.data).toHaveProperty("pedido");
+      expect(response.data.pedido).toHaveProperty("id");
+
+    } catch (error: any) {
+      expect(error.message).toEqual("Falha ao criar pedido");
+    }
+  });
+
+  test("(/pedido/{pedidoId} Busca pedido do Cliente identificado", async () => {
     try {
       const response = await axios.get(`${BASE_URL}/pedido/${pedidoId}`);
 
@@ -189,7 +242,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Adiciona combo ao pedido", async () => {
+  test("(/combo/adicionar) Adiciona combo ao Pedido", async () => {
     try {
       let response = await axios.post(
         `${BASE_URL}/pedido/${pedidoId}/combo/adicionar`,
@@ -223,7 +276,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Remove combo do pedido", async () => {
+  test("(/pedido/{pedidoId}/combo/{comboId}) Remove combo do pedido", async () => {
     try {
       const response = await axios.delete(
         `${BASE_URL}/pedido/${pedidoId}/combo/${comboId}`,
@@ -235,7 +288,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Fecha pedido", async () => {
+  test("(/pedido/{pedidoId}/fechar) Fecha pedido: encaminha para Checkout", async () => {
     try {
       const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/fechar`);
 
@@ -251,7 +304,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Checkout pedido", async () => {
+  test("(/pedido/{pedidoId}/checkout) Checkout pedido: encaminha para Fila de Preparação", async () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/pedido/${pedidoId}/checkout`,
@@ -265,7 +318,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Busca próximo pedido na fila de preparação", async () => {
+  test("(/preparacao/pedido/proximo) Busca próximo Pedido na fila de preparação", async () => {
     try {
       const response = await axios.get(`${BASE_URL}/preparacao/pedido/proximo`);
 
@@ -279,7 +332,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Inicia preparação do pedido", async () => {
+  test("(/preparacao/pedido/{pedidoId}/iniciar-preparacao) Inicia preparação do pedido", async () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/preparacao/pedido/${pedidoId}/iniciar-preparacao`,
@@ -297,7 +350,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Finaliza preparação do pedido", async () => {
+  test("(/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido", async () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/preparacao/pedido/${pedidoId}/finalizar-preparacao`,
@@ -315,7 +368,7 @@ describe("E2E Test for Order Process", () => {
     }
   });
 
-  test("Entrega pedido", async () => {
+  test("(/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido", async () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/preparacao/pedido/${pedidoId}/entregar`,

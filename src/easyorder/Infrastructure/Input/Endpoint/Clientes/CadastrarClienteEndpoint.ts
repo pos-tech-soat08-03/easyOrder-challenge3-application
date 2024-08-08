@@ -17,7 +17,7 @@ export class CadastrarClienteEndpoint {
             #swagger.path = '/cliente/cadastrar'
             #swagger.method = 'post'
             #swagger.summary = 'Cadastro de Novo Cliente'
-            #swagger.description = 'Este endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Todos os campos são obrigatórios. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
+            #swagger.description = 'Este endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
             #swagger.produces = ["application/json"]  
             #swagger.parameters['body'] = { 
                 in: 'body', 
