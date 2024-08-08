@@ -85,7 +85,7 @@ app.get('/health', (req, res) => {
 
 // Contexto de cliente
 app.post('/cliente/cadastrar', new CadastrarClienteEndpoint(clienteRepository).handle);
-app.post('/cliente/atualizar', new AtualizarClienteEndpoint(clienteRepository).handle);
+app.put('/cliente/atualizar', new AtualizarClienteEndpoint(clienteRepository).handle);
 app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle);
 app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 

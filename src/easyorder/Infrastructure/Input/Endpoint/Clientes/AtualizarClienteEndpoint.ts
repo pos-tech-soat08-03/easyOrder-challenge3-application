@@ -15,7 +15,7 @@ export class AtualizarClienteEndpoint {
         /**
             #swagger.tags = ['Clientes']
             #swagger.path = '/cliente/atualizar'
-            #swagger.method = 'post'
+            #swagger.method = 'put'
             #swagger.summary = 'Atualização de Cliente'
             #swagger.description = 'Este endpoint é utilizado para atualizar o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição. Todos os campos são obrigatórios, a chave de busca é o CPF.'
             #swagger.produces = ["application/json"]  
