@@ -292,7 +292,11 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
 
   test("(/pedido/{pedidoId}/fechar) Fecha pedido: encaminha para Checkout", async () => {
     try {
-      const response = await axios.put(`${BASE_URL}/pedido/${pedidoId}/fechar`);
+      const response = await axios.put(
+        `${BASE_URL}/pedido/${pedidoId}/fechar`
+      ).catch((error: any) => {
+        throw new Error(JSON.stringify(error.response.data) || error.message);
+      });;
 
       expect(response.status).toBe(200);
       expect(response.data).toHaveProperty("pedido");
@@ -302,7 +306,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
 
       pedidoId = response.data.pedido.id;
     } catch (error: any) {
-      expect(error.message).toEqual("Falha ao fechar pedido");
+      expect(error.message).toEqual("Falha ao fechar pedido: " + error.text);
     }
   });
 
@@ -310,13 +314,15 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/pedido/${pedidoId}/checkout`,
-      );
+      ).catch((error: any) => {
+        throw new Error(JSON.stringify(error.response.data) || error.message);
+      });
 
       expect(response.status).toBe(200);
       expect(response.data).toHaveProperty("mensagem");
       expect(response.data.mensagem).toEqual("Pedido fechado com sucesso");
     } catch (error: any) {
-      expect(error.message).toEqual("Falha ao realizar checkout do pedido");
+      expect(error.message).toEqual("Falha ao realizar checkout do pedido " + error.text);
     }
   });
 
