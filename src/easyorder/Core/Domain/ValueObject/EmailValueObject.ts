@@ -6,10 +6,11 @@ export class EmailValueObject {
 
     constructor(value: string) {
 
-        if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-            throw new Error('O email deve estar no formato a-z@az-.az');
+        if (value) {
+            if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                throw new Error('O email deve estar no formato a-z@az-.az');
+            }
         }
-
         this.value = value;
     }
 
