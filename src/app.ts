@@ -104,7 +104,7 @@ app.get('/pedido/:pedidoId', new BuscaPedidoPorIdEndpoint(pedidoRepository).hand
 app.put('/pedido/:pedidoId/cancelar', new CancelarPedidoEndpoint(pedidoRepository).handle);
 app.put('/pedido/:pedidoId/checkout', new CheckoutPedidoEndpoint(pedidoRepository).handle);
 app.put('/pedido/:pedidoId/fechar', new FecharPedidoEndpoint(pedidoRepository).handle);
-app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository).handle);
+app.post('/pedido/:pedidoId/combo/adicionar', new AdicionarComboAoPedidoEndpoint(pedidoRepository, produtoRepository).handle);
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
 
 // Contexto de preparação

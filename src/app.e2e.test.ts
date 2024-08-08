@@ -24,7 +24,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       expect(response.data.status).toEqual("UP");
 
     } catch (error: any) {
-      console.error("Teste interrompido. Falha no healthcheck: "+error.message);
+      console.error("Teste interrompido. Falha no healthcheck: " + error.message);
       exit(1);
     }
   });
@@ -156,7 +156,6 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       expect(response.data.cliente).toHaveProperty("id");
 
       clienteId = response.data.cliente.id;
-      console.log(`Cliente ID criado: ${clienteId}`);
     } catch (error: any) {
       expect(error.message).toEqual("Falha ao criar cliente");
     }
@@ -208,7 +207,6 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       expect(response.data.pedido).toHaveProperty("id");
 
       pedidoId = response.data.pedido.id;
-      console.log(`Pedido ID criado: ${pedidoId}`);
     } catch (error: any) {
       expect(error.message).toEqual("Falha ao criar pedido");
     }
@@ -252,7 +250,9 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
           sobremesaId: produtoSobremesaId,
           acompanhamentoId: produtoAcompanhamentoId,
         },
-      );
+      ).catch((error: any) => {
+        throw new Error(JSON.stringify(error.response.data) || error.message);
+      });
 
       expect(response.status).toBe(200);
       expect(response.data).toHaveProperty("pedido");
@@ -270,9 +270,11 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
           sobremesaId: produtoSobremesaId,
           acompanhamentoId: produtoAcompanhamentoId,
         },
-      );
+      ).catch((error: any) => {
+        throw new Error(JSON.stringify(error.response.data) || error.message);
+      });
     } catch (error: any) {
-      expect(error.message).toEqual("Falha ao adicionar produto ao pedido");
+      expect(error.message).toEqual("Falha ao adicionar produto ao pedido: " + error.text);
     }
   });
 
