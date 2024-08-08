@@ -19,6 +19,12 @@ export class PedidoComboEntity {
       this.bebidaId = bebibdaId || null;
       this.sobremesaId = sobremesaId || null;
       this.acompanhamentoId = acompanhamentoId || null;
+
+      // RN5. O combo deve ter ao menos um produto informado
+      if (!this.lancheId && !this.bebidaId && !this.sobremesaId && !this.acompanhamentoId) {
+         throw new Error('Combo deve ter ao menos um produto informado');
+      }
+
       this.id = id || uuidv4();
    }
 
