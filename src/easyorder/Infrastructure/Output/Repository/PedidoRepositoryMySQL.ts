@@ -6,6 +6,7 @@ import { Sequelize } from 'sequelize';
 import { Model, DataTypes } from 'sequelize';
 import { StatusPagamentoEnum } from '../../../Core/Domain/ValueObject/StatusPagamentoEnum';
 import { PedidoComboEntity } from "../../../Core/Domain/Entity/PedidoComboEntity";
+import { ProdutoEntity } from "../../../Core/Domain/Entity/ProdutoEntity";
 
 class LocalModel extends Model {
     public id!: string;
@@ -101,22 +102,7 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
             }
 
             pedidosArray = pedidos.map(p => {
-                const pedido = new PedidoEntity(
-                    p.clienteId,
-                    p.dataPedido,
-                    new StatusPedidoValueObject(p.statusPedido as StatusPedidoEnum),
-                    p.statusPagamento as StatusPagamentoEnum,
-                    p.id,
-                    p.combos.map((combo: any) => {
-                        return new PedidoComboEntity(
-                            combo.lancheId,
-                            combo.bebidaId,
-                            combo.sobremesaId,
-                            combo.acompanhamentoId,
-                            combo.id,
-                        );
-                    })
-                );
+                const pedido = this.pedidoDBToEntity(p);
                 return pedido;
             });
         });
@@ -128,25 +114,57 @@ class PedidoRepositoryMySQL implements PedidoRepositoryInterface {
         let pedidoEntity: PedidoEntity | null = null;
         await LocalModel.findByPk(id).then(pedido => {
             if (pedido) {
-                pedidoEntity = new PedidoEntity(
-                    pedido.clienteId,
-                    pedido.dataPedido,
-                    new StatusPedidoValueObject(pedido.statusPedido as StatusPedidoEnum),
-                    pedido.statusPagamento as StatusPagamentoEnum,
-                    pedido.id,
-                    pedido.combos.map((combo: any) => {
-                        return new PedidoComboEntity(
-                            combo.lancheId,
-                            combo.bebidaId,
-                            combo.sobremesaId,
-                            combo.acompanhamentoId,
-                            combo.id,
-                        );
-                    })
-                );
+                pedidoEntity = this.pedidoDBToEntity(pedido);
             }
         });
         return pedidoEntity;
+    }
+
+    private pedidoDBToEntity(pedido: any): PedidoEntity {
+        return new PedidoEntity(
+            pedido.clienteId,
+            pedido.dataPedido,
+            new StatusPedidoValueObject(pedido.statusPedido as StatusPedidoEnum),
+            pedido.statusPagamento as StatusPagamentoEnum,
+            pedido.id,
+            pedido.combos.map((combo: any) => {
+                return new PedidoComboEntity(
+                    combo.lanche ? new ProdutoEntity(
+                        combo.lanche.nome,
+                        combo.lanche.descricao,
+                        combo.lanche.preco,
+                        combo.lanche.categoria,
+                        combo.lanche.imagemURL,
+                        combo.lanche.id,
+                    ) : null,
+                    combo.bebida ? new ProdutoEntity(
+                        combo.bebida.nome,
+                        combo.bebida.descricao,
+                        combo.bebida.preco,
+                        combo.bebida.categoria,
+                        combo.bebida.imagemURL,
+                        combo.bebida.id,
+                    ) : null,
+                    combo.sobremesa ? new ProdutoEntity(
+                        combo.sobremesa.nome,
+                        combo.sobremesa.descricao,
+                        combo.sobremesa.preco,
+                        combo.sobremesa.categoria,
+                        combo.sobremesa.imagemURL,
+                        combo.sobremesa.id,
+                    ) : null,
+                    combo.acompanhamento ? new ProdutoEntity(
+                        combo.acompanhamento.nome,
+                        combo.acompanhamento.descricao,
+                        combo.acompanhamento.preco,
+                        combo.acompanhamento.categoria,
+                        combo.acompanhamento.imagemURL,
+                        combo.acompanhamento.id,
+                    ) : null,
+                    combo.id,
+                );
+            })
+        );
     }
 }
 

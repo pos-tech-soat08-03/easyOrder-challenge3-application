@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { ListarPedidosPorStatusUsecase } from '../../../../Core/Application/Usecase/Pedidos/ListarPedidosPorStatusUsecase';
 import { StatusPedidoEnum, StatusPedidoValueObject } from '../../../../Core/Domain/ValueObject/StatusPedidoValueObject';
 import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class ListarPedidosPorStatusEndpoint {
 
@@ -145,7 +146,7 @@ export class ListarPedidosPorStatusEndpoint {
                             pedidos: {
                                 type: 'array',
                                 items: {
-                                    $ref: '#/definitions/PedidoResponse'
+                                    $ref: '#/definitions/Pedido'
                                 }
                             }
                         }
@@ -153,15 +154,7 @@ export class ListarPedidosPorStatusEndpoint {
                 }
                 */
                 mensagem: result.getMensagem(),
-                pedidos: result.getPedidos().map(pedido => {
-                    return {
-                        id: pedido?.getId(),
-                        data: pedido?.getDataPedido(),
-                        clienteId: pedido?.getClienteId(),
-                        status: pedido?.getStatusPedido().getValue(),
-                        pagamentoStatus: pedido?.getStatusPagamento(),
-                    }
-                })
+                pedidos: result.getPedidos().map(pedido => ConvertePedidoParaJsonFunction(pedido)),
             });
             return;
 

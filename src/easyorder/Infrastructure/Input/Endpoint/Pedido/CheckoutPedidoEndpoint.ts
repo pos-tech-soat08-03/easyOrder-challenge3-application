@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { CheckoutPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CheckoutPedidoUsecase';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class CheckoutPedidoEndpoint {
 
@@ -55,7 +56,7 @@ export class CheckoutPedidoEndpoint {
                             example: 'Pedido pago com sucesso'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -63,13 +64,7 @@ export class CheckoutPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {

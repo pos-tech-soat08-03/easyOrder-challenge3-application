@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { BuscaProximoPedidoParaPreparacaoUsecase } from '../../../../../Core/Application/Usecase/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoUsecase';
+import { ConvertePedidoParaJsonFunction } from '../../Pedido/ConvertePedidoParaJsonFunction';
 
 export class BuscaProximoPedidoParaPreparacaoEndpoint {
 
@@ -64,20 +65,14 @@ export class BuscaProximoPedidoParaPreparacaoEndpoint {
                                 example: 'Pedido encontrado'
                             },
                             pedido: {
-                                $ref: '#/definitions/PedidoResponse'
+                                $ref: '#/definitions/Pedido'
                             }
                         }
                     }
                 }
                 */
                 mensagem: result.getMensagem(),
-                pedido: {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                }
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
             return;
 

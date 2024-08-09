@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { StatusPedidoEnum, StatusPedidoValueObject } from '../../../../Core/Domain/ValueObject/StatusPedidoValueObject';
 import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { BuscaPedidoPorIdUsecase } from '../../../../Core/Application/Usecase/Pedidos/BuscaPedidoPorIdUsecase';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class BuscaPedidoPorIdEndpoint {
 
@@ -65,35 +66,22 @@ export class BuscaPedidoPorIdEndpoint {
             res.json({
                 /**
                 #swagger.responses[200] = {
-                    'description': 'Pedido Encontrado',
+                    description: 'Pedido Encontrado',
                     '@schema': {
                         'properties': {
                             mensagem: {
                                 type: 'string',
-                                example: 'Pedido Encontrado'
+                                example: 'Nenhum pedido encontrado'
                             },
                             pedido: {
-                                $ref: '#/definitions/PedidoResponse'
+                                $ref: '#/definitions/Pedido'
                             }
                         }
                     }
                 }
                 */
                 mensagem: result.getMensagem(),
-                pedido: {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                    combo: result.getPedido()?.getCombos().map(combo => ({
-                        id: combo.getId(),
-                        lanche: combo.getLancheId(),
-                        bebida: combo.getBebidaId(),
-                        sobremesa: combo.getSobremesaId(),
-                        acompanhamento: combo.getAcompanhamentoId(),
-                    }))
-                }
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
             return;
 

@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { RemoverComboDoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/RemoverComboDoPedidoUsecase';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class RemoverComboDoPedidoEndpoint {
 
@@ -14,6 +15,7 @@ export class RemoverComboDoPedidoEndpoint {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
+            #swagger.path = '/pedido/:pedidoId/combo/:comboId'
             #swagger.method = 'delete'
             #swagger.summary = 'Remover combo do pedido'
             #swagger.description = 'Endpoint para remover um combo do pedido'
@@ -61,7 +63,7 @@ export class RemoverComboDoPedidoEndpoint {
                             example: 'Combo removido do pedido com sucesso'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -69,20 +71,7 @@ export class RemoverComboDoPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                    combo: result.getPedido()?.getCombos().map(combo => ({
-                        id: combo.getId(),
-                        lanche: combo.getLancheId(),
-                        bebida: combo.getBebidaId(),
-                        sobremesa: combo.getSobremesaId(),
-                        acompanhamento: combo.getAcompanhamentoId(),
-                    }))
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {

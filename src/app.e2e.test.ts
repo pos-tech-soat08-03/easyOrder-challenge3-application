@@ -243,7 +243,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
   test("(/combo/adicionar) Adiciona combo ao Pedido", async () => {
     try {
       let response = await axios.post(
-        `${BASE_URL}/pedido/${pedidoId}/combo/adicionar`,
+        `${BASE_URL}/pedido/${pedidoId}/combo`,
         {
           lancheId: produtoLancheId,
           bebidaId: produtoBebidaId,
@@ -260,10 +260,10 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       expect(response.data).toHaveProperty("mensagem");
       expect(response.data.mensagem).toEqual("Combo adicionado com sucesso");
 
-      comboId = response.data.pedido.combo[0].id;
+      comboId = response.data.pedido.combos[0].id;
 
       response = await axios.post(
-        `${BASE_URL}/pedido/${pedidoId}/combo/adicionar`,
+        `${BASE_URL}/pedido/${pedidoId}/combo`,
         {
           lancheId: produtoLancheId,
           bebidaId: produtoBebidaId,

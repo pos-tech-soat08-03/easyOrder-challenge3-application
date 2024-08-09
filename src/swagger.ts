@@ -9,7 +9,7 @@ const doc = {
 
   schemes: ['http'],
 
-  definitions: {
+  '@definitions': {
     ID: {
       type: "string",
       minLength: 36,
@@ -17,108 +17,87 @@ const doc = {
       format: "uuid",
       example: '29a81eeb-d16d-4d6c-a86c-e13597667307',
     },
-    PedidoResponse: {
-      required: ['id', 'data', 'clienteId', 'status', 'pagamentoStatus'],
-      id: {
-        schema: {
+    Produto: {
+      type: 'object',
+      properties: {
+        id: {
           $ref: '#/definitions/ID',
         },
-      },
-      data: {
-        type: 'string',
-        example: '2021-10-10T15:00:00.000Z'
-      },
-      clienteId: {
-        schema: {
-          $ref: '#/definitions/ID',
+        nome: {
+          type: 'string',
+          example: 'X-Bacon'
+        },
+        descricao: {
+          type: 'string',
+          example: 'Pão, hambúrguer, queijo, bacon, alface e tomate'
+        },
+        preco: {
+          type: 'number',
+          example: 20.0
+        },
+        categoria: {
+          type: 'string',
+          example: 'LANCHE'
+        },
+        imagemURL: {
+          type: 'string',
+          example: 'https://fakeimg.com/image.png'
         },
       },
-      status: {
-        type: 'string',
-        example: 'RASCUNHO'
+    },
+    Combo: {
+      type: 'object',
+      properties: {
+        lanche: {
+          $ref: '#/definitions/Produto',
+        },
+        bebida: {
+          $ref: '#/definitions/Produto',
+        },
+        sobremesa: {
+          $ref: '#/definitions/Produto',
+        },
+        acompanhamento: {
+          $ref: '#/definitions/Produto',
+        },
+        valorTotal: {
+          type: 'number',
+          example: 50.0
+        },
       },
-      pagamentoStatus: {
-        type: 'string',
-        example: 'PENDENTE'
-      },
-      combos: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            lanche: {
-              type: 'object',
-              properties: {
-                id: {
-                  schema: {
-                    $ref: '#/definitions/ID',
-                  },
-                },
-                nome: {
-                  type: 'string',
-                  example: 'X-Bacon'
-                },
-                preco: {
-                  type: 'number',
-                  example: 20.0
-                },
-              },
-            },
-            bebida: {
-              type: 'object',
-              properties: {
-                id: {
-                  schema: {
-                    $ref: '#/definitions/ID',
-                  },
-                },
-                nome: {
-                  type: 'string',
-                  example: 'Coca-Cola'
-                },
-                preco: {
-                  type: 'number',
-                  example: 5.0
-                },
-              },
-            },
-            sobremesa: {
-              type: 'object',
-              properties: {
-                id: {
-                  schema: {
-                    $ref: '#/definitions/ID',
-                  },
-                },
-                nome: {
-                  type: 'string',
-                  example: 'Sorvete'
-                },
-                preco: {
-                  type: 'number',
-                  example: 10.0
-                },
-              },
-            },
-            acompanhamento: {
-              type: 'object',
-              properties: {
-                id: {
-                  schema: {
-                    $ref: '#/definitions/ID',
-                  },
-                },
-                nome: {
-                  type: 'string',
-                  example: 'Batata Frita'
-                },
-                preco: {
-                  type: 'number',
-                  example: 15.0
-                },
-              },
-            },
+    },
+    Pedido: {
+      type: 'object',
+      properties: {
+        id: {
+          schema: {
+            $ref: '#/definitions/ID',
           },
+        },
+        data: {
+          type: 'string',
+          example: '2021-10-10T15:00:00.000Z'
+        },
+        clienteId: {
+          $ref: '#/definitions/ID',
+        },
+        status: {
+          type: 'string',
+          example: 'RASCUNHO'
+        },
+        pagamentoStatus: {
+          type: 'string',
+          example: 'PENDENTE'
+        },
+        combos: {
+          type: 'array',
+          items: {
+            $ref: '#/definitions/Combo',
+          },
+        },
+        valorTotal: {
+          type: 'number',
+          example: 50.0
         },
       },
     }
@@ -126,7 +105,8 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json';
-const routes = ['./app.ts'];
+// const routes = ['./app.ts', './src/easyorder/Infrastructure/Input/**/*.ts'];
+const routes = ['./app.ts', './easyorder/Infrastructure/Input/Endpoint/Pedido/CadastrarPedidoEndpoint.ts'];
 
 /* NOTE: If you are using the express Router, you must pass in the 'routes' only the 
 root file where the route starts, such as index.js, app.js, routes.js, etc ... */
