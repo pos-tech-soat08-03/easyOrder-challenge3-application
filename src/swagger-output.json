@@ -358,7 +358,7 @@
           "Produtos"
         ],
         "summary": "Buscar produto por ID.",
-        "description": "A busca de um Produto por ID permite que o cliente possa obter um resumo dos dados de um determinado Produto.",
+        "description": "Endpoint para buscar um produto usando o ID.",
         "produces": [
           "application/json"
         ],
@@ -991,18 +991,19 @@
     },
     "/pedido/{pedidoId}/combo": {
       "post": {
-        "description": "",
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Adicionar combo ao pedido",
+        "description": "Endpoint para adicionar um combo ao pedido",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "pedidoId",
             "in": "path",
             "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
             "type": "string",
             "description": "ID do pedido",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
