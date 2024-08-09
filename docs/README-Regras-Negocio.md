@@ -1,12 +1,5 @@
-# Fluxo
 
-```mermaid
-sequenceDiagram
-    Cliente ->> Toten: Solicita um novo pedido
-    Toten ->> API: Solicita a criação de um novo pedido
-    API ->> Database: Grava um novo pedido...
-
-```
+## Jornada do Cliente - Macro
 
 ```mermaid
 journey
@@ -26,6 +19,17 @@ journey
       Finaliza Pedido: 9 : Atendente
 
 ```
+
+# Fluxo Macro de Interação
+
+```mermaid
+sequenceDiagram
+    Cliente ->> Toten: Solicita um novo pedido
+    Toten ->> API: Solicita a criação de um novo pedido
+    API ->> Database: Grava um novo pedido...
+
+```
+
 
 # Regras de Negócio
 
