@@ -1,22 +1,38 @@
 
 import { Request, Response } from 'express';
-import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
-import { AdicionarComboAoPedidoUsecase, AdicionarComboAoPedidoUsecaseResponse } from '../../../../Core/Application/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
+import { AdicionarComboAoPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
 import { ProdutoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
+
+export class AdicionarComboAoPedidoEndpointParam {
+    public pedidoRepository: PedidoRepositoryInterface;
+    public produtoRepository: ProdutoRepositoryInterface;
+
+    constructor(pedidoRepository: PedidoRepositoryInterface, produtoRepository: ProdutoRepositoryInterface) {
+        this.pedidoRepository = pedidoRepository;
+        this.produtoRepository = produtoRepository;
+    }
+}
 
 export class AdicionarComboAoPedidoEndpoint {
 
+    public pedidoRepository: PedidoRepositoryInterface;
+    public produtoRepository: ProdutoRepositoryInterface;
+
     constructor(
-        private pedidoRepository: PedidoRepositoryInterface,
-        private produtoRepository: ProdutoRepositoryInterface
+        param: AdicionarComboAoPedidoEndpointParam
     ) {
+        this.pedidoRepository = param.pedidoRepository;
+        this.produtoRepository = param.produtoRepository;
+
         this.handle = this.handle.bind(this);
     }
 
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.tags = ['Pedidos']
+            #swagger.path = '/pedido/:pedidoId/combo'
             #swagger.method = 'post'
             #swagger.summary = 'Adicionar combo ao pedido'
             #swagger.description = 'Endpoint para adicionar um combo ao pedido'
@@ -34,28 +50,28 @@ export class AdicionarComboAoPedidoEndpoint {
                     "required": ["lancheId", "bebidaId", "sobremesaId", "acompanhamentoId"],
                     "properties": { 
                         "lancheId": { 
-                            "type": "string" | "null",
+                            "type": "string",
                             "minLength": 36,
                             "maxLength": 36,
                             "format": "uuid",
                             "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                         },
                         "bebidaId": { 
-                            "type": "string" | "null",
+                            "type": "string",
                             "minLength": 36,
                             "maxLength": 36,
                             "format": "uuid",
                             "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                         },
                         "sobremesaId": { 
-                            "type": "string" | "null",
+                            "type": "string",
                             "minLength": 36,
                             "maxLength": 36,
                             "format": "uuid",
                             "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                         },
                         "acompanhamentoId": { 
-                            "type": "string" | "null",
+                            "type": "string",
                             "minLength": 36,
                             "maxLength": 36,
                             "format": "uuid",
@@ -100,7 +116,7 @@ export class AdicionarComboAoPedidoEndpoint {
                             example: 'Combo adicionado ao pedido com sucesso'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -108,20 +124,7 @@ export class AdicionarComboAoPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                    combo: result.getPedido()?.getCombos().map(combo => ({
-                        id: combo.getId(),
-                        lanche: combo.getLancheId(),
-                        bebida: combo.getBebidaId(),
-                        sobremesa: combo.getSobremesaId(),
-                        acompanhamento: combo.getAcompanhamentoId(),
-                    }))
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {

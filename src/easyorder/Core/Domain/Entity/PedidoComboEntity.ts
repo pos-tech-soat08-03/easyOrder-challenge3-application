@@ -1,27 +1,28 @@
 import { v4 as uuidv4 } from 'uuid';
 import { CategoriaEnum } from '../ValueObject/CategoriaEnum';
+import { ProdutoEntity } from './ProdutoEntity';
 
 export class PedidoComboEntity {
    private id: string;
-   private lancheId: string | null;
-   private bebidaId: string | null;
-   private sobremesaId: string | null;
-   private acompanhamentoId: string | null;
+   private lanche: ProdutoEntity | null;
+   private bebida: ProdutoEntity | null;
+   private sobremesa: ProdutoEntity | null;
+   private acompanhamento: ProdutoEntity | null;
 
    constructor(
-      lancheId: string | null,
-      bebibdaId: string | null,
-      sobremesaId: string | null,
-      acompanhamentoId: string | null,
+      lanche: ProdutoEntity | null,
+      bebibda: ProdutoEntity | null,
+      sobremesa: ProdutoEntity | null,
+      acompanhamento: ProdutoEntity | null,
       id?: string
    ) {
-      this.lancheId = lancheId || null;
-      this.bebidaId = bebibdaId || null;
-      this.sobremesaId = sobremesaId || null;
-      this.acompanhamentoId = acompanhamentoId || null;
+      this.lanche = lanche || null;
+      this.bebida = bebibda || null;
+      this.sobremesa = sobremesa || null;
+      this.acompanhamento = acompanhamento || null;
 
       // RN5. O combo deve ter ao menos um produto informado
-      if (!this.lancheId && !this.bebidaId && !this.sobremesaId && !this.acompanhamentoId) {
+      if (!this.lanche && !this.bebida && !this.sobremesa && !this.acompanhamento) {
          throw new Error('Combo deve ter ao menos um produto informado');
       }
 
@@ -32,20 +33,42 @@ export class PedidoComboEntity {
       return this.id;
    }
 
-   public getLancheId(): string | null {
-      return this.lancheId;
+   public getLanche(): ProdutoEntity | null {
+      return this.lanche;
    }
 
-   public getBebidaId(): string | null {
-      return this.bebidaId;
+   public getBebida(): ProdutoEntity | null {
+      return this.bebida;
    }
 
-   public getSobremesaId(): string | null {
-      return this.sobremesaId;
+   public getSobremesa(): ProdutoEntity | null {
+      return this.sobremesa;
    }
 
-   public getAcompanhamentoId(): string | null {
-      return this.acompanhamentoId;
+   public getAcompanhamento(): ProdutoEntity | null {
+      return this.acompanhamento;
+   }
+
+   public getValorTotal(): number {
+      let valorTotal = 0;
+
+      if (this.lanche) {
+         valorTotal += this.lanche.getPreco();
+      }
+
+      if (this.bebida) {
+         valorTotal += this.bebida.getPreco();
+      }
+
+      if (this.sobremesa) {
+         valorTotal += this.sobremesa.getPreco();
+      }
+
+      if (this.acompanhamento) {
+         valorTotal += this.acompanhamento.getPreco();
+      }
+
+      return valorTotal;
    }
 }
 

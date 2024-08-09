@@ -189,4 +189,16 @@ export class PedidoEntity {
 
         return true;
     }
+
+    public getValorTotal(): number {
+        let valorTotal = 0;
+
+        if (this.combos && this.combos.length > 0) {
+            this.combos.forEach(combo => {
+                valorTotal += combo.getValorTotal();
+            });
+        }
+
+        return valorTotal;
+    }
 }

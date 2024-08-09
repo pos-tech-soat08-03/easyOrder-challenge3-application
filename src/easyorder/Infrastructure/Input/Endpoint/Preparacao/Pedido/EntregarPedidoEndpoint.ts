@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { EntregarPedidoUsecase } from '../../../../../Core/Application/Usecase/Preparacao/Pedido/EntregarPedidoUsecase';
+import { ConvertePedidoParaJsonFunction } from '../../Pedido/ConvertePedidoParaJsonFunction';
 
 export class EntregarPedidoEndpoint {
 
@@ -55,7 +56,7 @@ export class EntregarPedidoEndpoint {
                             example: 'Pedido entregue com sucesso.'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -63,13 +64,7 @@ export class EntregarPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {
