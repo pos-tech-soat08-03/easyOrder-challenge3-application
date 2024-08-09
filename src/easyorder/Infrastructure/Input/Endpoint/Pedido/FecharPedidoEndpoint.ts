@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
 import { FecharPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/FecharPedidoUsecase';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class FecharPedidoEndpoint {
 
@@ -55,7 +56,7 @@ export class FecharPedidoEndpoint {
                             example: 'Pedido fechado com sucesso. Aguardando pagamento.'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -63,13 +64,7 @@ export class FecharPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {

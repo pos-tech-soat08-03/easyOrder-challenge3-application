@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { CadastrarPedidoUsecase } from '../../../../Core/Application/Usecase/Pedidos/CadastrarPedidoUsecase';
 import { PedidoRepositoryInterface } from '../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface';
+import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
 
 export class CadastrarPedidoEndpoint {
 
@@ -63,7 +64,7 @@ export class CadastrarPedidoEndpoint {
                             example: 'Pedido cadastrado com sucesso3'
                         },
                         pedido: {
-                            $ref: '#/definitions/PedidoResponse'
+                            $ref: '#/definitions/Pedido'
                         }
                     }
                 }
@@ -71,13 +72,7 @@ export class CadastrarPedidoEndpoint {
             */
             res.json({
                 mensagem: result.getMensagem(),
-                pedido: result.getPedido() ? {
-                    id: result.getPedido()?.getId(),
-                    data: result.getPedido()?.getDataPedido(),
-                    clienteId: result.getPedido()?.getClienteId(),
-                    status: result.getPedido()?.getStatusPedido().getValue(),
-                    pagamentoStatus: result.getPedido()?.getStatusPagamento(),
-                } : null
+                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
             });
 
         } catch (error: any) {

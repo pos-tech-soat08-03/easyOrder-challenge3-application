@@ -103,10 +103,10 @@ export class AdicionarComboAoPedidoUsecase {
             }
 
             const pedidoCombo = new PedidoComboEntity(
-                lancheId,
-                bebidaId,
-                sobremesaId,
-                acompanhamentoId,
+                produtoLanche,
+                produtoBebida,
+                produtoSobremesa,
+                produtoAcompanhamento,
             );
 
             const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);

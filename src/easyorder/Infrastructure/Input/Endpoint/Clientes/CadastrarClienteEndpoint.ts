@@ -60,7 +60,7 @@ export class CadastrarClienteEndpoint {
 
             const { cpf, nome, email } = req.body;
 
-        const result = await usecase.execute(cpf, nome, email);
+            const result = await usecase.execute(cpf, nome, email);
 
             /**
                 #swagger.responses[200] = {
