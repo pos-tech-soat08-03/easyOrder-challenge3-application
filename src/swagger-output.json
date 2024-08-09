@@ -357,8 +357,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Buscar Produto por ID",
-        "description": "Este endpoint é utilizado para buscar um produto pelo seu ID no sistema.",
+        "summary": "Buscar produto por ID.",
+        "description": "A busca de um Produto por ID permite que o cliente possa obter um resumo dos dados de um determinado Produto.",
         "produces": [
           "application/json"
         ],
@@ -367,22 +367,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "required": [
-                "Id do Produto"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
-                }
-              }
-            }
+            "type": "string",
+            "description": "ID do produto",
+            "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
           }
         ],
         "responses": {
@@ -1004,19 +991,18 @@
     },
     "/pedido/{pedidoId}/combo": {
       "post": {
-        "tags": [
-          "Pedidos"
-        ],
-        "summary": "Adicionar combo ao pedido",
-        "description": "Endpoint para adicionar um combo ao pedido",
-        "produces": [
-          "application/json"
-        ],
+        "description": "",
         "parameters": [
           {
             "name": "pedidoId",
             "in": "path",
             "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
             "type": "string",
             "description": "ID do pedido",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
