@@ -31,11 +31,7 @@ O processo de Event Storming considerou:
 
 O Miro aberto para visualização pode ser acessado através do link: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). Caso o link não abra  automaticamente, copie e cole na barra de navegação.
 
-## Fluxo Macro na Visão do Cliente
-
-O fluxo detalhado no Miro pode ser representado de forma bastante macro com a seguinte jornada do Cliente
-
-![alt text](image.png)
+Informações adicionais da Jornada do Cliente e algumas regras de negócio são complementadas nessa [documentação adicional](./docs/README-Regras-Negocio.md).
 
 ## Requisitos de Arquitetura da Aplicação
 
@@ -141,7 +137,7 @@ O endpoint [http://localhost:3000/health](http://localhost:3000/health) também 
 ### 💡 Acesso à Documentação do Swagger
 
 Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/doc/](http://localhost:3000/doc/)
-![alt text](image.png)
+![Tela Swagger](./docs/image-swagger.png)
 
 ### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_)
 
@@ -153,24 +149,24 @@ docker exec -it easyorder npx jest
 
 # 🛠️ Arquitetura do Sistema
 
-A arquitetura utilizada no Sistema foi a [Arquitetura Hexagonal](https://www.alura.com.br/videos/o-que-e-arquitetura-hexagonal--c1134), também nomeada como Ports and Adapters pelo seu criador Alistair Cockburn. A arquitetura hexagonal tem como objetivo estruturar aplicações que sejam independentes de frameworks, interfaces, bancos de dado e outros elementos externos. 
+A arquitetura utilizada no Sistema foi a [Arquitetura Hexagonal](https://www.alura.com.br/videos/o-que-e-arquitetura-hexagonal--c1134), também conhecida como Ports and Adapters. A arquitetura hexagonal tem como objetivo estruturar aplicações que sejam independentes de frameworks, interfaces, bancos de dado e outros elementos externos. 
 
 O diagrama abaixo mostra de forma macro como ela considera a separação entre camadas (core, aplicações e infraestrutura), assim como sua divisão entre lado 'esquerdo' que representa os adaptadores primários (drivers) que representam formas de acessar a aplicação e lado 'direito' que representa os adaptadores secundários (driven) que mostram como a aplicação interage com sistemas / dependências externas.
 
-![](docs/exemplo-hexagonal-01.png)
+![Arquitetura Hexagonal](./docs/exemplo-hexagonal-01.png)
 
 Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, mas sim como ela foi implementada no nosso projeto.
 
 ## Estrutura de Pastas
 
     .
-    ├── docs                   # Documentação e Swagger
+    ├── docs                   # Documentos adicionais
     ├── src                    # Código Fonte
     ├── Dockerfile                              
-    ├── docker-compose.yml
-    ├── package.json
-    ├── tsconfig.json
-    └── README.md
+    ├── docker-compose.yml     
+    ├── package.json           
+    ├── tsconfig.json          
+    └── README.md              
 
 ## Detalhamento da estrutura do Código Fonte
 
@@ -220,10 +216,13 @@ Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, m
 - Sempre em Branches (ramos) e depois fazer o merge
 - No mínimo 1 aprovador de Pull Request
 - Utilizar os seguintes prefixos, quando possível com o número da atividade no projeto:
+
     - `Hotfix: {NúmeroTask} - {mensagem}` Para bugs
     - `Feature: {NúmeroTask} - {mensagem}` Para implementar funcionalidades
     - `Chore: {NúmeroTask} - {mensagem}` Para alterações que não impactem o uso (débito técnico)
+
 - O nome da branch deve ser igualmente o prefixo + id da atividade. Ex:
+
     - `hotfix/99999`
     - `feature/99999`
     - `chore/99999`
