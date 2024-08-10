@@ -10,6 +10,7 @@ export class CadastrarPedidoUsecaseResponse {
         this.sucesso_execucao = sucesso_execucao;
         this.mensagem = mensagem;
         this.pedido = pedido || null;
+
     }
 
     public getSucessoExecucao(): boolean {
@@ -31,9 +32,14 @@ export class CadastrarPedidoUsecase {
         private readonly pedidoRepository: PedidoRepositoryInterface
     ) { }
 
-    public async execute(clientId: string): Promise<CadastrarPedidoUsecaseResponse> {
+    public async execute(cliente_identificado: boolean, clientId: string): Promise<CadastrarPedidoUsecaseResponse> {
 
         try {
+
+            if (!cliente_identificado) {
+                clientId = "NAO_IDENTIFICADO";
+            }
+
             const pedido = new PedidoEntity(clientId);
 
             const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)

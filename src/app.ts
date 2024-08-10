@@ -83,7 +83,7 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send(`Acesse a documentação do Swagger em http://localhost:${port}/doc/`);
+  res.send(`Acesse a documentação do Swagger em <A HREF="http://localhost:${port}/doc/">http://localhost:${port}/doc/</A>`);
 });
 
 // Contexto de cliente

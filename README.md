@@ -3,14 +3,14 @@
 
 ## ✒️ Grupo / Autores
 
-O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes integrantes:
-- [Bruno Moreira Reis](mailto:brbrno@hotmail.com), RM358025, discord @bruno_m_reis
-- [Carlos Henrique de Lima](mailto:carlos334lima@gmail.com), RM356875, discord @carloslima2235 
-- [Fernando Gurkievicz](mailto:fergkz@gmail.com), RM357072, discord @goorkz
-- [Marcio Saragiotto](mailto:marcio.saragiotto@gmail.com), RM357349, discord @msgiotto
-- [Rafael da Silva Andrade](mailto:rafaandrade_@outlook.com), RM357010, discord @andrade_rafael
+O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes integrantes (nome, email, RM, discord):
+- Bruno Moreira Reis: brbrno@hotmail.com, RM358025, @bruno_m_reis
+- Carlos Henrique de Lima, carlos334lima@gmail.com, RM356875, @carloslima2235 
+- Fernando Gurkievicz, fergkz@gmail.com, RM357072, @goorkz
+- Marcio Saragiotto, marcio.saragiotto@gmail.com, RM357349, @msgiotto
+- Rafael da Silva Andrade, rafaandrade_@outlook.com, RM357010, @andrade_rafael
 
-
+&nbsp;
 ## Projeto - Descrição e Objetivos 
 
 A aplicação __easyOrder__ foi implementada como parte do _Tech Challenge_ da primeira etapa da Pós Tech de Arquitetura de Software (Turma SOAT8) da FIAP. Esse desafio simula a implantação de uma solução para uma Lanchonete de bairro expandir e alavancar seu negócio através da automação de parte dos seus processos, incluindo a _Realização do pedido e pagamento_ e o processo de _Preparação e entrega do pedido_.
@@ -31,6 +31,8 @@ O processo de Event Storming considerou:
 
 O Miro aberto para visualização pode ser acessado através do link: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). Caso o link não abra  automaticamente, copie e cole na barra de navegação.
 
+
+&nbsp;
 ## Requisitos de Arquitetura da Aplicação
 
 Os requisitos apontados no desafio consideram:
@@ -61,9 +63,9 @@ A aplicação foi implementada utilizando a linguagem [Typescript](https://www.t
 - [Mysql2](https://www.npmjs.com/package/mysql2) e [Sequelize](https://sequelize.org/) para implementação de persistência em Banco de Dados
 - [Axios](https://www.npmjs.com/package/axios) e [Jest](https://www.npmjs.com/package/ts-jest) para Testes Ponta a Ponta
 
-O detalhamento técnico da Arquitetura, tecnologias utilizadas e detalhamento de como foi realizada a implementação podem ser encontrados na sessão [Arquitetura do Sistema](#arquitetura-do-sistema)
+O detalhamento técnico da Arquitetura, tecnologias utilizadas e detalhamento de como foi realizada a implementação podem ser encontrados na sessão 'Arquitetura do Sistema'.
 
-
+&nbsp;
 ## Como Rodar o easyOrder
 
 ### 📋 Pré-requisitos
@@ -134,7 +136,9 @@ _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o
 ### 💡 Acesso à Documentação do Swagger
 
 Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/doc/](http://localhost:3000/doc/)
-![Tela Swagger](./docs/image-swagger.png)
+
+<img src="./docs/image-swagger.png" alt="Cabeçalho Swagger" style="width:50%;"/>
+
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
 
@@ -146,18 +150,19 @@ Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a v
 docker exec -it easyorder npx jest ./app.e2e.test.ts --verbose true
 ```
 
-O resultado dos testes Ponta a Ponta deve ser parecido com o abaixo:
+O resultado dos testes Ponta a Ponta deve ser similar ao abaixo:
 
-![Console Testes Ponta a Ponta](./docs/image-testes.png)
+<img src="./docs/image-testes.png" alt="Testes E2E" style="width:50%;"/>
 
-
+&nbsp;
+&nbsp;
 # 🛠️ Arquitetura do Sistema
 
 A arquitetura utilizada no Sistema foi a [Arquitetura Hexagonal](https://www.alura.com.br/videos/o-que-e-arquitetura-hexagonal--c1134), também conhecida como Ports and Adapters. A arquitetura hexagonal tem como objetivo estruturar aplicações que sejam independentes de frameworks, interfaces, bancos de dado e outros elementos externos. 
 
 O diagrama abaixo mostra de forma macro como ela considera a separação entre camadas (core, aplicações e infraestrutura), assim como sua divisão entre lado 'esquerdo' que representa os adaptadores primários (drivers) que representam formas de acessar a aplicação e lado 'direito' que representa os adaptadores secundários (driven) que mostram como a aplicação interage com sistemas / dependências externas.
 
-![Arquitetura Hexagonal](./docs/exemplo-hexagonal-01.png)
+<img src="./docs/exemplo-hexagonal-01.png" alt="Diagrama Hexagonal" style="width:70%;"/>
 
 Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, mas sim como ela foi implementada no nosso projeto.
 

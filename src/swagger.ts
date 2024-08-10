@@ -25,11 +25,11 @@ const doc = {
         },
         nome: {
           type: 'string',
-          example: 'X-Bacon'
+          example: 'Nome do produto'
         },
         descricao: {
           type: 'string',
-          example: 'Pão, hambúrguer, queijo, bacon, alface e tomate'
+          example: 'Descrição do produto'
         },
         preco: {
           type: 'number',
@@ -37,7 +37,7 @@ const doc = {
         },
         categoria: {
           type: 'string',
-          example: 'LANCHE'
+          example: 'CATEGORIA_PRODUTO'
         },
         imagemURL: {
           type: 'string',
@@ -62,7 +62,7 @@ const doc = {
         },
         valorTotal: {
           type: 'number',
-          example: 50.0
+          example: 80.0
         },
       },
     },
@@ -78,12 +78,16 @@ const doc = {
           type: 'string',
           example: '2021-10-10T15:00:00.000Z'
         },
+        cliente_identificado: {
+          type: 'boolean',
+          example: true,
+        },
         clienteId: {
           $ref: '#/definitions/ID',
         },
         status: {
           type: 'string',
-          example: 'RASCUNHO'
+          example: 'EM_ABERTO'
         },
         pagamentoStatus: {
           type: 'string',
@@ -97,7 +101,7 @@ const doc = {
         },
         valorTotal: {
           type: 'number',
-          example: 50.0
+          example: 80.0
         },
       },
     }
