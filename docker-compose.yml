@@ -18,7 +18,8 @@ services:
     links:
       - easyorder_database
     depends_on:
-      - easyorder_database
+        easyorder_database:
+            condition: service_healthy
   easyorder_database:
     image: mysql:5.7
     container_name: easyorder_database
@@ -34,5 +35,9 @@ services:
       MYSQL_USER: 'easyorder_database_username'
       MYSQL_PASSWORD: 'easyorder_database_password'
       MYSQL_ROOT_PASSWORD: 'root'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"] 
+      timeout: 5s
+      retries: 3
 volumes:
   easyorder-database:

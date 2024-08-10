@@ -74,11 +74,16 @@ app.use(express.json());
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.get('/health', (req, res) => {
-  // #swagger.tags = ['Health']
-  // #swagger.summary = 'Health check'
+  /** #swagger.tags = ['Health']
+      #swagger.summary = 'Health check'
+  */
   res.json({
     status: 'UP'
   });
+});
+
+app.get('/', (req, res) => {
+  res.send(`Acesse a documentação do Swagger em http://localhost:${port}/doc/`);
 });
 
 // Contexto de cliente
@@ -102,7 +107,6 @@ app.get('/pedido/:pedidoId', new BuscaPedidoPorIdEndpoint(pedidoRepository).hand
 app.put('/pedido/:pedidoId/cancelar', new CancelarPedidoEndpoint(pedidoRepository).handle);
 app.put('/pedido/:pedidoId/checkout', new CheckoutPedidoEndpoint(pedidoRepository).handle);
 app.put('/pedido/:pedidoId/fechar', new FecharPedidoEndpoint(pedidoRepository).handle);
-// Sim, o trecho abaixo não é bonito, mas é a única forma que o swagger auto-gen conseguiu entender uma classe com dois parâmetros. @todo: remover o comentário
 const adicionarComboAoPedidoEndpointParam = new AdicionarComboAoPedidoEndpointParam(pedidoRepository, produtoRepository);
 app.post('/pedido/:pedidoId/combo', new AdicionarComboAoPedidoEndpoint(adicionarComboAoPedidoEndpointParam).handle);
 app.delete('/pedido/:pedidoId/combo/:comboId', new RemoverComboDoPedidoEndpoint(pedidoRepository).handle);
