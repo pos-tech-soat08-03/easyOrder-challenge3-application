@@ -4,7 +4,7 @@ import { ProdutoRepositoryInterface } from "../../../Core/Domain/Output/Reposito
 import { CategoriaEnum } from "../../../Core/Domain/ValueObject/CategoriaEnum";
 import { Sequelize, Model, DataTypes, where } from 'sequelize';
 
-class LocalModel extends Model{
+class LocalModel extends Model {
     public id!: string;
     public nome!: string;
     public descricao!: string;
@@ -60,43 +60,43 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
             timestamps: false,
         });
         this.sequelize.sync({
-            alter:true
+            alter: true
         });
 
 
     }
 
 
-    public async listarProdutos():Promise< ProdutoEntity[]> {
+    public async listarProdutos(): Promise<ProdutoEntity[]> {
         const produtos = await LocalModel.findAll();
-        if(!produtos){
+        if (!produtos) {
             return [];
         }
 
 
-    
+
         return produtos.map(produto => {
-            return new ProdutoEntity(            
-            produto.nome,
-            produto.descricao,
-            produto.preco,
-            produto.categoria as CategoriaEnum,
-            produto.imagemURL,
-            produto.id
+            return new ProdutoEntity(
+                produto.nome,
+                produto.descricao,
+                produto.preco,
+                produto.categoria as CategoriaEnum,
+                produto.imagemURL,
+                produto.id
             )
         });
     }
-    public async listarProdutoCategoria(categoria: CategoriaEnum):Promise<ProdutoEntity[]> {
-       
-        return  new Array<ProdutoEntity>();
+    public async listarProdutoCategoria(categoria: CategoriaEnum): Promise<ProdutoEntity[]> {
+
+        return new Array<ProdutoEntity>();
     }
-    public  async  buscarProdutoPorId(id: string): Promise<ProdutoEntity | undefined>  {
+    public async buscarProdutoPorId(id: string): Promise<ProdutoEntity | undefined> {
         const produto = await LocalModel.findOne({
             where: {
                 id: id
             }
-    });
-            if(!produto){
+        });
+        if (!produto) {
             return undefined;
         }
         return new ProdutoEntity(
@@ -111,14 +111,20 @@ export class ProdutoRepositoryMySQL implements ProdutoRepositoryInterface {
 
 
     }
-    public    async   removerPorId(id: string): Promise<void> {
-       console.log("Removido{}",id);
+    public async removerPorId(idProduto: string): Promise<void> {
+        await LocalModel.destroy({
+            where: {
+                id: idProduto
+            }
+        });
+        return;
     }
 
 
-    public  async  salvarProduto(cliente: ProdutoEntity): Promise<void> {
 
-        const dto ={
+    public async salvarProduto(cliente: ProdutoEntity): Promise<void> {
+
+        const dto = {
             id: cliente.getId(),
             nome: cliente.getNome(),
             descricao: cliente.getDescricao(),
