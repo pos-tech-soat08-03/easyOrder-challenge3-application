@@ -36,7 +36,7 @@ services:
       MYSQL_PASSWORD: 'easyorder_database_password'
       MYSQL_ROOT_PASSWORD: 'root'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"] 
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-proot"] 
       timeout: 5s
       retries: 3
 volumes:
