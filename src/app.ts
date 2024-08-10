@@ -93,7 +93,7 @@ app.get('/cliente/listar', new ListarClientesEndpoint(clienteRepository).handle)
 app.get('/cliente/buscar/:cpf', new BuscarClienteEndpoint(clienteRepository).handle);
 
 // Contexto de produto
-app.delete('/produto/remover', new RemoverProdutoEndpoint(produtoRepository).handle);
+app.delete('/produto/remover/:id', new RemoverProdutoEndpoint(produtoRepository).handle);
 app.get('/produto/categoria/listar', new ListaCategoriasEndpoint(categoriaRepositoryMock).handle);
 app.get('/produto/buscar/:id', new BuscarProdutoEndpoint(produtoRepository).handle);
 app.post('/produto/cadastrar', new CadastrarProdutoEndpoint(produtoRepository).handle);

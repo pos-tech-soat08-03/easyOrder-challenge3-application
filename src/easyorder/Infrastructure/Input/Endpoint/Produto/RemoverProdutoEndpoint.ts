@@ -14,11 +14,12 @@ export class RemoverProdutoEndpoint {
 
         /**
             #swagger.tags = ['Produtos']
+            #swagger.path = '/produto/remover/{id}'
             #swagger.method = 'delete'
             #swagger.summary = 'Remover produto'
             #swagger.description = 'Endpoint para remover um produto'
             #swagger.produces = ["application/json"]
-            #swagger.parameters['produtoId'] = {
+            #swagger.parameters['id'] = {
                 in: 'path',
                 description: 'ID do produto',
                 required: true,
@@ -33,12 +34,12 @@ export class RemoverProdutoEndpoint {
         const id = req.params.id as string;
 
         try {
-            const result = await removerProdutoUsecase.execute({ id });
+            const result = await removerProdutoUsecase.execute({id});
 
-            if (req.body.id === id) {
+            if (result.sucesso === true) {
                 res.status(200).json({ sucesso: true, mensagem: `Produto com ID ${id} removido com sucesso.` });
             } else {
-                res.status(404).json({ sucesso: false, mensagem: 'Erro na remoção do produto.' });
+                res.status(400).json({ sucesso: false, mensagem: 'Erro na remoção do produto.' });
             }
         } catch (error) {
             res.status(500).json({ sucesso: false, mensagem: 'Ocorreu um erro inesperado.' });

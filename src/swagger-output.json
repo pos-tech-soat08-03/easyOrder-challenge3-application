@@ -312,7 +312,7 @@
         }
       }
     },
-    "/produto/remover": {
+    "/produto/remover/{id}": {
       "delete": {
         "tags": [
           "Produtos"
@@ -324,11 +324,11 @@
         ],
         "parameters": [
           {
-            "name": "produtoId",
+            "name": "id",
             "in": "path",
-            "description": "ID do produto",
             "required": true,
             "type": "string",
+            "description": "ID do produto",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
           }
         ],
