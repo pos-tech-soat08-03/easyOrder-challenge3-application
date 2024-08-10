@@ -35,7 +35,7 @@ export class AdicionarComboAoPedidoEndpoint {
             #swagger.path = '/pedido/:pedidoId/combo'
             #swagger.method = 'post'
             #swagger.summary = 'Adicionar combo ao pedido'
-            #swagger.description = 'Endpoint para adicionar um combo ao pedido'
+            #swagger.description = 'Endpoint para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',

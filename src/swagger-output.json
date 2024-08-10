@@ -25,6 +25,16 @@
         }
       }
     },
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/cliente/cadastrar": {
       "post": {
         "tags": [
@@ -995,7 +1005,7 @@
           "Pedidos"
         ],
         "summary": "Adicionar combo ao pedido",
-        "description": "Endpoint para adicionar um combo ao pedido",
+        "description": "Endpoint para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.",
         "produces": [
           "application/json"
         ],

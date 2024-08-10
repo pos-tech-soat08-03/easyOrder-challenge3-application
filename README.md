@@ -81,6 +81,7 @@ Inicializar o Git e Clonar o repositório em uma pasta local, com os comandos:
 
 ``` console
 git clone https://github.com/pos-tech-fiap-projects/easyOrder.git
+
 cd easyOrder/
 ```
 
@@ -88,19 +89,14 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 
 1. Buildar a aplicação de acordo com o arquivo docker-compose.yml
     
+    Windows:
     ``` console
-    docker-compose up --build
+    docker compose up --build
     ```
-    
 
-2. Buildar e rodar manualmente a imagem expondo a porta 3000
-
+    Linux:
     ``` console
-    docker image build -t easyorder:1.0.0 .
-
-    docker image ls
-
-    docker run -p 3000:3000 easyorder:1.0.0
+    sudo docker-compose up --build
     ```
 
 ### 🔧 Iniciando Em Modo "Desenvolvimento"
@@ -111,6 +107,7 @@ Inicializar o Git e Clonar o repositório em uma pasta local, com os comandos:
 
 ``` console
 git clone https://github.com/pos-tech-fiap-projects/easyOrder.git
+
 cd easyOrder/
 ```
 
@@ -134,18 +131,27 @@ Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, b
 
 O endpoint [http://localhost:3000/health](http://localhost:3000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
 
+_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
+
 ### 💡 Acesso à Documentação do Swagger
 
 Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/doc/](http://localhost:3000/doc/)
 ![Tela Swagger](./docs/image-swagger.png)
+
+_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
 
 ### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_)
 
 Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a validação do processo da aplicação. Para executar o teste ponta a ponta, através do ambiente ativo no Docker, rode em um outro terminal (mantenha a aplicação rodando no Docker).
 
 ``` console
-docker exec -it easyorder npx jest
+docker exec -it easyorder npx jest ./app.e2e.test.ts --verbose true
 ```
+
+O resultado dos testes Ponta a Ponta deve ser parecido com o abaixo:
+
+![Console Testes Ponta a Ponta](./docs/image-testes.png)
+
 
 # 🛠️ Arquitetura do Sistema
 
