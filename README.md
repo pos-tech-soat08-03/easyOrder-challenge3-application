@@ -31,8 +31,6 @@ O processo de Event Storming considerou:
 
 O Miro aberto para visualização pode ser acessado através do link: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). Caso o link não abra  automaticamente, copie e cole na barra de navegação.
 
-Informações adicionais da Jornada do Cliente e algumas regras de negócio são complementadas nessa [documentação adicional](./docs/README-Regras-Negocio.md).
-
 ## Requisitos de Arquitetura da Aplicação
 
 Os requisitos apontados no desafio consideram:
