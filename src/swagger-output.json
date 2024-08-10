@@ -620,7 +620,7 @@
           "Pedidos"
         ],
         "summary": "Cadastrar novo pedido",
-        "description": "Endpoint para início de novo Pedido. Cliente pode ser identificado por ID obtido através de endpoint (/cliente/buscar{cpf}) ou não ser identificado (utilizar \"null\")",
+        "description": "Endpoint para início de novo Pedido.",
         "produces": [
           "application/json"
         ],
@@ -629,16 +629,17 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "required": [
-                "clienteId"
-              ],
               "properties": {
+                "cliente_identificado": {
+                  "type": "boolean",
+                  "example": "true"
+                },
                 "clienteId": {
                   "type": "string",
                   "minLength": 36,
                   "maxLength": 36,
                   "format": "uuid",
-                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307 ou null"
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                 }
               }
             }
@@ -646,12 +647,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Pedido cadastrado com sucesso2",
+            "description": "Pedido cadastrado com sucesso",
             "schema": {
               "properties": {
                 "mensagem": {
                   "type": "string",
-                  "example": "Pedido cadastrado com sucesso3"
+                  "example": "Pedido cadastrado com sucesso"
                 },
                 "pedido": {
                   "$ref": "#/definitions/Pedido"
@@ -1361,11 +1362,11 @@
         },
         "nome": {
           "type": "string",
-          "example": "X-Bacon"
+          "example": "Nome do produto"
         },
         "descricao": {
           "type": "string",
-          "example": "Pão, hambúrguer, queijo, bacon, alface e tomate"
+          "example": "Descrição do produto"
         },
         "preco": {
           "type": "number",
@@ -1373,7 +1374,7 @@
         },
         "categoria": {
           "type": "string",
-          "example": "LANCHE"
+          "example": "CATEGORIA_PRODUTO"
         },
         "imagemURL": {
           "type": "string",
@@ -1398,7 +1399,7 @@
         },
         "valorTotal": {
           "type": "number",
-          "example": 50
+          "example": 80
         }
       }
     },
@@ -1414,12 +1415,16 @@
           "type": "string",
           "example": "2021-10-10T15:00:00.000Z"
         },
+        "cliente_identificado": {
+          "type": "boolean",
+          "example": true
+        },
         "clienteId": {
           "$ref": "#/definitions/ID"
         },
         "status": {
           "type": "string",
-          "example": "RASCUNHO"
+          "example": "EM_ABERTO"
         },
         "pagamentoStatus": {
           "type": "string",
@@ -1433,7 +1438,7 @@
         },
         "valorTotal": {
           "type": "number",
-          "example": 50
+          "example": 80
         }
       }
     }
