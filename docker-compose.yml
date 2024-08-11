@@ -21,7 +21,7 @@ services:
         easyorder_database:
             condition: service_healthy
   easyorder_database:
-    image: mysql:5.7
+    image: mysql:9.0.1
     container_name: easyorder_database
     restart: always
     ports:
