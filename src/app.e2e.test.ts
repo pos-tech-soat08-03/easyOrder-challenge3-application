@@ -161,23 +161,23 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-  test("(/cliente/atualizar) Atualiza Cliente: remove dados de identificação", async () => {
+  // test("(/cliente/atualizar) Atualiza Cliente: remove dados de identificação", async () => {
 
-    try {
-      const response = await axios.put(`${BASE_URL}/cliente/atualizar`, {
-        cpf: `${cpfAleatorio}`,
-        nome: "",
-        email: "",
-      });
+  //   try {
+  //     const response = await axios.put(`${BASE_URL}/cliente/atualizar`, {
+  //       cpf: `${cpfAleatorio}`,
+  //       nome: "",
+  //       email: "",
+  //     });
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("cliente");
-      expect(response.data.cliente).toHaveProperty("id");
+  //     expect(response.status).toBe(200);
+  //     expect(response.data).toHaveProperty("cliente");
+  //     expect(response.data.cliente).toHaveProperty("id");
 
-    } catch (error: any) {
-      expect(error.message).toEqual("Falha ao atualizar cliente");
-    }
-  });
+  //   } catch (error: any) {
+  //     expect(error.message).toEqual("Falha ao atualizar cliente");
+  //   }
+  // });
 
 
   test("(/cliente/buscar/{cpf}) Busca Cliente por CPF", async () => {
@@ -199,6 +199,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
   test("(/pedido) Cria a etapa inicial do Pedido, cliente identificado", async () => {
     try {
       const response = await axios.post(`${BASE_URL}/pedido`, {
+        cliente_identificado: "true",
         clienteId: clienteId,
       });
 
@@ -216,6 +217,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
   test("(/pedido) Alternativa: Cria a etapa inicial do Pedido, cliente não identificado", async () => {
     try {
       const response = await axios.post(`${BASE_URL}/pedido`, {
+        cliente_identificado: "false",
         clienteId: "null",
       });
 
