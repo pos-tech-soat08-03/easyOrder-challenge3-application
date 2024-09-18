@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "easyOrder 1.0",
-    "description": "Sistema de Gestão de Pedidos - Tech Challenge Pos Tech SOAT",
+    "title": "easyOrder 2.0",
+    "description": "Sistema de Gestão de Pedidos - Tech Challenge (2) da Pos Tech SOAT ",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -41,7 +41,7 @@
           "Clientes"
         ],
         "summary": "Cadastro de Novo Cliente",
-        "description": "Este endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
+        "description": "Este Controller é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
         "produces": [
           "application/json"
         ],
@@ -135,7 +135,7 @@
           "Clientes"
         ],
         "summary": "Atualização de Cliente",
-        "description": "Este endpoint é utilizado para Atualizar o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.",
+        "description": "Este Controller é utilizado para Atualizar o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.",
         "produces": [
           "application/json"
         ],
@@ -229,7 +229,7 @@
           "Clientes"
         ],
         "summary": "Listar clientes",
-        "description": "Endpoint para listar todos os clientes cadastrados",
+        "description": "Controller para listar todos os clientes cadastrados",
         "produces": [
           "application/json"
         ],
@@ -318,7 +318,7 @@
           "Produtos"
         ],
         "summary": "Remover produto",
-        "description": "Endpoint para remover um produto",
+        "description": "Controller para remover um produto",
         "produces": [
           "application/json"
         ],
@@ -339,36 +339,13 @@
         }
       }
     },
-    "/produto/categoria/listar": {
-      "get": {
-        "tags": [
-          "Produtos"
-        ],
-        "summary": "Listar todos as categorias",
-        "description": "Endpoint para listar todos as categorias cadastradas",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Não Encontrado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        }
-      }
-    },
     "/produto/buscar/{id}": {
       "get": {
         "tags": [
           "Produtos"
         ],
         "summary": "Buscar produto por ID.",
-        "description": "Endpoint para buscar um produto usando o ID.",
+        "description": "Controller para buscar um produto usando o ID.",
         "produces": [
           "application/json"
         ],
@@ -446,7 +423,7 @@
           "Produtos"
         ],
         "summary": "Cadastro de Novo Produto",
-        "description": "Este endpoint é utilizado para realizar o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
+        "description": "Este Controller é utilizado para realizar o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
         "produces": [
           "application/json"
         ],
@@ -493,7 +470,7 @@
           "Produtos"
         ],
         "summary": "Atualização de Produto",
-        "description": "Este endpoint é utilizado para atualizar o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
+        "description": "Este Controller é utilizado para atualizar o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
         "produces": [
           "application/json"
         ],
@@ -600,7 +577,7 @@
           "Produtos"
         ],
         "summary": "Listar todos os produtos",
-        "description": "Endpoint para listar todos os produtos cadastrados",
+        "description": "Controller para listar todos os produtos cadastrados",
         "produces": [
           "application/json"
         ],
@@ -620,7 +597,7 @@
           "Pedidos"
         ],
         "summary": "Cadastrar novo pedido",
-        "description": "Endpoint para início de novo Pedido.",
+        "description": "Controller para início de novo Pedido.",
         "produces": [
           "application/json"
         ],
@@ -680,7 +657,7 @@
           "Pedidos"
         ],
         "summary": "Listar pedidos por status",
-        "description": "Endpoint para listagem de pedidos por status",
+        "description": "Controller para listagem de pedidos por status",
         "produces": [
           "application/json"
         ],
@@ -799,7 +776,7 @@
           "Pedidos"
         ],
         "summary": "Buscar pedido por ID",
-        "description": "Endpoint para buscar um pedido por ID",
+        "description": "Controller para buscar um pedido por ID",
         "produces": [
           "application/json"
         ],
@@ -859,7 +836,7 @@
           "Pedidos"
         ],
         "summary": "Cancelar um pedido",
-        "description": "Endpoint para cancelamento de um pedido",
+        "description": "Controller para cancelamento de um pedido",
         "produces": [
           "application/json"
         ],
@@ -908,7 +885,7 @@
           "Pedidos"
         ],
         "summary": "Checkout/Pagamento de um pedido",
-        "description": "Endpoint para efetuar o pagamento de um pedido",
+        "description": "Controller para efetuar o pagamento de um pedido",
         "produces": [
           "application/json"
         ],
@@ -957,7 +934,7 @@
           "Pedidos"
         ],
         "summary": "Fechar pedido",
-        "description": "Endpoint para fechar um pedido",
+        "description": "Controller para fechar um pedido",
         "produces": [
           "application/json"
         ],
@@ -1006,7 +983,7 @@
           "Pedidos"
         ],
         "summary": "Adicionar combo ao pedido",
-        "description": "Endpoint para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.",
+        "description": "Controller para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.",
         "produces": [
           "application/json"
         ],
@@ -1097,7 +1074,7 @@
           "Pedidos"
         ],
         "summary": "Remover combo do pedido",
-        "description": "Endpoint para remover um combo do pedido",
+        "description": "Controller para remover um combo do pedido",
         "produces": [
           "application/json"
         ],
@@ -1154,7 +1131,7 @@
           "Preparação"
         ],
         "summary": "Busca o próximo pedido para preparação",
-        "description": "Endpoint para buscar o próximo pedido para preparação",
+        "description": "Controller para buscar o próximo pedido para preparação",
         "produces": [
           "application/json"
         ],
@@ -1204,7 +1181,7 @@
           "Preparação"
         ],
         "summary": "Iniciar preparação de um pedido",
-        "description": "Endpoint para iniciar a preparação de um pedido",
+        "description": "Controller para iniciar a preparação de um pedido",
         "produces": [
           "application/json"
         ],
@@ -1253,7 +1230,7 @@
           "Preparação"
         ],
         "summary": "Finalizar preparação de um pedido",
-        "description": "Endpoint para finalizar a preparação de um pedido",
+        "description": "Controller para finalizar a preparação de um pedido",
         "produces": [
           "application/json"
         ],
@@ -1302,7 +1279,7 @@
           "Preparação"
         ],
         "summary": "Entregar um pedido",
-        "description": "Endpoint para entregar um pedido",
+        "description": "Controller para entregar um pedido",
         "produces": [
           "application/json"
         ],

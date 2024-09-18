@@ -7,13 +7,15 @@ O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes inte
 - Bruno Moreira Reis: brbrno@hotmail.com, RM358025, @bruno_m_reis
 - Fernando Gurkievicz, fergkz@gmail.com, RM357072, @goorkz
 - Marcio Saragiotto, marcio.saragiotto@gmail.com, RM357349, @msgiotto
-- Matias Correa Franco de Faria, RM357411, @matiasf8321
+- Matias Correa Franco de Faria, devmatiascff@gmail.com, RM357411, @matiasf8321
 - Rafael da Silva Andrade, rafaandrade_@outlook.com, RM357010, @andrade_rafael
 
 &nbsp;
 ## Projeto - Descrição e Objetivos 
 
-A aplicação __easyOrder__ foi implementada como parte do _Tech Challenge_ da primeira etapa da Pós Tech de Arquitetura de Software (Turma SOAT8) da FIAP. Esse desafio simula a implantação de uma solução para uma Lanchonete de bairro expandir e alavancar seu negócio através da automação de parte dos seus processos, incluindo a _Realização do pedido e pagamento_ e o processo de _Preparação e entrega do pedido_.
+A aplicação __easyOrder__ 2.0 foi implementada como parte do _Tech Challenge_ da segunda etapa da Pós Tech de Arquitetura de Software (Turma SOAT8) da FIAP. Esse desafio simula a implantação de uma solução para uma Lanchonete de bairro expandir e alavancar seu negócio através da automação de parte dos seus processos, incluindo a _Realização do pedido e pagamento_ e o processo de _Preparação e entrega do pedido_.
+
+**<EM CONSTRUÇÃO - REQUISITOS DA SEGUNDA FASE>**
 
  Outros requisitos (incluindo requisitos não funcionais e de desenho de arquitetura) também foram solicitados, e são explicados ao longo desse documento. O enunciado do Problema original pode ser consultado [nesse link](./docs/README-Problema.md).
 

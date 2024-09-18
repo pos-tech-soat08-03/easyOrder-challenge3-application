@@ -1,8 +1,7 @@
-
-import fs from 'fs';
-import { PedidoEntity } from "../../../../Core/Domain/Entity/PedidoEntity";
-import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from "../../../../Core/Domain/Output/Repository/PedidoRepositoryInterface";
-import { StatusPedidoValueObject } from '../../../../Core/Domain/ValueObject/StatusPedidoValueObject';
+import fs from 'fs' ;
+import { PedidoEntity } from '../../../Core/Entity/PedidoEntity';
+import { StatusPedidoValueObject } from '../../../Core/Entity/ValueObject/StatusPedidoValueObject';
+import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderField, PedidoRepositoryInterfaceFilterOrderDirection } from '../../../Core/Repository/PedidoRepositoryInterface';
 
 export class PedidoRepositoryMock implements PedidoRepositoryInterface {
     private filePath: string;

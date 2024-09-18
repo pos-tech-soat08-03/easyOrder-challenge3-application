@@ -26,7 +26,7 @@ import { BuscarProdutoController } from "../Controller/Produto/BuscarProdutoCont
 import { CadastrarProdutoController } from "../Controller/Produto/CadastrarProdutoController";
 // import { ListaCategoriasController } from "../Controller/Produto/ListarCategoriasController";
 import { ListarProdutoController } from "../Controller/Produto/ListarProdutoController";
-import { RemoverProdutoController } from "../Controller/Produto/RemoverProdutoEndpoint";
+import { RemoverProdutoController } from "../Controller/Produto/RemoverProdutoController";
 
 export class EasyOrderApp {
   private _dbconnection: DbConnection;
