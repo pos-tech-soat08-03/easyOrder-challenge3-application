@@ -1,26 +1,26 @@
-// TODO: REFATORAR PARA INICIALIZAÇÃO
+// TODO: REFATORAR PARA FUNÇÃO DE API - CAMADA INFRAESTRUTURA
 
 
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
-import swaggerOutput from "./swagger-output.json";
+import swaggerOutput from "../../../swagger-output.json";
 
 // import { ProdutoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ProdutoRepositoryMock';
 // import { ClienteRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/ClienteRepositoryMock';
 // import { PedidoRepositoryMock } from './easyorder/Infrastructure/Output/Repository/Mock/PedidoRepositoryMock';
-import { CategoriaRepositoryMock } from './easyorder/Infrastructure/Repository/Mock/CategoriaRepositoryMock';
+import { CategoriaRepositoryMock } from '../Repository/Mock/CategoriaRepositoryMock';
 
-import { PedidoRepositoryMySQL } from './easyorder/Infrastructure/Repository/PedidoRepositoryMySQL';
-import { ClienteRepositoryMySQL } from './easyorder/Infrastructure/Repository/ClienteRepositoryMySQL';
+import { PedidoRepositoryMySQL } from '../Repository/PedidoRepositoryMySQL';
+import { ClienteRepositoryMySQL } from '../Repository/ClienteRepositoryMySQL';
 
 import { CadastrarProdutoController } from './easyorder/Infrastructure/Controller/Produto/CadastrarProdutoController';
 import { RemoverProdutoController } from './easyorder/Infrastructure/Controller/Produto/RemoverProdutoController';
 import { BuscarProdutoController } from './easyorder/Infrastructure/Controller/Produto/BuscarProdutoController';
 
-import { CadastrarClienteController } from './easyorder/Infrastructure/Controller/Clientes/CadastrarClienteController';
-import { AtualizarClienteController } from './easyorder/Infrastructure/Controller/Clientes/AtualizarClienteController';
-import { ListarClientesController } from './easyorder/Infrastructure/Controller/Clientes/ListarClientesController';
-import { BuscarClienteController } from './easyorder/Infrastructure/Controller/Clientes/BuscarClienteController';
+import { CadastrarClienteController } from '../Controller/Clientes/CadastrarClienteController';
+import { AtualizarClienteController } from '../Controller/Clientes/AtualizarClienteController';
+import { ListarClientesController } from '../Controller/Clientes/ListarClientesController';
+import { BuscarClienteController } from '../Controller/Clientes/BuscarClienteController';
 
 import { CadastrarPedidoController } from './easyorder/Infrastructure/Controller/Pedido/CadastrarPedidoController';
 import { CancelarPedidoController } from './easyorder/Infrastructure/Controller/Pedido/CancelarPedidoController';
@@ -32,10 +32,10 @@ import { EntregarPedidoController } from './easyorder/Infrastructure/Controller/
 
 import { ListaCategoriasController } from './easyorder/Infrastructure/Controller/Produto/ListarCategoriasController';
 import { CheckoutPedidoController } from './easyorder/Infrastructure/Controller/Pedido/CheckoutPedidoController';
-import { ProdutoRepositoryMySQL } from './easyorder/Infrastructure/Repository/ProdutoRepositoryMySQL';
+import { ProdutoRepositoryMySQL } from '../Repository/ProdutoRepositoryMySQL';
 import { AtualizarProdutoController } from './easyorder/Infrastructure/Controller/Produto/AtualizarProdutoController';
 
-import { AdicionarComboAoPedidoController, AdicionarComboAoPedidoControllerParam } from './easyorder/Infrastructure/Controller/Pedido/AdicionarComboAoPedidoController';
+import { AdicionarComboAoPedidoController, AdicionarComboAoPedidoControllerParam } from '../Controller/Pedido/AdicionarComboAoPedidoController';
 import { RemoverComboDoPedidoController } from './easyorder/Infrastructure/Controller/Pedido/RemoverComboDoPedidoController';
 import { BuscaProximoPedidoParaPreparacaoController } from './easyorder/Infrastructure/Controller/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoController';
 import { ListarProdutoController } from './easyorder/Infrastructure/Controller/Produto/ListarProdutoController';
