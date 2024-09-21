@@ -1,5 +1,5 @@
-import { ListaCategoriasUsecaseInput, ListaCategoriasUsecaseOutput } from "../../../../Core/Domain/Output/Repository/CategoriaRepositoryInterface";
-import { CategoriaEnum } from "../../../../Core/Domain/ValueObject/CategoriaEnum";
+import { CategoriaEnum } from "../../../Core/Entity/ValueObject/CategoriaEnum";
+import { ListaCategoriasUsecaseOutput } from "../../../Core/Repository/CategoriaRepositoryInterface";
 
 
 

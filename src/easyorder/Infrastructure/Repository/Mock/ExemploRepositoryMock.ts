@@ -1,6 +1,6 @@
-import { ExemploRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ExemploRepositoryInterface";
-import { ExemploEntity } from "../../../../Core/Domain/Entity/ExemploEntity";
-import { EnderecoValueObject } from "../../../../Core/Domain/ValueObject/EnderecoValueObject";
+import { ExemploEntity } from "../../../Core/Entity/ExemploEntity";
+import { EnderecoValueObject } from "../../../Core/Entity/ValueObject/EnderecoValueObject";
+import { ExemploRepositoryInterface } from "../../../Core/Repository/ExemploRepositoryInterface";
 
 export class ExemploRepositoryMock implements ExemploRepositoryInterface {
 

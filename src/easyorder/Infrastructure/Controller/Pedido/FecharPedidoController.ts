@@ -15,6 +15,7 @@ export class FecharPedidoController {
     public async handle(req: Request, res: Response): Promise<void> {
         /**
             #swagger.method = 'put'
+            #swagger.tags = ['Pedidos']
             #swagger.summary = 'Fechar pedido'
             #swagger.description = 'Controller para fechar um pedido'
             #swagger.produces = ["application/json"]

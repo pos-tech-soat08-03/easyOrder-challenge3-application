@@ -1,12 +1,11 @@
-
-import { PedidoEntity } from "../../../Core/Domain/Entity/PedidoEntity";
-import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderDirection, PedidoRepositoryInterfaceFilterOrderField } from "../../../Core/Domain/Output/Repository/PedidoRepositoryInterface";
-import { StatusPedidoEnum, StatusPedidoValueObject } from '../../../Core/Domain/ValueObject/StatusPedidoValueObject';
 import { Sequelize } from 'sequelize';
 import { Model, DataTypes } from 'sequelize';
-import { StatusPagamentoEnum } from '../../../Core/Domain/ValueObject/StatusPagamentoEnum';
-import { PedidoComboEntity } from "../../../Core/Domain/Entity/PedidoComboEntity";
-import { ProdutoEntity } from "../../../Core/Domain/Entity/ProdutoEntity";
+import { PedidoComboEntity } from '../../Core/Entity/PedidoComboEntity';
+import { PedidoEntity } from '../../Core/Entity/PedidoEntity';
+import { ProdutoEntity } from '../../Core/Entity/ProdutoEntity';
+import { StatusPagamentoEnum } from '../../Core/Entity/ValueObject/StatusPagamentoEnum';
+import { StatusPedidoValueObject, StatusPedidoEnum } from '../../Core/Entity/ValueObject/StatusPedidoValueObject';
+import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter, PedidoRepositoryInterfaceFilterOrderField } from '../../Core/Repository/PedidoRepositoryInterface';
 
 class LocalModel extends Model {
     public id!: string;

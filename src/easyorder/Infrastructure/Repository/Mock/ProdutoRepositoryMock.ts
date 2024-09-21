@@ -1,8 +1,6 @@
-import { ProdutoEntity } from "../../../../Core/Domain/Entity/ProdutoEntity";
-import { ProdutoRepositoryInterface } from "../../../../Core/Domain/Output/Repository/ProdutoRepositoryInterface";
-import { CategoriaEnum } from "../../../../Core/Domain/ValueObject/CategoriaEnum";
-import { CpfValueObject } from "../../../../Core/Domain/ValueObject/CpfValueObject";
-import { EmailValueObject } from "../../../../Core/Domain/ValueObject/EmailValueObject";
+import { ProdutoEntity } from "../../../Core/Entity/ProdutoEntity";
+import { CategoriaEnum } from "../../../Core/Entity/ValueObject/CategoriaEnum";
+import { ProdutoRepositoryInterface } from "../../../Core/Repository/ProdutoRepositoryInterface";
 
 
 export class ProdutoRepositoryMock implements ProdutoRepositoryInterface {
