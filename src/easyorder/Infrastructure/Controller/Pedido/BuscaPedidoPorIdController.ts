@@ -1,19 +1,15 @@
-
-import { Request, Response } from 'express';
-import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
-import { PedidoRepositoryInterface } from '../../../Core/Repository/PedidoRepositoryInterface';
-import { BuscaPedidoPorIdUsecase } from '../../../Core/Usecase/Pedidos/BuscaPedidoPorIdUsecase';
+import { Request, Response } from "express";
+import { ConvertePedidoParaJsonFunction } from "./ConvertePedidoParaJsonFunction";
+import { PedidoGatewayInterface } from "../../../Core/Gateway/PedidoGatewayInterface";
+import { BuscaPedidoPorIdUsecase } from "../../../Core/Usecase/Pedidos/BuscaPedidoPorIdUsecase";
 
 export class BuscaPedidoPorIdController {
+  constructor(private pedidoGateway: PedidoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private pedidoRepository: PedidoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido/:pedidoId'
             #swagger.method = 'get'
@@ -28,22 +24,17 @@ export class BuscaPedidoPorIdController {
                 example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
             }
         */
-        try {
+    try {
+      const usecase = new BuscaPedidoPorIdUsecase(this.pedidoGateway);
 
-            const usecase = new BuscaPedidoPorIdUsecase(
-                this.pedidoRepository
-            );
+      const result = await usecase.execute(req.params.pedidoId);
 
-            const result = await usecase.execute(
-                req.params.pedidoId
-            );
+      if (!result) {
+        throw new Error("Erro ao listar pedidos");
+      }
 
-            if (!result) {
-                throw new Error('Erro ao listar pedidos');
-            }
-
-            if (!result.getPedido()) {
-                /**
+      if (!result.getPedido()) {
+        /**
                 #swagger.responses[404] = {
                     'description': 'Nenhum pedido encontrado',
                     '@schema': {
@@ -56,14 +47,14 @@ export class BuscaPedidoPorIdController {
                     }
                 }
                 */
-                res.status(404).json({
-                    mensagem: 'Nenhum pedido encontrado'
-                });
-                return;
-            }
+        res.status(404).json({
+          mensagem: "Nenhum pedido encontrado",
+        });
+        return;
+      }
 
-            res.json({
-                /**
+      res.json({
+        /**
                 #swagger.responses[200] = {
                     description: 'Pedido Encontrado',
                     '@schema': {
@@ -79,13 +70,12 @@ export class BuscaPedidoPorIdController {
                     }
                 }
                 */
-                mensagem: result.getMensagem(),
-                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
-            });
-            return;
-
-        } catch (error: any) {
-            /**
+        mensagem: result.getMensagem(),
+        pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
+      });
+      return;
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -98,11 +88,9 @@ export class BuscaPedidoPorIdController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
-
+  }
 }

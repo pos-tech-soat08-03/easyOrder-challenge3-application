@@ -1,19 +1,15 @@
-
-import { Request, Response } from 'express';
-import { ConvertePedidoParaJsonFunction } from '../../Pedido/ConvertePedidoParaJsonFunction';
-import { PedidoRepositoryInterface } from '../../../../Core/Repository/PedidoRepositoryInterface';
-import { BuscaProximoPedidoParaPreparacaoUsecase } from '../../../../Core/Usecase/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoUsecase';
+import { Request, Response } from "express";
+import { ConvertePedidoParaJsonFunction } from "../../Pedido/ConvertePedidoParaJsonFunction";
+import { PedidoGatewayInterface } from "../../../../Core/Gateway/PedidoGatewayInterface";
+import { BuscaProximoPedidoParaPreparacaoUsecase } from "../../../../Core/Usecase/Preparacao/Pedido/BuscaProximoPedidoParaPreparacaoUsecase";
 
 export class BuscaProximoPedidoParaPreparacaoController {
+  constructor(private pedidoGateway: PedidoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private pedidoRepository: PedidoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Preparação']
             #swagger.path = '/preparacao/pedido/proximo'
             #swagger.method = 'get'
@@ -21,20 +17,19 @@ export class BuscaProximoPedidoParaPreparacaoController {
             #swagger.description = 'Controller para buscar o próximo pedido para preparação'
             #swagger.produces = ["application/json"]
         */
-        try {
+    try {
+      const usecase = new BuscaProximoPedidoParaPreparacaoUsecase(
+        this.pedidoGateway
+      );
 
-            const usecase = new BuscaProximoPedidoParaPreparacaoUsecase(
-                this.pedidoRepository
-            );
+      const result = await usecase.execute();
 
-            const result = await usecase.execute();
+      if (!result) {
+        throw new Error("Erro ao listar pedidos");
+      }
 
-            if (!result) {
-                throw new Error('Erro ao listar pedidos');
-            }
-
-            if (!result.getPedido()) {
-                /**
+      if (!result.getPedido()) {
+        /**
                 #swagger.responses[404] = {
                     'description': 'Nenhum pedido encontrado',
                     '@schema': {
@@ -47,15 +42,15 @@ export class BuscaProximoPedidoParaPreparacaoController {
                     }
                 }
                 */
-                res.status(404).json({
-                    mensagem: 'Nenhum pedido encontrado',
-                    pedidos: []
-                });
-                return;
-            }
+        res.status(404).json({
+          mensagem: "Nenhum pedido encontrado",
+          pedidos: [],
+        });
+        return;
+      }
 
-            res.json({
-                /**
+      res.json({
+        /**
                 #swagger.responses[200] = {
                     'description': 'Pedido encontrado',
                     '@schema': {
@@ -71,13 +66,12 @@ export class BuscaProximoPedidoParaPreparacaoController {
                     }
                 }
                 */
-                mensagem: result.getMensagem(),
-                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
-            });
-            return;
-
-        } catch (error: any) {
-            /**
+        mensagem: result.getMensagem(),
+        pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
+      });
+      return;
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -90,11 +84,9 @@ export class BuscaProximoPedidoParaPreparacaoController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
-
+  }
 }

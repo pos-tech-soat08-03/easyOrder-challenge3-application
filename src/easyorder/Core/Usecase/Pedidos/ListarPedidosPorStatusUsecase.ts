@@ -1,51 +1,58 @@
 import { PedidoEntity } from "../../Entity/PedidoEntity";
 import { StatusPedidoValueObject } from "../../Entity/ValueObject/StatusPedidoValueObject";
-import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilter } from "../../Repository/PedidoRepositoryInterface";
+import {
+  PedidoGatewayInterface,
+  PedidoGatewayInterfaceFilter,
+} from "../../Gateway/PedidoGatewayInterface";
 
 export class ListarPedidosPorStatusUsecaseResponse {
-    private mensagem: string;
-    private pedidos: PedidoEntity[];
+  private mensagem: string;
+  private pedidos: PedidoEntity[];
 
-    constructor(mensagem: string, pedidos: PedidoEntity[]) {
-        this.mensagem = mensagem;
-        this.pedidos = pedidos;
-    }
+  constructor(mensagem: string, pedidos: PedidoEntity[]) {
+    this.mensagem = mensagem;
+    this.pedidos = pedidos;
+  }
 
-    public getMensagem(): string {
-        return this.mensagem;
-    }
+  public getMensagem(): string {
+    return this.mensagem;
+  }
 
-    public getPedidos(): PedidoEntity[] {
-        return this.pedidos;
-    }
+  public getPedidos(): PedidoEntity[] {
+    return this.pedidos;
+  }
 }
 
 export class ListarPedidosPorStatusUsecase {
+  constructor(private readonly pedidoGateway: PedidoGatewayInterface) {}
 
-    constructor(
-        private readonly pedidoRepository: PedidoRepositoryInterface
-    ) { }
+  public async execute(
+    pedidoStatus: StatusPedidoValueObject,
+    filter: PedidoGatewayInterfaceFilter
+  ): Promise<ListarPedidosPorStatusUsecaseResponse> {
+    try {
+      const pedidos = await this.pedidoGateway.listarPedidosPorStatus(
+        pedidoStatus,
+        filter
+      );
 
-    public async execute(
-        pedidoStatus: StatusPedidoValueObject,
-        filter: PedidoRepositoryInterfaceFilter,
-    ): Promise<ListarPedidosPorStatusUsecaseResponse> {
+      if (!pedidos) {
+        throw new Error("Erro ao listar pedidos");
+      }
 
-        try {
-            const pedidos = await this.pedidoRepository.listarPedidosPorStatus(pedidoStatus, filter);
+      if (!pedidos.length) {
+        return new ListarPedidosPorStatusUsecaseResponse(
+          "Nenhum pedido encontrado",
+          []
+        );
+      }
 
-            if (!pedidos) {
-                throw new Error('Erro ao listar pedidos');
-            }
-
-            if (!pedidos.length) {
-                return new ListarPedidosPorStatusUsecaseResponse('Nenhum pedido encontrado', []);
-            }
-
-            return new ListarPedidosPorStatusUsecaseResponse('Pedido listados com sucesso', pedidos);
-        } catch (error: any) {
-            return new ListarPedidosPorStatusUsecaseResponse(error.message, []);
-        }
+      return new ListarPedidosPorStatusUsecaseResponse(
+        "Pedido listados com sucesso",
+        pedidos
+      );
+    } catch (error: any) {
+      return new ListarPedidosPorStatusUsecaseResponse(error.message, []);
     }
-
+  }
 }

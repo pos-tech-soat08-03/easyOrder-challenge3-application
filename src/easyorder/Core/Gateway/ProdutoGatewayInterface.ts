@@ -2,7 +2,7 @@ import { promises } from "dns";
 import { ProdutoEntity } from "../Entity/ProdutoEntity";
 import { CategoriaEnum } from "../Entity/ValueObject/CategoriaEnum";
 
-export interface ProdutoRepositoryInterface {
+export interface ProdutoGatewayInterface {
     listarProdutos (): Promise<ProdutoEntity[]>;
     listarProdutoCategoria(categoria: CategoriaEnum): Promise<ProdutoEntity[]>;
     salvarProduto (produto: ProdutoEntity):Promise <void> ;

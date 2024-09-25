@@ -1,18 +1,15 @@
-import express from 'express';
-import { Request, Response } from 'express';
-import { RemoverProdutoUsecase } from '../../../Core/Usecase/Produtos/RemoverProdutosUseCase';
-import { ProdutoRepositoryInterface } from '../../../Core/Repository/ProdutoRepositoryInterface';
+import express from "express";
+import { Request, Response } from "express";
+import { RemoverProdutoUsecase } from "../../../Core/Usecase/Produtos/RemoverProdutosUseCase";
+import { ProdutoGatewayInterface } from "../../../Core/Gateway/ProdutoGatewayInterface";
 
 export class RemoverProdutoController {
+  public constructor(private produtoGateway: ProdutoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    public constructor(private produtoRepository: ProdutoRepositoryInterface) {
-        this.handle = this.handle.bind(this);
-    }
-
-
-    public async handle(req: Request, res: Response): Promise<void> {
-
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/remover/{id}'
             #swagger.method = 'delete'
@@ -29,21 +26,29 @@ export class RemoverProdutoController {
             }
         */
 
-        const removerProdutoUsecase = new RemoverProdutoUsecase(this.produtoRepository);
+    const removerProdutoUsecase = new RemoverProdutoUsecase(
+      this.produtoGateway
+    );
 
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
-        try {
-            const result = await removerProdutoUsecase.execute({id});
+    try {
+      const result = await removerProdutoUsecase.execute({ id });
 
-            if (result.sucesso === true) {
-                res.status(200).json({ sucesso: true, mensagem: `Produto com ID ${id} removido com sucesso.` });
-            } else {
-                res.status(400).json({ sucesso: false, mensagem: 'Erro na remoção do produto.' });
-            }
-        } catch (error) {
-            res.status(500).json({ sucesso: false, mensagem: 'Ocorreu um erro inesperado.' });
-        }
+      if (result.sucesso === true) {
+        res.status(200).json({
+          sucesso: true,
+          mensagem: `Produto com ID ${id} removido com sucesso.`,
+        });
+      } else {
+        res
+          .status(400)
+          .json({ sucesso: false, mensagem: "Erro na remoção do produto." });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .json({ sucesso: false, mensagem: "Ocorreu um erro inesperado." });
     }
-
+  }
 }

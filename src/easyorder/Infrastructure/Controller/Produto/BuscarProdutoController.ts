@@ -1,18 +1,22 @@
 import express, { Request, Response } from "express";
-import { ProdutoRepositoryInterface } from "../../../Core/Repository/ProdutoRepositoryInterface";
+import { ProdutoGatewayInterface } from "../../../Core/Gateway/ProdutoGatewayInterface";
 import { BuscarProdutoPorIdUseCase } from "../../../Core/Usecase/Produtos/BuscaProdutoUsecase";
 
 export class BuscarProdutoController {
+  private buscarProdutoPorIdUseCase: BuscarProdutoPorIdUseCase;
 
-    private buscarProdutoPorIdUseCase: BuscarProdutoPorIdUseCase;
+  public constructor(produtoGateway: ProdutoGatewayInterface) {
+    this.buscarProdutoPorIdUseCase = new BuscarProdutoPorIdUseCase(
+      produtoGateway
+    );
+    this.handle = this.handle.bind(this);
+  }
 
-    public constructor(produtoRepository: ProdutoRepositoryInterface) {
-        this.buscarProdutoPorIdUseCase = new BuscarProdutoPorIdUseCase(produtoRepository);
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: express.Request, res: express.Response): Promise<void> {
-        /**
+  public async handle(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    /**
             #swagger.summary = 'Buscar produto por ID.'
             #swagger.description = 'Controller para buscar um produto usando o ID.'
             #swagger.tags = ['Produtos']
@@ -28,10 +32,10 @@ export class BuscarProdutoController {
             }
         */
 
-        try {
-            const id_produto: string = req.params.id;
+    try {
+      const id_produto: string = req.params.id;
 
-            /**
+      /**
                                     #swagger.responses[200] = {
                                         'description': 'Produto localizado:',
                                         '@schema': {
@@ -70,28 +74,24 @@ export class BuscarProdutoController {
                                     }
                                 */
 
+      if (!id_produto) {
+        res.status(400).json({ mensagem: "ID não informado", produto: null });
+        return;
+      }
 
-            if (!id_produto) {
-                res.status(400).json({ mensagem: 'ID não informado', produto: null });
-                return;
-            }
+      const produto = await this.buscarProdutoPorIdUseCase.execute(id_produto);
 
-
-            const produto = await this.buscarProdutoPorIdUseCase.execute(id_produto);
-
-
-            if (produto) {
-                res.status(200).json({
-                    produto: {
-                        id: produto.getId(),
-                        nome: produto.getNome(),
-                        preco: produto.getPreco(),
-                        categoria: produto.getCategoria()
-                    }
-                });
-            } else {
-
-                /**
+      if (produto) {
+        res.status(200).json({
+          produto: {
+            id: produto.getId(),
+            nome: produto.getNome(),
+            preco: produto.getPreco(),
+            categoria: produto.getCategoria(),
+          },
+        });
+      } else {
+        /**
             #swagger.responses[404] = {
                 'description': 'Produto não encontrado',
                 '@schema': {
@@ -109,11 +109,14 @@ export class BuscarProdutoController {
                 }
             }
             */
-                res.status(404).json({ mensagem: 'Produto não encontrado', produto: null });
-            }
-        } catch (error) {
-
-            res.status(500).json({ mensagem: 'Erro interno do servidor', produto: null });
-        }
+        res
+          .status(404)
+          .json({ mensagem: "Produto não encontrado", produto: null });
+      }
+    } catch (error) {
+      res
+        .status(500)
+        .json({ mensagem: "Erro interno do servidor", produto: null });
     }
+  }
 }

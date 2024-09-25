@@ -1,36 +1,35 @@
-
-import { Request, Response } from 'express';
-import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
-import { PedidoRepositoryInterface } from '../../../Core/Repository/PedidoRepositoryInterface';
-import { ProdutoRepositoryInterface } from '../../../Core/Repository/ProdutoRepositoryInterface';
-import { AdicionarComboAoPedidoUsecase } from '../../../Core/Usecase/Pedidos/AdicionarComboAoPedidoUsecase';
+import { Request, Response } from "express";
+import { ConvertePedidoParaJsonFunction } from "./ConvertePedidoParaJsonFunction";
+import { PedidoGatewayInterface } from "../../../Core/Gateway/PedidoGatewayInterface";
+import { ProdutoGatewayInterface } from "../../../Core/Gateway/ProdutoGatewayInterface";
+import { AdicionarComboAoPedidoUsecase } from "../../../Core/Usecase/Pedidos/AdicionarComboAoPedidoUsecase";
 
 export class AdicionarComboAoPedidoControllerParam {
-    public pedidoRepository: PedidoRepositoryInterface;
-    public produtoRepository: ProdutoRepositoryInterface;
+  public pedidoGateway: PedidoGatewayInterface;
+  public produtoGateway: ProdutoGatewayInterface;
 
-    constructor(pedidoRepository: PedidoRepositoryInterface, produtoRepository: ProdutoRepositoryInterface) {
-        this.pedidoRepository = pedidoRepository;
-        this.produtoRepository = produtoRepository;
-    }
+  constructor(
+    pedidoGateway: PedidoGatewayInterface,
+    produtoGateway: ProdutoGatewayInterface
+  ) {
+    this.pedidoGateway = pedidoGateway;
+    this.produtoGateway = produtoGateway;
+  }
 }
 
 export class AdicionarComboAoPedidoController {
+  public pedidoGateway: PedidoGatewayInterface;
+  public produtoGateway: ProdutoGatewayInterface;
 
-    public pedidoRepository: PedidoRepositoryInterface;
-    public produtoRepository: ProdutoRepositoryInterface;
+  constructor(param: AdicionarComboAoPedidoControllerParam) {
+    this.pedidoGateway = param.pedidoGateway;
+    this.produtoGateway = param.produtoGateway;
 
-    constructor(
-        param: AdicionarComboAoPedidoControllerParam
-    ) {
-        this.pedidoRepository = param.pedidoRepository;
-        this.produtoRepository = param.produtoRepository;
+    this.handle = this.handle.bind(this);
+  }
 
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido/:pedidoId/combo'
             #swagger.method = 'post'
@@ -81,32 +80,31 @@ export class AdicionarComboAoPedidoController {
                 }
             }
         */
-        try {
+    try {
+      const usecase = new AdicionarComboAoPedidoUsecase(
+        this.pedidoGateway,
+        this.produtoGateway
+      );
 
-            const usecase = new AdicionarComboAoPedidoUsecase(
-                this.pedidoRepository,
-                this.produtoRepository
-            );
+      if (req.body === undefined || Object.keys(req.body).length === 0) {
+        throw new Error("Nenhum dado enviado.");
+      }
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado enviado.');
-            }
+      const pedidoId = req.params.pedidoId;
 
-            const pedidoId = req.params.pedidoId;
+      const result = await usecase.execute(
+        pedidoId,
+        req.body.lancheId,
+        req.body.bebidaId,
+        req.body.sobremesaId,
+        req.body.acompanhamentoId
+      );
 
-            const result = await usecase.execute(
-                pedidoId,
-                req.body.lancheId,
-                req.body.bebidaId,
-                req.body.sobremesaId,
-                req.body.acompanhamentoId,
-            );
+      if (!result.getSucessoExecucao()) {
+        throw new Error(result.getMensagem());
+      }
 
-            if (!result.getSucessoExecucao()) {
-                throw new Error(result.getMensagem());
-            }
-
-            /**
+      /**
             #swagger.responses[200] = {
                 description: 'Combo adicionado ao pedido com sucesso',
                 '@schema': {
@@ -122,13 +120,12 @@ export class AdicionarComboAoPedidoController {
                 }
             }
             */
-            res.json({
-                mensagem: result.getMensagem(),
-                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
-            });
-
-        } catch (error: any) {
-            /**
+      res.json({
+        mensagem: result.getMensagem(),
+        pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
+      });
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -141,13 +138,11 @@ export class AdicionarComboAoPedidoController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
-        return;
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
 
+    return;
+  }
 }

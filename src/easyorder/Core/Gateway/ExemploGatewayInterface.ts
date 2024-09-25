@@ -2,6 +2,6 @@ import { ExemploEntity } from "../Entity/ExemploEntity";
 
 
 
-export interface ExemploRepositoryInterface {
+export interface ExemploGatewayInterface {
     listarTodos(): ExemploEntity[]
 }

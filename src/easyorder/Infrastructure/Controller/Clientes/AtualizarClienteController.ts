@@ -1,18 +1,17 @@
 import express from "express";
-import { ClienteRepositoryInterface } from "../../../Core/Repository/ClienteRepositoryInterface";
+import { ClienteGatewayInterface } from "../../../Core/Gateway/ClienteGatewayInterface";
 import { AtualizarClienteUsecase } from "../../../Core/Usecase/Clientes/AtualizarClienteUsecase";
 
 export class AtualizarClienteController {
+  constructor(private clienteGateway: ClienteGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private clienteRepository: ClienteRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: express.Request, res: express.Response): Promise<void> {
-
-        /**
+  public async handle(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    /**
             #swagger.tags = ['Clientes']
             #swagger.path = '/cliente/atualizar'
             #swagger.method = 'put'
@@ -47,22 +46,18 @@ export class AtualizarClienteController {
             }
         */
 
-        const usecase = new AtualizarClienteUsecase(
-            this.clienteRepository
-        );
+    const usecase = new AtualizarClienteUsecase(this.clienteGateway);
 
+    try {
+      if (req.body === undefined || Object.keys(req.body).length === 0) {
+        throw new Error("Nenhum dado informado.");
+      }
 
-        try {
+      const { cpf, nome, email } = req.body;
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado informado.');
-            }
+      const result = await usecase.execute(cpf, nome, email);
 
-            const { cpf, nome, email } = req.body;
-
-        const result = await usecase.execute(cpf, nome, email);
-
-            /**
+      /**
                 #swagger.responses[200] = {
                     'description': 'Cliente atualizado com sucesso',
                     '@schema': {
@@ -101,20 +96,20 @@ export class AtualizarClienteController {
                 }
             */
 
-            res.json({
-                resultado_atualizacao: result.getSucessoAtualizacao(),
-                mensagem: result.getMensagem(),
-                cliente: result.getSucessoAtualizacao() ? {
-                    id: result.getCliente()?.getId(),
-                    nome: result.getCliente()?.getNome(),
-                    cpf: result.getCliente()?.getCpf().getFormatado(),
-                    email: result.getCliente()?.getEmail().getValue()
-                } : null
-            });
-
-        }
-        catch (error: any) {
-            /**
+      res.json({
+        resultado_atualizacao: result.getSucessoAtualizacao(),
+        mensagem: result.getMensagem(),
+        cliente: result.getSucessoAtualizacao()
+          ? {
+              id: result.getCliente()?.getId(),
+              nome: result.getCliente()?.getNome(),
+              cpf: result.getCliente()?.getCpf().getFormatado(),
+              email: result.getCliente()?.getEmail().getValue(),
+            }
+          : null,
+      });
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -127,12 +122,10 @@ export class AtualizarClienteController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: error.message,
-            });
-            return;
-        }
-
+      res.status(400).json({
+        mensagem: error.message,
+      });
+      return;
     }
-
+  }
 }
