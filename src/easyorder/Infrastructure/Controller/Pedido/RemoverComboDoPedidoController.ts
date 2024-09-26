@@ -1,19 +1,15 @@
-
-import { Request, Response } from 'express';
-import { RemoverComboDoPedidoUsecase } from '../../../Core/Usecase/Pedidos/RemoverComboDoPedidoUsecase';
-import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
-import { PedidoRepositoryInterface } from '../../../Core/Repository/PedidoRepositoryInterface';
+import { Request, Response } from "express";
+import { RemoverComboDoPedidoUsecase } from "../../../Core/Usecase/Pedidos/RemoverComboDoPedidoUsecase";
+import { ConvertePedidoParaJsonFunction } from "./ConvertePedidoParaJsonFunction";
+import { PedidoGatewayInterface } from "../../../Core/Gateway/PedidoGatewayInterface";
 
 export class RemoverComboDoPedidoController {
+  constructor(private pedidoGateway: PedidoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private pedidoRepository: PedidoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido/:pedidoId/combo/:comboId'
             #swagger.method = 'delete'
@@ -35,25 +31,19 @@ export class RemoverComboDoPedidoController {
                 example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
             }
         */
-        try {
+    try {
+      const usecase = new RemoverComboDoPedidoUsecase(this.pedidoGateway);
 
-            const usecase = new RemoverComboDoPedidoUsecase(
-                this.pedidoRepository
-            );
+      const pedidoId = req.params.pedidoId;
+      const comboId = req.params.comboId;
 
-            const pedidoId = req.params.pedidoId;
-            const comboId = req.params.comboId;
+      const result = await usecase.execute(pedidoId, comboId);
 
-            const result = await usecase.execute(
-                pedidoId,
-                comboId,
-            );
+      if (!result.getSucessoExecucao()) {
+        throw new Error(result.getMensagem());
+      }
 
-            if (!result.getSucessoExecucao()) {
-                throw new Error(result.getMensagem());
-            }
-
-            /**
+      /**
             #swagger.responses[200] = {
                 description: 'Combo removido do pedido com sucesso',
                 '@schema': {
@@ -69,13 +59,12 @@ export class RemoverComboDoPedidoController {
                 }
             }
             */
-            res.json({
-                mensagem: result.getMensagem(),
-                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
-            });
-
-        } catch (error: any) {
-            /**
+      res.json({
+        mensagem: result.getMensagem(),
+        pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
+      });
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -88,13 +77,11 @@ export class RemoverComboDoPedidoController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
-        return;
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
 
+    return;
+  }
 }

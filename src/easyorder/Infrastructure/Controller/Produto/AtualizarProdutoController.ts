@@ -1,18 +1,17 @@
 import express from "express";
-import { ProdutoRepositoryInterface } from "../../../Core/Repository/ProdutoRepositoryInterface";
+import { ProdutoGatewayInterface } from "../../../Core/Gateway/ProdutoGatewayInterface";
 import { AtualizarProdutoUsecase } from "../../../Core/Usecase/Produtos/AtualizarProdutoUsecase";
 
-
 export class AtualizarProdutoController {
-    public constructor(
-        private repository: ProdutoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
+  public constructor(private Gateway: ProdutoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    public async handle(req: express.Request, res: express.Response): Promise<void> {
-
-        /**
+  public async handle(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    /**
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/atualizar'
             #swagger.method = 'put'
@@ -51,11 +50,10 @@ export class AtualizarProdutoController {
                 }
             }
         */
-        const usecase = new AtualizarProdutoUsecase(this.repository);
+    const usecase = new AtualizarProdutoUsecase(this.Gateway);
 
-        if (req.body === undefined || Object.keys(req.body).length === 0) {
-
-            /**
+    if (req.body === undefined || Object.keys(req.body).length === 0) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Produto não encontrado',
                 '@schema': {
@@ -73,18 +71,25 @@ export class AtualizarProdutoController {
             }
             */
 
-            res.status(400).json({
-                resultado_cadastro: false,
-                mensagem: 'Nenhum dado enviado.',
-                produto: null
-            });
-            return;
-        }
+      res.status(400).json({
+        resultado_cadastro: false,
+        mensagem: "Nenhum dado enviado.",
+        produto: null,
+      });
+      return;
+    }
 
-        const { nome, descricao, preco, categoria, imagemURL, id } = req.body;
-        const result = await usecase.execute(nome, descricao, preco, categoria, imagemURL, id);
+    const { nome, descricao, preco, categoria, imagemURL, id } = req.body;
+    const result = await usecase.execute(
+      nome,
+      descricao,
+      preco,
+      categoria,
+      imagemURL,
+      id
+    );
 
-        /**
+    /**
                                     #swagger.responses[200] = {
                                         'description': 'Produto atualizado com sucesso:',
                                         '@schema': {
@@ -131,19 +136,19 @@ export class AtualizarProdutoController {
                                     }
                                 */
 
-        res.json({
-            resultado_cadastro: result.getSucessoCadastro(),
-            mensagem: result.getMensagem(),
-            produto: result.getSucessoCadastro() ? {
-                id: result.getProduto()?.getId(),
-                nome: result.getProduto()?.getNome(),
-                descricao: result.getProduto()?.getDescricao(),
-                preco: result.getProduto()?.getPreco(),
-                categoria: result.getProduto()?.getCategoria(),
-                imagem_url: result.getProduto()?.getImagemURL()
-            } : null
-        });
-
-    }
-
+    res.json({
+      resultado_cadastro: result.getSucessoCadastro(),
+      mensagem: result.getMensagem(),
+      produto: result.getSucessoCadastro()
+        ? {
+            id: result.getProduto()?.getId(),
+            nome: result.getProduto()?.getNome(),
+            descricao: result.getProduto()?.getDescricao(),
+            preco: result.getProduto()?.getPreco(),
+            categoria: result.getProduto()?.getCategoria(),
+            imagem_url: result.getProduto()?.getImagemURL(),
+          }
+        : null,
+    });
+  }
 }

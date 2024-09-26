@@ -1,60 +1,61 @@
 import { PedidoEntity } from "../../Entity/PedidoEntity";
-import { PedidoRepositoryInterface } from "../../Repository/PedidoRepositoryInterface";
-
+import { PedidoGatewayInterface } from "../../Gateway/PedidoGatewayInterface";
 
 export class RemoverComboDoPedidoUsecaseResponse {
-    private sucesso_execucao: boolean;
-    private mensagem: string;
-    private pedido: PedidoEntity | null = null;
+  private sucesso_execucao: boolean;
+  private mensagem: string;
+  private pedido: PedidoEntity | null = null;
 
-    constructor(sucesso_execucao: boolean, mensagem: string, pedido?: PedidoEntity | null) {
-        this.sucesso_execucao = sucesso_execucao;
-        this.mensagem = mensagem;
-        this.pedido = pedido || null;
-    }
+  constructor(
+    sucesso_execucao: boolean,
+    mensagem: string,
+    pedido?: PedidoEntity | null
+  ) {
+    this.sucesso_execucao = sucesso_execucao;
+    this.mensagem = mensagem;
+    this.pedido = pedido || null;
+  }
 
-    public getSucessoExecucao(): boolean {
-        return this.sucesso_execucao;
-    }
+  public getSucessoExecucao(): boolean {
+    return this.sucesso_execucao;
+  }
 
-    public getMensagem(): string {
-        return this.mensagem;
-    }
+  public getMensagem(): string {
+    return this.mensagem;
+  }
 
-    public getPedido(): PedidoEntity | null {
-        return this.pedido;
-    }
+  public getPedido(): PedidoEntity | null {
+    return this.pedido;
+  }
 }
 
 export class RemoverComboDoPedidoUsecase {
+  constructor(private readonly pedidoGateway: PedidoGatewayInterface) {}
 
-    constructor(
-        private readonly pedidoRepository: PedidoRepositoryInterface
-    ) { }
+  public async execute(
+    pedidoId: string,
+    comboId: string
+  ): Promise<RemoverComboDoPedidoUsecaseResponse> {
+    try {
+      const pedido = await this.pedidoGateway.buscaPedidoPorId(pedidoId);
 
-    public async execute(
-        pedidoId: string,
-        comboId: string,
-    ): Promise<RemoverComboDoPedidoUsecaseResponse> {
+      if (!pedido) {
+        throw new Error("Pedido não encontrado");
+      }
 
-        try {
+      pedido.removerCombo(comboId);
 
-            const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
+      await this.pedidoGateway.salvarPedido(pedido);
 
-            if (!pedido) {
-                throw new Error('Pedido não encontrado');
-            }
+      const pedidoSalvo = await this.pedidoGateway.buscaPedidoPorId(pedidoId);
 
-            pedido.removerCombo(comboId);
-
-            await this.pedidoRepository.salvarPedido(pedido);
-
-            const pedidoSalvo = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
-
-            return new RemoverComboDoPedidoUsecaseResponse(true, 'Combo removido com sucesso', pedidoSalvo);
-        } catch (error: any) {
-            return new RemoverComboDoPedidoUsecaseResponse(false, error.message);
-        }
-
+      return new RemoverComboDoPedidoUsecaseResponse(
+        true,
+        "Combo removido com sucesso",
+        pedidoSalvo
+      );
+    } catch (error: any) {
+      return new RemoverComboDoPedidoUsecaseResponse(false, error.message);
     }
+  }
 }

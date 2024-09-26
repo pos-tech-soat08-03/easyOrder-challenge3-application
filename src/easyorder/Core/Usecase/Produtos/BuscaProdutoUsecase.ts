@@ -1,32 +1,28 @@
 import { ProdutoEntity } from "../../Entity/ProdutoEntity";
-import { ProdutoRepositoryInterface } from "../../Repository/ProdutoRepositoryInterface";
+import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
 
 export class BuscarProdutoPorIdUseCase {
-    private produtoRepository: ProdutoRepositoryInterface;
+  private produtoGateway: ProdutoGatewayInterface;
 
-    constructor(produtoRepository: ProdutoRepositoryInterface) {
-        this.produtoRepository = produtoRepository;
+  constructor(produtoGateway: ProdutoGatewayInterface) {
+    this.produtoGateway = produtoGateway;
+  }
+
+  public async execute(id: string): Promise<ProdutoEntity | null> {
+    try {
+      if (!id) {
+        throw new Error("ID inválido");
+      }
+
+      const produto = await this.produtoGateway.buscarProdutoPorId(id);
+
+      if (!produto) {
+        return null;
+      }
+
+      return produto;
+    } catch (error) {
+      throw error;
     }
-
-    public async execute(id: string): Promise<ProdutoEntity | null> {
-        try {
-            if (!id) {
-                throw new Error("ID inválido");
-            }
-
-
-            const produto = await this.produtoRepository.buscarProdutoPorId(id);
-
-
-            if (!produto) {
-                return null;
-            }
-
-
-            return produto;
-        } catch (error) {
-
-            throw error;
-        }
-    }
+  }
 }

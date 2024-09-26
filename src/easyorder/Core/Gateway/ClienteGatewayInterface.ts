@@ -1,7 +1,7 @@
 import { ClienteEntity } from "../Entity/ClienteEntity";
 import { CpfValueObject } from "../Entity/ValueObject/CpfValueObject";
 
-export interface ClienteRepositoryInterface {
+export interface ClienteGatewayInterface {
     listarClientes(): Promise<ClienteEntity[]>;
     adicionarCliente(cliente: ClienteEntity): Promise<boolean>;
     atualizarCliente(cliente: ClienteEntity, novoCliente: ClienteEntity): Promise<boolean>;

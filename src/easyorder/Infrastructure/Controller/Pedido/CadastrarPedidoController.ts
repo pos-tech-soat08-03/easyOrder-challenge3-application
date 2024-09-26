@@ -1,19 +1,15 @@
-
-import { Request, Response } from 'express';
-import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
-import { PedidoRepositoryInterface } from '../../../Core/Repository/PedidoRepositoryInterface';
-import { CadastrarPedidoUsecase } from '../../../Core/Usecase/Pedidos/CadastrarPedidoUsecase';
+import { Request, Response } from "express";
+import { ConvertePedidoParaJsonFunction } from "./ConvertePedidoParaJsonFunction";
+import { PedidoGatewayInterface } from "../../../Core/Gateway/PedidoGatewayInterface";
+import { CadastrarPedidoUsecase } from "../../../Core/Usecase/Pedidos/CadastrarPedidoUsecase";
 
 export class CadastrarPedidoController {
+  constructor(private pedidoGateway: PedidoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private pedidoRepository: PedidoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido'
             #swagger.method = 'post'
@@ -39,34 +35,31 @@ export class CadastrarPedidoController {
                 }
             }
         */
-        try {
+    try {
+      const usecase = new CadastrarPedidoUsecase(this.pedidoGateway);
 
-            const usecase = new CadastrarPedidoUsecase(
-                this.pedidoRepository
-            );
+      if (req.body === undefined || Object.keys(req.body).length === 0) {
+        throw new Error("Nenhum dado enviado.");
+      }
 
-            if (req.body === undefined || Object.keys(req.body).length === 0) {
-                throw new Error('Nenhum dado enviado.');
-            }
+      const cliente_identificado: boolean = req.body.cliente_identificado;
+      const clienteId: string = req.body.clienteId;
 
-            const cliente_identificado: boolean = req.body.cliente_identificado;
-            const clienteId: string = req.body.clienteId;
+      if (cliente_identificado) {
+        if (!clienteId) {
+          throw new Error(
+            "Para identificar o Cliente, é obrigatório inserir o id."
+          );
+        }
+      }
 
-            if (cliente_identificado) {
+      const result = await usecase.execute(cliente_identificado, clienteId);
 
-                if (!clienteId) {
-                    throw new Error('Para identificar o Cliente, é obrigatório inserir o id.');
-                }
-    
-            }
-            
-            const result = await usecase.execute(cliente_identificado, clienteId);
+      if (!result.getSucessoExecucao()) {
+        throw new Error(result.getMensagem());
+      }
 
-            if (!result.getSucessoExecucao()) {
-                throw new Error(result.getMensagem());
-            }
-
-            /**
+      /**
             #swagger.responses[200] = {
                 'description': 'Pedido cadastrado com sucesso',
                 '@schema': {
@@ -82,13 +75,12 @@ export class CadastrarPedidoController {
                 }
             }
             */
-            res.json({
-                mensagem: result.getMensagem(),
-                pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
-            });
-
-        } catch (error: any) {
-            /**
+      res.json({
+        mensagem: result.getMensagem(),
+        pedido: ConvertePedidoParaJsonFunction(result.getPedido()),
+      });
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -101,13 +93,11 @@ export class CadastrarPedidoController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
-        return;
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
 
+    return;
+  }
 }

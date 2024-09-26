@@ -1,20 +1,23 @@
-
-import { Request, Response } from 'express';
-import { ConvertePedidoParaJsonFunction } from './ConvertePedidoParaJsonFunction';
-import { StatusPedidoValueObject, StatusPedidoEnum } from '../../../Core/Entity/ValueObject/StatusPedidoValueObject';
-import { PedidoRepositoryInterface, PedidoRepositoryInterfaceFilterOrderField, PedidoRepositoryInterfaceFilterOrderDirection } from '../../../Core/Repository/PedidoRepositoryInterface';
-import { ListarPedidosPorStatusUsecase } from '../../../Core/Usecase/Pedidos/ListarPedidosPorStatusUsecase';
+import { Request, Response } from "express";
+import { ConvertePedidoParaJsonFunction } from "./ConvertePedidoParaJsonFunction";
+import {
+  StatusPedidoValueObject,
+  StatusPedidoEnum,
+} from "../../../Core/Entity/ValueObject/StatusPedidoValueObject";
+import {
+  PedidoGatewayInterface,
+  PedidoGatewayInterfaceFilterOrderField,
+  PedidoGatewayInterfaceFilterOrderDirection,
+} from "../../../Core/Gateway/PedidoGatewayInterface";
+import { ListarPedidosPorStatusUsecase } from "../../../Core/Usecase/Pedidos/ListarPedidosPorStatusUsecase";
 
 export class ListarPedidosPorStatusController {
+  constructor(private pedidoGateway: PedidoGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private pedidoRepository: PedidoRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: Request, res: Response): Promise<void> {
-        /**
+  public async handle(req: Request, res: Response): Promise<void> {
+    /**
             #swagger.tags = ['Pedidos']
             #swagger.path = '/pedido/listar/:statusPedido'
             #swagger.method = 'get'
@@ -77,39 +80,43 @@ export class ListarPedidosPorStatusController {
                 ]
             }
         */
-        try {
+    try {
+      const statusPedido: string = req.params.statusPedido;
 
-            const statusPedido: string = req.params.statusPedido;
+      if (!statusPedido) {
+        throw new Error("Status do pedido não informado");
+      }
 
-            if (!statusPedido) {
-                throw new Error('Status do pedido não informado');
-            }
+      const paramPage = req.query.page ? parseInt(req.query.page as string) : 1;
+      const paramLimit = req.query.limit
+        ? parseInt(req.query.limit as string)
+        : 10;
+      const paramOrderField = req.query.orderField
+        ? (req.query.orderField as string)
+        : "DATA_CADASTRO";
+      const paramOrderDirection = req.query.orderDirection
+        ? (req.query.orderDirection as string)
+        : "DESC";
 
-            const paramPage = req.query.page ? parseInt(req.query.page as string) : 1;
-            const paramLimit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-            const paramOrderField = req.query.orderField ? req.query.orderField as string : 'DATA_CADASTRO';
-            const paramOrderDirection = req.query.orderDirection ? req.query.orderDirection as string : 'DESC';
+      const usecase = new ListarPedidosPorStatusUsecase(this.pedidoGateway);
 
-            const usecase = new ListarPedidosPorStatusUsecase(
-                this.pedidoRepository
-            );
+      const result = await usecase.execute(
+        new StatusPedidoValueObject(statusPedido as StatusPedidoEnum),
+        {
+          page: paramPage,
+          limit: paramLimit,
+          orderField: paramOrderField as PedidoGatewayInterfaceFilterOrderField,
+          orderDirection:
+            paramOrderDirection as PedidoGatewayInterfaceFilterOrderDirection,
+        }
+      );
 
-            const result = await usecase.execute(
-                new StatusPedidoValueObject(statusPedido as StatusPedidoEnum),
-                {
-                    page: paramPage,
-                    limit: paramLimit,
-                    orderField: paramOrderField as PedidoRepositoryInterfaceFilterOrderField,
-                    orderDirection: paramOrderDirection as PedidoRepositoryInterfaceFilterOrderDirection
-                }
-            );
+      if (!result) {
+        throw new Error("Erro ao listar pedidos");
+      }
 
-            if (!result) {
-                throw new Error('Erro ao listar pedidos');
-            }
-
-            if (!result.getPedidos().length) {
-                /**
+      if (!result.getPedidos().length) {
+        /**
                 #swagger.responses[404] = {
                     'description': 'Nenhum pedido encontrado',
                     '@schema': {
@@ -126,15 +133,15 @@ export class ListarPedidosPorStatusController {
                     }
                 }
                 */
-                res.status(404).json({
-                    mensagem: 'Nenhum pedido encontrado',
-                    pedidos: []
-                });
-                return;
-            }
+        res.status(404).json({
+          mensagem: "Nenhum pedido encontrado",
+          pedidos: [],
+        });
+        return;
+      }
 
-            res.json({
-                /**
+      res.json({
+        /**
                 #swagger.responses[200] = {
                     'description': 'Pedidos listados com sucesso',
                     '@schema': {
@@ -153,13 +160,14 @@ export class ListarPedidosPorStatusController {
                     }
                 }
                 */
-                mensagem: result.getMensagem(),
-                pedidos: result.getPedidos().map(pedido => ConvertePedidoParaJsonFunction(pedido)),
-            });
-            return;
-
-        } catch (error: any) {
-            /**
+        mensagem: result.getMensagem(),
+        pedidos: result
+          .getPedidos()
+          .map((pedido) => ConvertePedidoParaJsonFunction(pedido)),
+      });
+      return;
+    } catch (error: any) {
+      /**
             #swagger.responses[400] = {
                 'description': 'Ocorreu um erro inesperado',
                 '@schema': {
@@ -172,11 +180,9 @@ export class ListarPedidosPorStatusController {
                 }
             }
             */
-            res.status(400).json({
-                mensagem: 'Ocorreu um erro inesperado: ' + error.message,
-            });
-        }
-
+      res.status(400).json({
+        mensagem: "Ocorreu um erro inesperado: " + error.message,
+      });
     }
-
+  }
 }

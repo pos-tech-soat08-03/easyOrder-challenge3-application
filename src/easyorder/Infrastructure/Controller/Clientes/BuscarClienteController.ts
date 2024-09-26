@@ -1,17 +1,17 @@
 import express from "express";
-import { ClienteRepositoryInterface } from "../../../Core/Repository/ClienteRepositoryInterface";
+import { ClienteGatewayInterface } from "../../../Core/Gateway/ClienteGatewayInterface";
 import { BuscarClienteUsecase } from "../../../Core/Usecase/Clientes/BuscarClienteUsecase";
 
 export class BuscarClienteController {
+  constructor(private clienteGateway: ClienteGatewayInterface) {
+    this.handle = this.handle.bind(this);
+  }
 
-    constructor(
-        private clienteRepository: ClienteRepositoryInterface
-    ) {
-        this.handle = this.handle.bind(this);
-    }
-
-    public async handle(req: express.Request, res: express.Response): Promise<void> {
-        /**
+  public async handle(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    /**
             #swagger.summary = 'Buscar Cliente do Restaurante por CPF.'
             #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado nas próximas etapas por ID.
             #swagger.tags = ['Clientes']
@@ -27,39 +27,34 @@ export class BuscarClienteController {
             }
         */
 
-        const usecase = new BuscarClienteUsecase(
-            this.clienteRepository
-        );
+    const usecase = new BuscarClienteUsecase(this.clienteGateway);
 
-        try { 
+    try {
+      const cpf: string = req.params.cpf;
 
-            const cpf: string = req.params.cpf;
+      if (!cpf) {
+        throw new Error("CPF não informado");
+      }
 
-            if (!cpf) {
-                throw new Error('CPF não informado');
+      const result = await usecase.execute(cpf);
+
+      res.json({
+        mensagem: result.getMensagem(),
+        cliente: result.getCliente()
+          ? {
+              id: result.getCliente()?.getId(),
+              cpf: result.getCliente()?.getCpf().getFormatado(),
+              nome: result.getCliente()?.getNome(),
+              email: result.getCliente()?.getEmail().getValue(),
             }
-
-            const result = await usecase.execute(cpf);
-
-            res.json({
-                mensagem: result.getMensagem(),
-                cliente: result.getCliente() ? {
-                    id: result.getCliente()?.getId(),
-                    cpf: result.getCliente()?.getCpf().getFormatado(),
-                    nome: result.getCliente()?.getNome(),
-                    email: result.getCliente()?.getEmail().getValue()
-                } : null
-            });
-
-        }
-        catch (error: any) {
-            res.status(400).json({
-                mensagem: error.message,
-                cliente: null
-            });
-            return;
-        }
-
+          : null,
+      });
+    } catch (error: any) {
+      res.status(400).json({
+        mensagem: error.message,
+        cliente: null,
+      });
+      return;
     }
-
+  }
 }

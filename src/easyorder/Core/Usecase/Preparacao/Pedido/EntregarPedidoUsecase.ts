@@ -1,58 +1,68 @@
 import { PedidoEntity } from "../../../Entity/PedidoEntity";
-import { StatusPedidoValueObject, StatusPedidoEnum } from "../../../Entity/ValueObject/StatusPedidoValueObject";
-import { PedidoRepositoryInterface } from "../../../Repository/PedidoRepositoryInterface";
+import {
+  StatusPedidoValueObject,
+  StatusPedidoEnum,
+} from "../../../Entity/ValueObject/StatusPedidoValueObject";
+import { PedidoGatewayInterface } from "../../../Gateway/PedidoGatewayInterface";
 
 export class EntregarPedidoUsecaseResponse {
-    private sucesso_execucao: boolean;
-    private mensagem: string;
-    private pedido: PedidoEntity | null = null;
+  private sucesso_execucao: boolean;
+  private mensagem: string;
+  private pedido: PedidoEntity | null = null;
 
-    constructor(sucesso_execucao: boolean, mensagem: string, pedido?: PedidoEntity | null) {
-        this.sucesso_execucao = sucesso_execucao;
-        this.mensagem = mensagem;
-        this.pedido = pedido || null;
-    }
+  constructor(
+    sucesso_execucao: boolean,
+    mensagem: string,
+    pedido?: PedidoEntity | null
+  ) {
+    this.sucesso_execucao = sucesso_execucao;
+    this.mensagem = mensagem;
+    this.pedido = pedido || null;
+  }
 
-    public getSucessoExecucao(): boolean {
-        return this.sucesso_execucao;
-    }
+  public getSucessoExecucao(): boolean {
+    return this.sucesso_execucao;
+  }
 
-    public getMensagem(): string {
-        return this.mensagem;
-    }
+  public getMensagem(): string {
+    return this.mensagem;
+  }
 
-    public getPedido(): PedidoEntity | null {
-        return this.pedido;
-    }
+  public getPedido(): PedidoEntity | null {
+    return this.pedido;
+  }
 }
 
 export class EntregarPedidoUsecase {
+  constructor(private readonly pedidoGateway: PedidoGatewayInterface) {}
 
-    constructor(
-        private readonly pedidoRepository: PedidoRepositoryInterface
-    ) { }
+  public async execute(
+    pedidoId: string
+  ): Promise<EntregarPedidoUsecaseResponse> {
+    try {
+      const pedido = await this.pedidoGateway.buscaPedidoPorId(pedidoId);
 
-    public async execute(pedidoId: string): Promise<EntregarPedidoUsecaseResponse> {
+      if (!pedido) {
+        throw new Error("Pedido não encontrado");
+      }
 
-        try {
-            const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
+      pedido.setStatusPedido(
+        new StatusPedidoValueObject(StatusPedidoEnum.FINALIZADO)
+      );
 
-            if (!pedido) {
-                throw new Error('Pedido não encontrado');
-            }
+      const pedidoSalvo = await this.pedidoGateway.salvarPedido(pedido);
 
-            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.FINALIZADO));
+      if (!pedidoSalvo) {
+        throw new Error("Erro ao salvar pedido");
+      }
 
-            const pedidoSalvo = await this.pedidoRepository.salvarPedido(pedido)
-
-            if (!pedidoSalvo) {
-                throw new Error('Erro ao salvar pedido');
-            }
-
-            return new EntregarPedidoUsecaseResponse(true, 'Pedido entregue com sucesso', pedidoSalvo);
-        } catch (error: any) {
-            return new EntregarPedidoUsecaseResponse(false, error.message);
-        }
+      return new EntregarPedidoUsecaseResponse(
+        true,
+        "Pedido entregue com sucesso",
+        pedidoSalvo
+      );
+    } catch (error: any) {
+      return new EntregarPedidoUsecaseResponse(false, error.message);
     }
-
+  }
 }

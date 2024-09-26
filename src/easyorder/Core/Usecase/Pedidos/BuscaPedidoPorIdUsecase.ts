@@ -1,46 +1,40 @@
 import { PedidoEntity } from "../../Entity/PedidoEntity";
-import { PedidoRepositoryInterface } from "../../Repository/PedidoRepositoryInterface";
-
+import { PedidoGatewayInterface } from "../../Gateway/PedidoGatewayInterface";
 
 export class BuscaPedidoPorIdUsecaseResponse {
-    private mensagem: string;
-    private pedido?: PedidoEntity;
+  private mensagem: string;
+  private pedido?: PedidoEntity;
 
-    constructor(mensagem: string, pedido?: PedidoEntity) {
-        this.mensagem = mensagem;
-        this.pedido = pedido;
-    }
+  constructor(mensagem: string, pedido?: PedidoEntity) {
+    this.mensagem = mensagem;
+    this.pedido = pedido;
+  }
 
-    public getMensagem(): string {
-        return this.mensagem;
-    }
+  public getMensagem(): string {
+    return this.mensagem;
+  }
 
-    public getPedido(): PedidoEntity | undefined {
-        return this.pedido;
-    }
+  public getPedido(): PedidoEntity | undefined {
+    return this.pedido;
+  }
 }
 
 export class BuscaPedidoPorIdUsecase {
+  constructor(private readonly pedidoGateway: PedidoGatewayInterface) {}
 
-    constructor(
-        private readonly pedidoRepository: PedidoRepositoryInterface
-    ) { }
+  public async execute(
+    pedidoId: string
+  ): Promise<BuscaPedidoPorIdUsecaseResponse> {
+    try {
+      const pedido = await this.pedidoGateway.buscaPedidoPorId(pedidoId);
 
-    public async execute(
-        pedidoId: string,
-    ): Promise<BuscaPedidoPorIdUsecaseResponse> {
+      if (!pedido) {
+        return new BuscaPedidoPorIdUsecaseResponse("Nenhum pedido encontrado");
+      }
 
-        try {
-            const pedido = await this.pedidoRepository.buscaPedidoPorId(pedidoId);
-
-            if (!pedido) {
-                return new BuscaPedidoPorIdUsecaseResponse('Nenhum pedido encontrado');
-            }
-
-            return new BuscaPedidoPorIdUsecaseResponse('Pedido encontrado', pedido);
-        } catch (error: any) {
-            return new BuscaPedidoPorIdUsecaseResponse(error.message);
-        }
+      return new BuscaPedidoPorIdUsecaseResponse("Pedido encontrado", pedido);
+    } catch (error: any) {
+      return new BuscaPedidoPorIdUsecaseResponse(error.message);
     }
-
+  }
 }

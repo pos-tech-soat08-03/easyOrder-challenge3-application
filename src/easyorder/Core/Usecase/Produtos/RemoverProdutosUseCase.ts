@@ -1,30 +1,37 @@
-import { ProdutoRepositoryInterface } from "../../Repository/ProdutoRepositoryInterface";
-import { RemoverProdutoUsecaseInput, RemoverProdutoUsecaseOutput } from "../../Repository/RemoverProdutoRepositoryInterface";
+import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
+import {
+  RemoverProdutoUsecaseInput,
+  RemoverProdutoUsecaseOutput,
+} from "../../Gateway/RemoverProdutoGatewayInterface";
 
 export class RemoverProdutoUsecase {
-    private produtoRepository: ProdutoRepositoryInterface;
+  private produtoGateway: ProdutoGatewayInterface;
 
-    constructor(produtoRepository: ProdutoRepositoryInterface) {
-        this.produtoRepository = produtoRepository;
+  constructor(produtoGateway: ProdutoGatewayInterface) {
+    this.produtoGateway = produtoGateway;
+  }
+
+  public async execute(
+    input: RemoverProdutoUsecaseInput
+  ): Promise<RemoverProdutoUsecaseOutput> {
+    try {
+      const produtoExistente = await this.produtoGateway.buscarProdutoPorId(
+        input.id
+      );
+
+      if (!produtoExistente) {
+        return { sucesso: false, mensagem: "O produto não foi encontrado." };
+      }
+
+      await this.produtoGateway.removerPorId(input.id);
+
+      return { sucesso: true };
+    } catch (error) {
+      console.error("Erro ao remover o produto:", error);
+      return {
+        sucesso: false,
+        mensagem: "Ocorreu um erro ao remover o produto.",
+      };
     }
-
-    public async execute(input: RemoverProdutoUsecaseInput): Promise<RemoverProdutoUsecaseOutput> {
-        try {
-
-            const produtoExistente = await this.produtoRepository.buscarProdutoPorId(input.id);
-
-            if (!produtoExistente) {
-                return { sucesso: false, mensagem: 'O produto não foi encontrado.' };
-            }
-
-
-            await this.produtoRepository.removerPorId(input.id);
-
-            return { sucesso: true };
-        } catch (error) {
-
-            console.error('Erro ao remover o produto:', error);
-            return { sucesso: false, mensagem: 'Ocorreu um erro ao remover o produto.' };
-        }
-    }
+  }
 }
