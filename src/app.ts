@@ -4,8 +4,7 @@
 // import { ClienteGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ClienteGatewayMock';
 // import { PedidoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/PedidoGatewayMock';
 import { CategoriaGatewayMock } from "./easyorder/Infrastructure/Gateway/Mock/CategoriaGatewayMock";
-
-import { EasyOrderApp } from "./easyorder/Infrastructure/API";
+import { EasyOrderApp } from "./easyorder/api";
 import { MySQLConnection } from "./easyorder/Infrastructure/Gateway/Impl/MySQLConnection";
 
 // Instanciar o mock e o use case para categorias
