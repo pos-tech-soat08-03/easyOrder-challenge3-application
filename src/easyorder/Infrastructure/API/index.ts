@@ -1,6 +1,4 @@
 import express from "express";
-import swaggerUi from "swagger-ui-express";
-import swaggerOutput from "../../../swagger-output.json";
 import { AtualizarClienteController } from "../Controller/Clientes/AtualizarClienteController";
 import { BuscarClienteController } from "../Controller/Clientes/BuscarClienteController";
 import { CadastrarClienteController } from "../Controller/Clientes/CadastrarClienteController";
@@ -10,7 +8,6 @@ import {
     AdicionarComboAoPedidoController,
 } from "../Controller/Pedido/AdicionarComboAoPedidoController";
 import { BuscaPedidoPorIdController } from "../Controller/Pedido/BuscaPedidoPorIdController";
-import { CadastrarPedidoController } from "../Controller/Pedido/CadastrarPedidoController";
 import { CancelarPedidoController } from "../Controller/Pedido/CancelarPedidoController";
 import { CheckoutPedidoController } from "../Controller/Pedido/CheckoutPedidoController";
 import { FecharPedidoController } from "../Controller/Pedido/FecharPedidoController";
@@ -31,23 +28,6 @@ import { IDbConnection } from '../../Core/Interfaces/IDbConnection';
 export class EasyOrderApp {
 
     static router(dbconnection: IDbConnection, app: express.Application, port: number) {
-
-        app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
-
-        app.get("/health", (req, res) => {
-            /** #swagger.tags = ['Health']
-                #swagger.summary = 'Health check'
-            */
-            res.json({
-                status: "UP",
-            });
-        });
-
-        app.get("/", (req, res) => {
-            res.send(
-                `Acesse a documentação do Swagger em <A HREF="http://localhost:${port}/doc/">http://localhost:${port}/doc/</A>`
-            );
-        });
 
         // Contexto de cliente
         app.post(
@@ -103,11 +83,6 @@ export class EasyOrderApp {
         );
 
         // Contexto de pedido
-        app.post(
-            "/pedido",
-            new CadastrarPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
         app.get(
             "/pedido/listar/:statusPedido",
             new ListarPedidosPorStatusController(
