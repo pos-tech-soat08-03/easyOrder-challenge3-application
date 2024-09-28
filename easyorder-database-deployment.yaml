@@ -6,12 +6,12 @@ spec:
   replica: 1
   selector:
     matchLabels:
-      app: easyorder-database-pod
+      app: easyorder-database
   template:
     metadata:
-      name: easyorder-database-pod
+      name: easyorder-database
       labels:
-        app: easyorder-database-pod
+        app: easyorder-database
     spec:
       containers:
       - name: easyorder-database-container
