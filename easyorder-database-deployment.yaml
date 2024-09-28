@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: easyorder-database-deployment
 spec:
-  replica: 1
+  replicas: 1
   selector:
     matchLabels:
       app: easyorder-database
@@ -14,15 +14,21 @@ spec:
         app: easyorder-database
     spec:
       containers:
-      - name: easyorder-database-container
-        image: mysql:9.0.1
-        resources:
-          limits:
-            memory: "500Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 3306
-        envFrom:
-        - configMapRef:
-            name: easyorder-database-configmap
-
+        - name: easyorder-database-container
+          image: mysql:9.0.1
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: easyorder-database-persitent-storage
+              mountPath: /var/lib/mysql
+          envFrom:
+            - configMapRef:
+                name: easyorder-database-configmap
+      volumes:
+        - name: easyorder-database-persitent-storage
+      persistentVolumeClaim:
+        claimName: pvc-easyorder-database
