@@ -25,14 +25,8 @@ spec:
         env:
         - name: NODE_ENV
           value: "development"
-        - name: SERVER_PORT
-          value: "3000"
-        - name: MYSQL_DATABASE
-          value: "easyorder_database_schema"
-        - name: MYSQL_USER
-          value: "easyorder_database_username"
-        - name: MYSQL_PASSWORD
-          value: "easyorder_database_password"
-        - name: MYSQL_ROOT_PASSWORD
-          value: "easyorder_database_password_10"
+        envFrom:
+        - configMapRef:
+            name: easyorder-database-configmap
+          
 
