@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easyorder-database-deployment
+spec:
+  replica: 3
+  selector:
+    matchLabels:
+      app: easyorder-database-pod
+  template:
+    metadata:
+      name: easyorder-database-pod
+      labels:
+        app: easyorder-database-pod
+    spec:
+      containers:
+      - name: easyorder-database-container
+        image: mysql:9.0.1
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_DATABASE
+          value: "easyorder_database_schema"
+        - name: MYSQL_USER
+          value: "easyorder_database_username"
+        - name: MYSQL_PASSWORD
+          value: "easyorder_database_password"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "easyorder_database_password_10"
+

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: easyorder-pod
+spec:
+  containers:
+    - name: mysql-container
+      image: mysql:9.0.1
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 3306
+      env:
+        - name: MYSQL_DATABASE
+          value: "easyorder_database_schema"
+        - name: MYSQL_USER
+          value: "easyorder_database_username"
+        - name: MYSQL_PASSWORD
+          value: "easyorder_database_password"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "easyorder_database_password_10"
+
+    - name: easyorder-container
+      image: brunomoreirareis/easyorder:v1.0
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 3000
+      env:
+        - name: NODE_ENV
+          value: "development"
+        - name: SERVER_PORT
+          value: "3000"
+        - name: MYSQL_DATABASE
+          value: "easyorder_database_schema"
+        - name: MYSQL_USER
+          value: "easyorder_database_username"
+        - name: MYSQL_PASSWORD
+          value: "easyorder_database_password"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "easyorder_database_password_10"
