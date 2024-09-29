@@ -28,7 +28,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: easyorder-database-configmap
+                optional: true
       volumes:
         - name: easyorder-database-persitent-storage
-      persistentVolumeClaim:
-        claimName: pvc-easyorder-database
+          persistentVolumeClaim:
+            claimName: pvc-easyorder-database
