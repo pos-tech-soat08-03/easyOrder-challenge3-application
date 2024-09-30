@@ -32,5 +32,13 @@ export class ClientesController {
         return ClienteAdapter.adaptJsonCliente(cliente, mensagem); 
     }
     
+    public static async CadastrarCliente (dbConnection: IDbConnection, cpf: string, nome: string, email: string): Promise<string> {
+        const clienteGateway = dbConnection.gateways.clienteGateway;
+        const { cliente, mensagem }  = await ClientesUsecases.CadastrarClienteUsecase(clienteGateway, cpf, nome, email);
+        if (cliente === undefined) {
+            return ClienteAdapter.adaptClienteJsonError(mensagem);
+        }
+        return ClienteAdapter.adaptJsonCliente(cliente, mensagem); 
+    }
 
 }
