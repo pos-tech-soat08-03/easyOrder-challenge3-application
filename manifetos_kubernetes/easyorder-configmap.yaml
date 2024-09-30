@@ -4,7 +4,8 @@ metadata:
   name: easyorder-configmap
 data:
   NODE_ENV: development
-  DATABASE_HOST: svc-easyorder-database:3306
+  DATABASE_HOST: svc-easyorder-database
+  DATABASE_PORT: "3306"
   DATABASE_NAME: easyorder_database_schema
   DATABASE_USER: easyorder_database_username
   DATABASE_PASS: easyorder_database_password
