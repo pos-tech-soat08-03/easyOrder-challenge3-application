@@ -54,11 +54,11 @@ export class ClienteGateway implements ClienteGatewayInterface {
     this.sequelize.sync({ alter: true });
   }
 
-  public async listarClientes(): Promise<ClienteEntity[]> {
+  public async listarClientes(): Promise<ClienteEntity[] | undefined> {
     const clientes = await LocalModel.findAll();
 
     if (!clientes) {
-      return [];
+      return undefined;
     }
 
     return clientes.map((cliente) => {

@@ -2,7 +2,6 @@ import { Express } from "express";
 import express from "express";
 import { IDbConnection } from "../Core/Interfaces/IDbConnection";
 import { AtualizarClienteController } from "../Infrastructure/Controller/Clientes/AtualizarClienteController";
-import { BuscarClienteController } from "../Infrastructure/Controller/Clientes/BuscarClienteController";
 import { CadastrarClienteController } from "../Infrastructure/Controller/Clientes/CadastrarClienteController";
 import { ClientesController } from "../controllers/ClientesController";
 
@@ -94,9 +93,39 @@ export class ApiClientes {
         );
         
         this.app.get(
-            "/cliente/buscar/:cpf",
-            new BuscarClienteController(this._dbconnection.gateways.clienteGateway).handle
+            "/cliente/buscar/:cpf", 
+            async (req, res) => {
+                /**
+                    #swagger.summary = 'Buscar Cliente do Restaurante por CPF.'
+                    #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado nas próximas etapas por ID.
+                    #swagger.tags = ['Clientes']
+                    #swagger.path = '/cliente/buscar/{cpf}'
+                    #swagger.method = 'get'
+                    #swagger.produces = ["application/json"]
+                    #swagger.parameters['cpf'] = {
+                        in: 'path',
+                        description: 'CPF do Cliente sem pontuação',
+                        required: true,
+                        type: 'string',
+                        example: '00000000000'
+                    }
+                */
+                try {
+                    const cpfBusca: string = req.params.cpf;
+                    if (!cpfBusca) {
+                        res.status(400).send("Ocorreu um erro inesperado: Parâmetro da busca não enviado.")
+                        throw new Error("Erro: CPF não informado no parâmetro da busca.");
+                    }
+                    const clientePayload = await ClientesController.BuscarClientePorCpf(this._dbconnection, cpfBusca);
+                    res.send(clientePayload); 
+                }
+                catch (error: any) {
+                    res.send(error.message);
+                }
+            }
         );
         
     }
 }
+
+
