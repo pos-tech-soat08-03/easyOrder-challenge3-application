@@ -1,10 +1,11 @@
 import express from "express";
-//import { EasyOrderApp } from "./easyorder/api";
 import { MySQLConnection } from "./easyorder/Infrastructure/Gateway/Impl/MySQLConnection";
 import { CategoriaGatewayMock } from "./easyorder/Infrastructure/Gateway/Mock/CategoriaGatewayMock";
 import { DefaultApiEndpoints } from "./easyorder/api/ApisDefaultEndpoints";
 import { ApiClientes } from "./easyorder/api/ApiClientes";
 import { ApiPedidos } from "./easyorder/api/ApiPedidos";
+import { ApiPreparacao } from "./easyorder/api/ApiPreparacao";
+import { ApiProdutos } from "./easyorder/api/ApiProdutos";
 // import { ProdutoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ProdutoGatewayMock';
 // import { ClienteGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ClienteGatewayMock';
 // import { PedidoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/PedidoGatewayMock';
@@ -28,6 +29,10 @@ const app = express();
 const defaultEndpoints = new DefaultApiEndpoints(app).start();
 const clientesEndpoints = new ApiClientes(mysqlConnection, app).start();
 const pedidosEndpoints = new ApiPedidos(mysqlConnection, app).start();
+const produtosEndpoints = new ApiProdutos(mysqlConnection, app).start();
+const preparacaoEndpoints = new ApiPreparacao(mysqlConnection, app).start();
+
+
 
 // Inicialização do Express server
 app.listen(port, () => {
