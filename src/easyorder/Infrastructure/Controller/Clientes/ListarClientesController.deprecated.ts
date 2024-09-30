@@ -1,6 +1,6 @@
 import express from "express";
 import { ClienteGatewayInterface } from "../../../Core/Gateway/ClienteGatewayInterface";
-import { ListarClientesUsecase } from "../../../Core/Usecase/Clientes/ListarClientesUsecase";
+import { ListarClientesUsecase } from "../../../Core/Usecase/Clientes/ListarClientesUsecase.deprecated";
 
 export class ListarClientesController {
   constructor(private clienteGateway: ClienteGatewayInterface) {
