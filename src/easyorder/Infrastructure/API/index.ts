@@ -1,8 +1,4 @@
 import express from "express";
-import { AtualizarClienteController } from "../Controller/Clientes/AtualizarClienteController";
-import { BuscarClienteController } from "../Controller/Clientes/BuscarClienteController";
-import { CadastrarClienteController } from "../Controller/Clientes/CadastrarClienteController";
-import { ListarClientesController } from "../Controller/Clientes/ListarClientesController";
 import {
     AdicionarComboAoPedidoControllerParam,
     AdicionarComboAoPedidoController,
@@ -29,27 +25,27 @@ export class EasyOrderApp {
 
     static router(dbconnection: IDbConnection, app: express.Application, port: number) {
 
-        // Contexto de cliente
-        app.post(
-            "/cliente/cadastrar",
-            new CadastrarClienteController(dbconnection.gateways.clienteGateway)
-                .handle
-        );
-        app.put(
-            "/cliente/atualizar",
-            new AtualizarClienteController(dbconnection.gateways.clienteGateway)
-                .handle
-        );
-        app.get(
-            "/cliente/listar",
-            new ListarClientesController(dbconnection.gateways.clienteGateway)
-                .handle
-        );
-        app.get(
-            "/cliente/buscar/:cpf",
-            new BuscarClienteController(dbconnection.gateways.clienteGateway)
-                .handle
-        );
+        // // Contexto de cliente
+        // app.post(
+        //     "/cliente/cadastrar",
+        //     new CadastrarClienteController(dbconnection.gateways.clienteGateway)
+        //         .handle
+        // );
+        // app.put(
+        //     "/cliente/atualizar",
+        //     new AtualizarClienteController(dbconnection.gateways.clienteGateway)
+        //         .handle
+        // );
+        // app.get(
+        //     "/cliente/listar",
+        //     new ListarClientesController(dbconnection.gateways.clienteGateway)
+        //         .handle
+        // );
+        // app.get(
+        //     "/cliente/buscar/:cpf",
+        //     new BuscarClienteController(dbconnection.gateways.clienteGateway)
+        //         .handle
+        // );
 
         // Contexto de produto
         app.delete(
