@@ -20,7 +20,7 @@ export class ClienteAdapter {
                 email: cliente.getEmail().getValue(),
               };
             }),
-          });
+          }, null, 2);
 
     }
 
