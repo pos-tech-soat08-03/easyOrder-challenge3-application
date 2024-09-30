@@ -78,50 +78,50 @@ export class EasyOrderApp {
                 .handle
         );
 
-        // Contexto de pedido
-        app.get(
-            "/pedido/listar/:statusPedido",
-            new ListarPedidosPorStatusController(
-                dbconnection.gateways.pedidoGateway
-            ).handle
-        );
-        app.get(
-            "/pedido/:pedidoId",
-            new BuscaPedidoPorIdController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
-        app.put(
-            "/pedido/:pedidoId/cancelar",
-            new CancelarPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
-        app.put(
-            "/pedido/:pedidoId/checkout",
-            new CheckoutPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
-        app.put(
-            "/pedido/:pedidoId/fechar",
-            new FecharPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
-        const adicionarComboAoPedidoControllerParam =
-            new AdicionarComboAoPedidoControllerParam(
-                dbconnection.gateways.pedidoGateway,
-                dbconnection.gateways.produtoGateway
-            );
-        app.post(
-            "/pedido/:pedidoId/combo",
-            new AdicionarComboAoPedidoController(
-                adicionarComboAoPedidoControllerParam
-            ).handle
-        );
-        app.delete(
-            "/pedido/:pedidoId/combo/:comboId",
-            new RemoverComboDoPedidoController(
-                dbconnection.gateways.pedidoGateway
-            ).handle
-        );
+        // // Contexto de pedido
+        // app.get(
+        //     "/pedido/listar/:statusPedido",
+        //     new ListarPedidosPorStatusController(
+        //         dbconnection.gateways.pedidoGateway
+        //     ).handle
+        // );
+        // app.get(
+        //     "/pedido/:pedidoId",
+        //     new BuscaPedidoPorIdController(dbconnection.gateways.pedidoGateway)
+        //         .handle
+        // );
+        // app.put(
+        //     "/pedido/:pedidoId/cancelar",
+        //     new CancelarPedidoController(dbconnection.gateways.pedidoGateway)
+        //         .handle
+        // );
+        // app.put(
+        //     "/pedido/:pedidoId/checkout",
+        //     new CheckoutPedidoController(dbconnection.gateways.pedidoGateway)
+        //         .handle
+        // );
+        // app.put(
+        //     "/pedido/:pedidoId/fechar",
+        //     new FecharPedidoController(dbconnection.gateways.pedidoGateway)
+        //         .handle
+        // );
+        // const adicionarComboAoPedidoControllerParam =
+        //     new AdicionarComboAoPedidoControllerParam(
+        //         dbconnection.gateways.pedidoGateway,
+        //         dbconnection.gateways.produtoGateway
+        //     );
+        // app.post(
+        //     "/pedido/:pedidoId/combo",
+        //     new AdicionarComboAoPedidoController(
+        //         adicionarComboAoPedidoControllerParam
+        //     ).handle
+        // );
+        // app.delete(
+        //     "/pedido/:pedidoId/combo/:comboId",
+        //     new RemoverComboDoPedidoController(
+        //         dbconnection.gateways.pedidoGateway
+        //     ).handle
+        // );
 
         // Contexto de preparação
         app.get(

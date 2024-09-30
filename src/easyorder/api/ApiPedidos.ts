@@ -2,6 +2,13 @@ import { Express } from "express";
 import express from "express";
 import { IDbConnection } from "../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../controllers/PedidoController";
+import { AdicionarComboAoPedidoControllerParam, AdicionarComboAoPedidoController } from "../Infrastructure/Controller/Pedido/AdicionarComboAoPedidoController";
+import { BuscaPedidoPorIdController } from "../Infrastructure/Controller/Pedido/BuscaPedidoPorIdController";
+import { CancelarPedidoController } from "../Infrastructure/Controller/Pedido/CancelarPedidoController";
+import { CheckoutPedidoController } from "../Infrastructure/Controller/Pedido/CheckoutPedidoController";
+import { FecharPedidoController } from "../Infrastructure/Controller/Pedido/FecharPedidoController";
+import { ListarPedidosPorStatusController } from "../Infrastructure/Controller/Pedido/ListarPedidosPorStatusController";
+import { RemoverComboDoPedidoController } from "../Infrastructure/Controller/Pedido/RemoverComboDoPedidoController";
 
 export class ApiPedidos {
   private _dbconnection: IDbConnection;
@@ -77,6 +84,52 @@ export class ApiPedidos {
         const pedidoPayload = await PedidoController.CadastrarPedido(this._dbconnection, clienteIdentificado, clienteId);
         res.send(pedidoPayload);
     });
+
+        this.app.get(
+            "/pedido/listar/:statusPedido",
+            new ListarPedidosPorStatusController(
+                this._dbconnection.gateways.pedidoGateway
+            ).handle
+        );
+        this.app.get(
+            "/pedido/:pedidoId",
+            new BuscaPedidoPorIdController(this._dbconnection.gateways.pedidoGateway)
+                .handle
+        );
+        this.app.put(
+            "/pedido/:pedidoId/cancelar",
+            new CancelarPedidoController(this._dbconnection.gateways.pedidoGateway)
+                .handle
+        );
+        this.app.put(
+            "/pedido/:pedidoId/checkout",
+            new CheckoutPedidoController(this._dbconnection.gateways.pedidoGateway)
+                .handle
+        );
+        this.app.put(
+            "/pedido/:pedidoId/fechar",
+            new FecharPedidoController(this._dbconnection.gateways.pedidoGateway)
+                .handle
+        );
+        const adicionarComboAoPedidoControllerParam =
+            new AdicionarComboAoPedidoControllerParam(
+                this._dbconnection.gateways.pedidoGateway,
+                this._dbconnection.gateways.produtoGateway
+            );
+        this.app.post(
+            "/pedido/:pedidoId/combo",
+            new AdicionarComboAoPedidoController(
+                adicionarComboAoPedidoControllerParam
+            ).handle
+        );
+        this.app.delete(
+            "/pedido/:pedidoId/combo/:comboId",
+            new RemoverComboDoPedidoController(
+                this._dbconnection.gateways.pedidoGateway
+            ).handle
+        );
+
+
 
   }
 }
