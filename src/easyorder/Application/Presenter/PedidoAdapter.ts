@@ -11,7 +11,20 @@ export class PedidoAdapter {
     }
 
     public static adaptJsonPedido(pedido: PedidoEntity): string {
+        return JSON.stringify({
+            mensagem: "Pedido cadastrado com sucesso",
+            pedido: PedidoAdapter.adaptJsonPedidoObject(pedido)
+        });
+    }
 
+    public static adaptJsonPedidos(pedidos: PedidoEntity[]): string {
+        return JSON.stringify({
+            mensagem: pedidos.length > 0 ? "Pedidos listados com sucesso" : "Nenhum pedido encontrado",
+            pedidos: pedidos.map(pedido => PedidoAdapter.adaptJsonPedidoObject(pedido))
+        });
+    }
+
+    private static adaptJsonPedidoObject(pedido: PedidoEntity): any {
         const produtoToJson = function (produto: ProdutoEntity | null): any {
             return produto ? {
                 id: produto.getId(),
@@ -34,19 +47,15 @@ export class PedidoAdapter {
             };
         }
 
-        return JSON.stringify({
-            mensagem: "Pedido cadastrado com sucesso",
-            pedido: {
-                id: pedido?.getId(),
-                data: pedido?.getDataPedido(),
-                clienteId: pedido?.getClienteId(),
-                status: pedido?.getStatusPedido().getValue(),
-                pagamentoStatus: pedido?.getStatusPagamento(),
-                combos: pedido?.getCombos().map(combo => comboToJson(combo)),
-                valorTotal: pedido?.getValorTotal()
-            }
-        });
-
+        return {
+            id: pedido?.getId(),
+            data: pedido?.getDataPedido(),
+            clienteId: pedido?.getClienteId(),
+            status: pedido?.getStatusPedido().getValue(),
+            pagamentoStatus: pedido?.getStatusPagamento(),
+            combos: pedido?.getCombos().map(combo => comboToJson(combo)),
+            valorTotal: pedido?.getValorTotal()
+        };
     }
 
 }
