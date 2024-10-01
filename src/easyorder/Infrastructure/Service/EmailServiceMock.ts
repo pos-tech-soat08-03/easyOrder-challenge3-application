@@ -1,4 +1,4 @@
-import { EmailServiceInterface } from "../../Core/Service/EmailServiceInterface";
+import { EmailServiceInterface } from "../../Core/Interfaces/Services/EmailServiceInterface";
 
 export class EmailServiceMock implements EmailServiceInterface {
     public async sendEmail(to: string, subject: string, body: string): Promise<boolean> {

@@ -3,11 +3,7 @@ import {
   StatusPedidoValueObject,
   StatusPedidoEnum,
 } from "../../../Entity/ValueObject/StatusPedidoValueObject";
-import {
-  PedidoGatewayInterface,
-  PedidoGatewayInterfaceFilterOrderField,
-  PedidoGatewayInterfaceFilterOrderDirection,
-} from "../../../Gateway/PedidoGatewayInterface";
+import { PedidoGatewayInterface, PedidoGatewayInterfaceFilterOrderField, PedidoGatewayInterfaceFilterOrderDirection } from "../../../Interfaces/Gateway/PedidoGatewayInterface";
 
 export class BuscaProximoPedidoParaPreparacaoUsecaseResponse {
   private mensagem: string;

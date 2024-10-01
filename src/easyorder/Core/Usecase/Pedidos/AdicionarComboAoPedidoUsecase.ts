@@ -1,8 +1,8 @@
 import { PedidoComboEntity } from "../../Entity/PedidoComboEntity";
 import { PedidoEntity } from "../../Entity/PedidoEntity";
 import { CategoriaEnum } from "../../Entity/ValueObject/CategoriaEnum";
-import { PedidoGatewayInterface } from "../../Gateway/PedidoGatewayInterface";
-import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
+import { PedidoGatewayInterface } from "../../Interfaces/Gateway/PedidoGatewayInterface";
+import { ProdutoGatewayInterface } from "../../Interfaces/Gateway/ProdutoGatewayInterface";
 
 export class AdicionarComboAoPedidoUsecaseResponse {
   private sucesso_execucao: boolean;

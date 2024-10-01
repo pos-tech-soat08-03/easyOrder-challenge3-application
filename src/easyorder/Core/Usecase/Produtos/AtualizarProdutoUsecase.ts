@@ -1,6 +1,6 @@
 import { ProdutoEntity } from "../../Entity/ProdutoEntity";
 import { CategoriaEnum } from "../../Entity/ValueObject/CategoriaEnum";
-import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
+import { ProdutoGatewayInterface } from "../../Interfaces/Gateway/ProdutoGatewayInterface";
 
 export class AtualizarProdutoUsecase {
   constructor(private readonly produtoGateway: ProdutoGatewayInterface) {}
