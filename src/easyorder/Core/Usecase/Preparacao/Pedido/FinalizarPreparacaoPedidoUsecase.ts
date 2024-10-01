@@ -3,7 +3,7 @@ import {
   StatusPedidoValueObject,
   StatusPedidoEnum,
 } from "../../../Entity/ValueObject/StatusPedidoValueObject";
-import { PedidoGatewayInterface } from "../../../Gateway/PedidoGatewayInterface";
+import { PedidoGatewayInterface } from "../../../Interfaces/Gateway/PedidoGatewayInterface";
 
 export class FinalizarPreparacaoPedidoUsecaseResponse {
   private sucesso_execucao: boolean;

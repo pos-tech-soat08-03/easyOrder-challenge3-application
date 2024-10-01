@@ -1,5 +1,5 @@
 import { ProdutoEntity } from "../../Entity/ProdutoEntity";
-import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
+import { ProdutoGatewayInterface } from "../../Interfaces/Gateway/ProdutoGatewayInterface";
 
 export class ListarProdutosUsecase {
   private produtoGateway: ProdutoGatewayInterface;

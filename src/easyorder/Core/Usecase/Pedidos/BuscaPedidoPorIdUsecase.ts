@@ -1,5 +1,5 @@
 import { PedidoEntity } from "../../Entity/PedidoEntity";
-import { PedidoGatewayInterface } from "../../Gateway/PedidoGatewayInterface";
+import { PedidoGatewayInterface } from "../../Interfaces/Gateway/PedidoGatewayInterface";
 
 export class BuscaPedidoPorIdUsecaseResponse {
   private mensagem: string;

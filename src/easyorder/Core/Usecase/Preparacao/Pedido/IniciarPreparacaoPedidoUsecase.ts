@@ -1,9 +1,6 @@
 import { PedidoEntity } from "../../../Entity/PedidoEntity";
-import {
-  StatusPedidoValueObject,
-  StatusPedidoEnum,
-} from "../../../Entity/ValueObject/StatusPedidoValueObject";
-import { PedidoGatewayInterface } from "../../../Gateway/PedidoGatewayInterface";
+import { StatusPedidoValueObject, StatusPedidoEnum } from "../../../Entity/ValueObject/StatusPedidoValueObject";
+import { PedidoGatewayInterface } from "../../../Interfaces/Gateway/PedidoGatewayInterface";
 
 export class IniciarPreparacaoPedidoUsecaseResponse {
   private sucesso_execucao: boolean;

@@ -1,8 +1,5 @@
 import { CategoriaEnum } from "../../Entity/ValueObject/CategoriaEnum";
-import {
-  ListaCategoriasUsecaseInput,
-  ListaCategoriasUsecaseOutput,
-} from "../../Gateway/CategoriaGatewayInterface";
+import { ListaCategoriasUsecaseInput, ListaCategoriasUsecaseOutput } from "../../Interfaces/Gateway/CategoriaGatewayInterface";
 
 export class ListarCategoriasUsecase {
   public async execute(

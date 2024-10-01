@@ -1,6 +1,5 @@
-
 import { inspect } from 'util';
-import { MonitorServiceInterface } from '../../Core/Service/MonitorServiceInterface';
+import { MonitorServiceInterface } from '../../Core/Interfaces/Services/MonitorServiceInterface';
 
 export class MonitorService implements MonitorServiceInterface {
     private transactionName: string;

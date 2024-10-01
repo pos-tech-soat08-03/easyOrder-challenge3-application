@@ -1,9 +1,6 @@
 import { PedidoEntity } from "../../Entity/PedidoEntity";
 import { StatusPedidoValueObject } from "../../Entity/ValueObject/StatusPedidoValueObject";
-import {
-  PedidoGatewayInterface,
-  PedidoGatewayInterfaceFilter,
-} from "../../Gateway/PedidoGatewayInterface";
+import { PedidoGatewayInterface, PedidoGatewayInterfaceFilter } from "../../Interfaces/Gateway/PedidoGatewayInterface";
 
 export class ListarPedidosPorStatusUsecaseResponse {
   private mensagem: string;

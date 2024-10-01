@@ -1,8 +1,5 @@
-import { ProdutoGatewayInterface } from "../../Gateway/ProdutoGatewayInterface";
-import {
-  RemoverProdutoUsecaseInput,
-  RemoverProdutoUsecaseOutput,
-} from "../../Gateway/RemoverProdutoGatewayInterface";
+import { ProdutoGatewayInterface } from "../../Interfaces/Gateway/ProdutoGatewayInterface";
+import { RemoverProdutoUsecaseInput, RemoverProdutoUsecaseOutput } from "../../Interfaces/Gateway/RemoverProdutoGatewayInterface";
 
 export class RemoverProdutoUsecase {
   private produtoGateway: ProdutoGatewayInterface;

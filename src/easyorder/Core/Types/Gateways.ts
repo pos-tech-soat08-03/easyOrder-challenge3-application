@@ -1,6 +1,6 @@
-import { ClienteGatewayInterface } from '../Gateway/ClienteGatewayInterface';
-import { PedidoGatewayInterface } from '../Gateway/PedidoGatewayInterface';
-import { ProdutoGatewayInterface } from '../Gateway/ProdutoGatewayInterface';
+import { ClienteGatewayInterface } from "../Interfaces/Gateway/ClienteGatewayInterface";
+import { PedidoGatewayInterface } from "../Interfaces/Gateway/PedidoGatewayInterface";
+import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
 
 export type Gateways = {
   clienteGateway: ClienteGatewayInterface;
