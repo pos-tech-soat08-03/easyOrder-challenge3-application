@@ -3,7 +3,6 @@ import express from "express";
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../../Application/Controller/PedidoController";
 import { AdicionarComboAoPedidoControllerParam, AdicionarComboAoPedidoController } from "../../Application/Controller/Pedido/AdicionarComboAoPedidoController";
-import { CancelarPedidoController } from "../../Application/Controller/Pedido/CancelarPedidoController";
 import { CheckoutPedidoController } from "../../Application/Controller/Pedido/CheckoutPedidoController";
 import { FecharPedidoController } from "../../Application/Controller/Pedido/FecharPedidoController";
 import { RemoverComboDoPedidoController } from "../../Application/Controller/Pedido/RemoverComboDoPedidoController";
@@ -260,11 +259,21 @@ export class ApiPedidos {
             res.status(200).type('json').send(pedidoPayload);
         });
 
-        app.put(
-            "/pedido/:pedidoId/cancelar",
-            new CancelarPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
+        app.put("/pedido/:pedidoId/cancelar", async (req, res) => {
+
+            if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
+                res.status(400).type('json').send(
+                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
+                );
+            }
+
+            const pedidoId = req.params.pedidoId;
+
+            const pedidoPayload = await PedidoController.CancelarPedido(dbconnection, pedidoId);
+
+            res.status(200).type('json').send(pedidoPayload);
+        });
+
         app.put(
             "/pedido/:pedidoId/checkout",
             new CheckoutPedidoController(dbconnection.gateways.pedidoGateway)

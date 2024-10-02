@@ -60,4 +60,25 @@ export class PedidoUsecases {
 
         return pedido;
     }
+
+    public static async CancelarPedido(
+        pedidoGateway: PedidoGatewayInterface,
+        pedidoId: string,
+    ): Promise<PedidoEntity> {
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            throw new Error("Pedido não encontrado");
+        }
+
+        if (pedido.getStatusPedido().getValue() === StatusPedidoEnum.CANCELADO) {
+            throw new Error("Pedido já cancelado");
+        }
+
+        pedido.setStatusPedido(
+            new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO)
+        );
+
+        return pedido;
+    }
 }
