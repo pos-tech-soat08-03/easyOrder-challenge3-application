@@ -146,4 +146,42 @@ export class PedidoController {
         }
     }
 
+    public static async AdicionarComboAoPedido(
+        dbConnection: IDbConnection,
+        pedidoId: string,
+        lancheId: string,
+        bebidaId: string,
+        sobremesaId: string,
+        acompanhamentoId: string,
+    ): Promise<string> {
+        try {
+            const pedidoGateway = dbConnection.gateways.pedidoGateway;
+            const produtoGateway = dbConnection.gateways.produtoGateway;
+
+            const pedido = await PedidoUsecases.AdicionarComboAoPedido(
+                pedidoGateway,
+                produtoGateway,
+                pedidoId,
+                lancheId,
+                bebidaId,
+                sobremesaId,
+                acompanhamentoId
+            );
+
+            if (!pedido) {
+                return PedidoAdapter.adaptJsonError("Pedido não encontrado.");
+            }
+
+            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+            if (!pedidoSalvo) {
+                return PedidoAdapter.adaptJsonError("Erro ao adicionar combo ao pedido.");
+            }
+
+            return PedidoAdapter.adaptJsonPedido(pedido, "Combo adicionado com sucesso");
+        } catch (error) {
+            return PedidoAdapter.adaptJsonError("Erro ao adicionar combo ao pedido.");
+        }
+    }
+
 }

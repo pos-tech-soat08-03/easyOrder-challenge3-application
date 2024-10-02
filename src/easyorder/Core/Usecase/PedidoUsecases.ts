@@ -1,7 +1,10 @@
+import { PedidoComboEntity } from "../Entity/PedidoComboEntity";
 import { PedidoEntity } from "../Entity/PedidoEntity";
+import { CategoriaEnum } from "../Entity/ValueObject/CategoriaEnum";
 import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
-import { PedidoGatewayInterface, PedidoGatewayInterfaceFilter, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
+import { PedidoGatewayInterface, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
+import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
 
 export class PedidoUsecases {
 
@@ -119,6 +122,90 @@ export class PedidoUsecases {
         pedido.setStatusPedido(
             new StatusPedidoValueObject(StatusPedidoEnum.AGUARDANDO_PAGAMENTO)
         );
+
+        return pedido;
+    }
+
+    public static async AdicionarComboAoPedido(
+        pedidoGateway: PedidoGatewayInterface,
+        produtoGateway: ProdutoGatewayInterface,
+        pedidoId: string,
+        lancheId: string,
+        bebidaId: string,
+        sobremesaId: string,
+        acompanhamentoId: string,
+    ): Promise<PedidoEntity> {
+
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            throw new Error("Pedido não encontrado");
+        }
+
+        let produtoLanche = null
+        if (lancheId) {
+            produtoLanche = await produtoGateway.buscarProdutoPorId(lancheId);
+
+            if (!produtoLanche) {
+                throw new Error("Lanche não encontrado");
+            }
+
+            // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
+            if (produtoLanche.getCategoria() !== CategoriaEnum.LANCHE) {
+                throw new Error("Produto informado não é um lanche");
+            }
+        }
+
+        let produtoBebida = null
+        if (bebidaId) {
+            produtoBebida = await produtoGateway.buscarProdutoPorId(bebidaId);
+
+            if (!produtoBebida) {
+                throw new Error("Bebida não encontrada");
+            }
+
+            // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
+            if (produtoBebida.getCategoria() !== CategoriaEnum.BEBIDA) {
+                throw new Error("Produto informado não é uma bebida");
+            }
+        }
+
+        let produtoSobremesa = null
+        if (sobremesaId) {
+            produtoSobremesa = await produtoGateway.buscarProdutoPorId(sobremesaId);
+
+            if (!produtoSobremesa) {
+                throw new Error("Sobremesa não encontrada");
+            }
+
+            // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
+            if (produtoSobremesa.getCategoria() !== CategoriaEnum.SOBREMESA) {
+                throw new Error("Produto informado não é uma sobremesa");
+            }
+        }
+
+        let produtoAcompanhamento = null
+        if (acompanhamentoId) {
+            produtoAcompanhamento = await produtoGateway.buscarProdutoPorId(acompanhamentoId);
+
+            if (!produtoAcompanhamento) {
+                throw new Error("Acompanhamento não encontrado");
+            }
+
+            // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
+            if (produtoAcompanhamento.getCategoria() !== CategoriaEnum.ACOMPANHAMENTO) {
+                throw new Error("Produto informado não é um acompanhamento");
+            }
+        }
+
+        const pedidoCombo = new PedidoComboEntity(
+            produtoLanche,
+            produtoBebida,
+            produtoSobremesa,
+            produtoAcompanhamento
+        );
+
+        pedido.adicionarCombos([pedidoCombo]);
 
         return pedido;
     }
