@@ -209,4 +209,20 @@ export class PedidoUsecases {
 
         return pedido;
     }
+
+    public static async RemoverComboDoPedido(
+        pedidoGateway: PedidoGatewayInterface,
+        pedidoId: string,
+        comboId: string,
+    ): Promise<PedidoEntity> {
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            throw new Error("Pedido não encontrado");
+        }
+
+        pedido.removerCombo(comboId);
+
+        return pedido;
+    }
 }

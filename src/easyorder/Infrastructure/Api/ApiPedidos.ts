@@ -2,7 +2,6 @@ import { Express } from "express";
 import express from "express";
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../../Application/Controller/PedidoController";
-import { RemoverComboDoPedidoController } from "../../Application/Controller/Pedido/RemoverComboDoPedidoController";
 import { PedidoAdapter } from "../../Application/Presenter/PedidoAdapter";
 
 export class ApiPedidos {
@@ -480,14 +479,77 @@ export class ApiPedidos {
             res.status(200).type('json').send(pedidoPayload);
         });
 
-        app.delete(
-            "/pedido/:pedidoId/combo/:comboId",
-            new RemoverComboDoPedidoController(
-                dbconnection.gateways.pedidoGateway
-            ).handle
-        );
+        app.delete("/pedido/:pedidoId/combo/:comboId", async (req, res) => {
+            /**
+                #swagger.tags = ['Pedidos']
+                #swagger.path = '/pedido/:pedidoId/combo/:comboId'
+                #swagger.method = 'delete'
+                #swagger.summary = 'Remover combo do pedido'
+                #swagger.description = 'Controller para remover um combo do pedido'
+                #swagger.produces = ["application/json"]
+                #swagger.parameters['pedidoId'] = {
+                    in: 'path',
+                    description: 'ID do pedido',
+                    required: true,
+                    type: 'string',
+                    example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
+                }
+                #swagger.parameters['comboId'] = {
+                    in: 'path',
+                    description: 'ID do combo',
+                    required: true,
+                    type: 'string',
+                    example: '228ec10e-5675-47f4-ba1f-2c4932fe68cc'
+                }
+                #swagger.responses[200] = {
+                    description: 'Combo removido do pedido com sucesso',
+                    '@schema': {
+                        'properties': {
+                            mensagem: {
+                                type: 'string',
+                                example: 'Combo removido do pedido com sucesso'
+                            },
+                            pedido: {
+                                $ref: '#/definitions/Pedido'
+                            }
+                        }
+                    }
+                }
+                #swagger.responses[400] = {
+                    'description': 'Ocorreu um erro inesperado',
+                    '@schema': {
+                        'properties': {
+                            mensagem: {
+                                type: 'string',
+                                example: 'Ocorreu um erro inesperado: Pedido não encontrado'
+                            }
+                        }
+                    }
+                }
+            */
 
+            if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
+                res.status(400).type('json').send(
+                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
+                );
+            }
 
+            if (req.params.comboId === undefined || req.params.comboId === "" || req.params.comboId === null) {
+                res.status(400).type('json').send(
+                    PedidoAdapter.adaptJsonError("Erro: ID do combo não informado.")
+                );
+            }
 
+            const pedidoId = req.params.pedidoId;
+            const comboId = req.params.comboId;
+
+            const pedidoPayload = await PedidoController.RemoverComboDoPedido(
+                dbconnection,
+                pedidoId,
+                comboId
+            );
+
+            res.status(200).type('json').send(pedidoPayload);
+        });
     }
 }

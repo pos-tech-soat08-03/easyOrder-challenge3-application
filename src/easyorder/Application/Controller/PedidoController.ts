@@ -184,4 +184,30 @@ export class PedidoController {
         }
     }
 
+    public static async RemoverComboDoPedido(
+        dbConnection: IDbConnection,
+        pedidoId: string,
+        comboId: string,
+    ): Promise<string> {
+        try {
+            const pedidoGateway = dbConnection.gateways.pedidoGateway;
+
+            const pedido = await PedidoUsecases.RemoverComboDoPedido(pedidoGateway, pedidoId, comboId);
+
+            if (!pedido) {
+                return PedidoAdapter.adaptJsonError("Pedido não encontrado.");
+            }
+
+            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+            if (!pedidoSalvo) {
+                return PedidoAdapter.adaptJsonError("Erro ao remover combo do pedido.");
+            }
+
+            return PedidoAdapter.adaptJsonPedido(pedido, "Combo removido com sucesso");
+        } catch (error) {
+            return PedidoAdapter.adaptJsonError("Erro ao remover combo do pedido.");
+        }
+    }
+
 }
