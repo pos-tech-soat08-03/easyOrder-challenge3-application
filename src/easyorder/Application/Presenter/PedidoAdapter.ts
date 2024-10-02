@@ -10,9 +10,9 @@ export class PedidoAdapter {
         });
     }
 
-    public static adaptJsonPedido(pedido: PedidoEntity): string {
+    public static adaptJsonPedido(pedido: PedidoEntity, mensagem: string = "Pedido cadastrado com sucesso"): string {
         return JSON.stringify({
-            mensagem: "Pedido cadastrado com sucesso",
+            mensagem: mensagem,
             pedido: PedidoAdapter.adaptJsonPedidoObject(pedido)
         });
     }

@@ -3,7 +3,6 @@ import express from "express";
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../../Application/Controller/PedidoController";
 import { AdicionarComboAoPedidoControllerParam, AdicionarComboAoPedidoController } from "../../Application/Controller/Pedido/AdicionarComboAoPedidoController";
-import { CheckoutPedidoController } from "../../Application/Controller/Pedido/CheckoutPedidoController";
 import { FecharPedidoController } from "../../Application/Controller/Pedido/FecharPedidoController";
 import { RemoverComboDoPedidoController } from "../../Application/Controller/Pedido/RemoverComboDoPedidoController";
 import { PedidoAdapter } from "../../Application/Presenter/PedidoAdapter";
@@ -274,11 +273,61 @@ export class ApiPedidos {
             res.status(200).type('json').send(pedidoPayload);
         });
 
-        app.put(
-            "/pedido/:pedidoId/checkout",
-            new CheckoutPedidoController(dbconnection.gateways.pedidoGateway)
-                .handle
-        );
+        app.put("/pedido/:pedidoId/checkout", async (req, res) => {
+            /**
+                #swagger.tags = ['Pedidos']
+                #swagger.path = '/pedido/:pedidoId/checkout'
+                #swagger.method = 'put'
+                #swagger.summary = 'Checkout/Pagamento de um pedido'
+                #swagger.description = 'Controller para efetuar o pagamento de um pedido'
+                #swagger.produces = ["application/json"]
+                #swagger.parameters['pedidoId'] = {
+                    in: 'path',
+                    description: 'ID do pedido',
+                    required: true,
+                    type: 'string',
+                    example: '29a81eeb-d16d-4d6c-a86c-e13597667307'
+                }
+                #swagger.responses[200] = {
+                    'description': 'Pedido pago com sucesso',
+                    '@schema': {
+                        'properties': {
+                            mensagem: {
+                                type: 'string',
+                                example: 'Pedido pago com sucesso'
+                            },
+                            pedido: {
+                                $ref: '#/definitions/Pedido'
+                            }
+                        }
+                    }
+                }
+                #swagger.responses[400] = {
+                    'description': 'Ocorreu um erro inesperado',
+                    '@schema': {
+                        'properties': {
+                            mensagem: {
+                                type: 'string',
+                                example: 'Ocorreu um erro inesperado: Pedido não encontrado'
+                            }
+                        }
+                    }
+                }
+            */
+
+            if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
+                res.status(400).type('json').send(
+                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
+                );
+            }
+
+            const pedidoId = req.params.pedidoId;
+
+            const pedidoPayload = await PedidoController.CheckoutPedido(dbconnection, pedidoId);
+
+            res.status(200).type('json').send(pedidoPayload);
+        });
+
         app.put(
             "/pedido/:pedidoId/fechar",
             new FecharPedidoController(dbconnection.gateways.pedidoGateway)

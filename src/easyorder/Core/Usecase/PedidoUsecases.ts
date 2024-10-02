@@ -1,4 +1,5 @@
 import { PedidoEntity } from "../Entity/PedidoEntity";
+import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
 import { PedidoGatewayInterface, PedidoGatewayInterfaceFilter, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
 
@@ -78,6 +79,29 @@ export class PedidoUsecases {
         pedido.setStatusPedido(
             new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO)
         );
+
+        return pedido;
+    }
+
+    public static async CheckoutPedido(
+        pedidoGateway: PedidoGatewayInterface,
+        pedidoId: string,
+    ): Promise<PedidoEntity> {
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            throw new Error("Pedido não encontrado");
+        }
+
+        if (pedido.getStatusPedido().getValue() === StatusPedidoEnum.CANCELADO) {
+            throw new Error("Pedido já cancelado");
+        }
+
+        pedido.setStatusPedido(
+            new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)
+        );
+
+        pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
 
         return pedido;
     }
