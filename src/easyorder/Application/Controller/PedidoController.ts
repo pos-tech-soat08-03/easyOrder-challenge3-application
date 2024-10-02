@@ -51,4 +51,23 @@ export class PedidoController {
             return PedidoAdapter.adaptJsonError("Erro ao cadastrar pedido.");
         }
     }
+
+    public static async BuscaPedidoPorId(
+        dbConnection: IDbConnection,
+        pedidoId: string,
+    ): Promise<string> {
+        try {
+            const pedidoGateway = dbConnection.gateways.pedidoGateway;
+
+            const pedido = await PedidoUsecases.BuscaPedidoPorId(pedidoGateway, pedidoId);
+
+            if (!pedido) {
+                return PedidoAdapter.adaptJsonError("Pedido não encontrado.");
+            }
+
+            return PedidoAdapter.adaptJsonPedido(pedido);
+        } catch (error) {
+            return PedidoAdapter.adaptJsonError("Erro ao buscar pedido.");
+        }
+    }
 }

@@ -47,4 +47,17 @@ export class PedidoUsecases {
 
         return pedidos;
     }
+
+    public static async BuscaPedidoPorId(
+        pedidoGateway: PedidoGatewayInterface,
+        pedidoId: string,
+    ): Promise<PedidoEntity | null> {
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            return null;
+        }
+
+        return pedido;
+    }
 }
