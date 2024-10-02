@@ -10,7 +10,12 @@ export class TransactionEntity {
     private msgTransacao: string;
     private hashTransacao: string;
 
-    constructor(idPedido: string, valorTransacao: number) {
+    constructor(idPedido: string, valorTransacao: number, 
+        idTransacao?: string, 
+        dataCriacaoTransacao?: Date, 
+        statusTransacao?: StatusTransacaoValueObject, 
+        msgTransacao?: string,
+        hashTransacao?: string) {
         if (idPedido === undefined) {
             throw new Error('Pedido ID é obrigatório');
         }
@@ -18,13 +23,23 @@ export class TransactionEntity {
             throw new Error('Valor da transação é obrigatório e deve ser maior que zero');
         }
         try {
-            this.idTransacao = uuidv4();
             this.idPedido = idPedido;
-            this.dataCriacaoTransacao = new Date();
-            this.statusTransacao = new StatusTransacaoValueObject(StatusTransacaoEnum.PENDENTE);
             this.valorTransacao = valorTransacao;
-            this.msgTransacao = '';
-            this.hashTransacao = '';
+
+            if (idTransacao !== undefined) this.idTransacao = idTransacao;
+            else this.idTransacao = uuidv4();
+            
+            if (dataCriacaoTransacao!== undefined) this.dataCriacaoTransacao = dataCriacaoTransacao;
+            else this.dataCriacaoTransacao = new Date();
+
+            if (statusTransacao!== undefined) this.statusTransacao = statusTransacao;
+            else this.statusTransacao = new StatusTransacaoValueObject(StatusTransacaoEnum.PENDENTE);
+            
+            if (msgTransacao != undefined) this.msgTransacao = msgTransacao;
+            else this.msgTransacao = '';
+
+            if (hashTransacao!= undefined) this.hashTransacao = hashTransacao;
+            else this.hashTransacao = '';
         }
         catch (error: any) {
             throw new Error("Erro ao instanciar a transacao: " + error.message);
@@ -79,14 +94,20 @@ export class TransactionEntity {
         this.msgTransacao = msgTransacao;        
     }
 
+    public getMsgTransacao(): string {  
+        return this.msgTransacao;
+    }
+    
     public setHashTransacao(hashTransacao: string): void {
         this.hashTransacao = hashTransacao;
+    }
+
+    public getHashTransacao(): string {
+        return this.hashTransacao;
     }
 
     public getValorTransacao(): number {
         return this.valorTransacao;
     }
-
-
 
 }
