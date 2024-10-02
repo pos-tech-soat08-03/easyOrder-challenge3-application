@@ -105,4 +105,21 @@ export class PedidoUsecases {
 
         return pedido;
     }
+
+    public static async FecharPedido(
+        pedidoGateway: PedidoGatewayInterface,
+        pedidoId: string,
+    ): Promise<PedidoEntity> {
+        const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
+
+        if (!pedido) {
+            throw new Error("Pedido não encontrado");
+        }
+
+        pedido.setStatusPedido(
+            new StatusPedidoValueObject(StatusPedidoEnum.AGUARDANDO_PAGAMENTO)
+        );
+
+        return pedido;
+    }
 }

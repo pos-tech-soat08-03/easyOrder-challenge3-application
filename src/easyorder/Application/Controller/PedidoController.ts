@@ -121,4 +121,29 @@ export class PedidoController {
         }
     }
 
+    public static async FecharPedido(
+        dbConnection: IDbConnection,
+        pedidoId: string,
+    ): Promise<string> {
+        try {
+            const pedidoGateway = dbConnection.gateways.pedidoGateway;
+
+            const pedido = await PedidoUsecases.FecharPedido(pedidoGateway, pedidoId);
+
+            if (!pedido) {
+                return PedidoAdapter.adaptJsonError("Pedido não encontrado.");
+            }
+
+            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+            if (!pedidoSalvo) {
+                return PedidoAdapter.adaptJsonError("Erro ao fechar pedido.");
+            }
+
+            return PedidoAdapter.adaptJsonPedido(pedido, "Pedido fechado com sucesso");
+        } catch (error) {
+            return PedidoAdapter.adaptJsonError("Erro ao fechar pedido.");
+        }
+    }
+
 }
