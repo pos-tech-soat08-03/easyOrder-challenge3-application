@@ -1,4 +1,5 @@
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
+import { DataNotFoundException, SystemErrorException, ValidationErrorException } from "../../Core/Types/ExceptionType";
 import { PedidoUsecases } from "../../Core/Usecase/PedidoUsecases";
 import { PedidoAdapter } from "../Presenter/PedidoAdapter";
 
@@ -8,21 +9,38 @@ export class PedidoController {
         dbConnection: IDbConnection,
         clienteIdentificado: boolean,
         clienteId: string,
-    ): Promise<string> {
+    ): Promise<PedidoAdapter> {
         try {
-            const pedidoGateway = dbConnection.gateways.pedidoGateway;
+            if (typeof clienteId !== "string") {
+                return PedidoAdapter.validateError("Falha ao criar pedido");
+            }
 
-            const pedido = await PedidoUsecases.CadastrarPedido(pedidoGateway, clienteIdentificado, clienteId);
+            if (typeof clienteIdentificado !== "boolean") {
+                return PedidoAdapter.validateError("Falha ao criar pedido");
+            }
+
+            const pedido = await PedidoUsecases.CadastrarPedido(clienteIdentificado, clienteId);
+
+            const pedidoGateway = dbConnection.gateways.pedidoGateway;
 
             const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
 
             if (!pedidoSalvo) {
-                return PedidoAdapter.adaptJsonError("Erro ao cadastrar pedido.");
+                return PedidoAdapter.dataNotFound("Erro ao cadastrar pedido.");
             }
 
-            return PedidoAdapter.adaptJsonPedido(pedido);
+            return PedidoAdapter.successPedido(pedido);
+
         } catch (error) {
-            return PedidoAdapter.adaptJsonError("Erro ao cadastrar pedido.");
+            if (error instanceof DataNotFoundException) {
+                return PedidoAdapter.dataNotFound("Erro ao cadastrar pedido.");
+            }
+
+            if (error instanceof ValidationErrorException) {
+                return PedidoAdapter.validateError("Erro ao cadastrar pedido.");
+            }
+
+            return PedidoAdapter.systemError("Erro ao cadastrar pedido.");
         }
     }
 

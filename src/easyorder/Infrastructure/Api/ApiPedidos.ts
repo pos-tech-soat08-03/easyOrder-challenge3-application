@@ -2,7 +2,7 @@ import { Express } from "express";
 import express from "express";
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../../Application/Controller/PedidoController";
-import { PedidoAdapter } from "../../Application/Presenter/PedidoAdapter";
+import { PedidoAdapter, PedidoAdapterStatus } from "../../Application/Presenter/PedidoAdapter";
 
 export class ApiPedidos {
 
@@ -63,12 +63,30 @@ export class ApiPedidos {
                 }
             */
             if (req.body === undefined || Object.keys(req.body).length === 0) {
-                res.status(400).type('json').send(PedidoAdapter.adaptJsonError("Erro: Sem dados no Body da requisição."));
+                res.status(400).type('json').send(PedidoAdapter.systemError("Erro: Sem dados no Body da requisição.").dataJsonString);
+                return
             }
-            const clienteIdentificado: boolean = req.body.cliente_identificado;
+            const clienteIdentificado: boolean = req.body.cliente_identificado == "true";
             const clienteId: string = req.body.clienteId;
-            const pedidoPayload = await PedidoController.CadastrarPedido(dbconnection, clienteIdentificado, clienteId);
-            res.status(200).type('json').send(pedidoPayload);
+            const pedidoPresenter = await PedidoController.CadastrarPedido(dbconnection, clienteIdentificado, clienteId);
+
+            switch (pedidoPresenter.status) {
+                case PedidoAdapterStatus.DATA_NOT_FOUND:
+                    res.status(404).type('json').send(pedidoPresenter.dataJsonString);
+                    break;
+                case PedidoAdapterStatus.VALIDATE_ERROR:
+                    res.status(400).type('json').send(pedidoPresenter.dataJsonString);
+                    break;
+                case PedidoAdapterStatus.SYSTEM_ERROR:
+                    res.status(500).type('json').send(pedidoPresenter.dataJsonString);
+                    break;
+                case PedidoAdapterStatus.SYSTEM_ERROR:
+                case PedidoAdapterStatus.SUCCESS:
+                default:
+                    res.status(200).type('json').send(pedidoPresenter.dataJsonString);
+                    break;
+            }
+
         });
 
         app.get("/pedido/listar/:statusPedido", async (req, res) => {

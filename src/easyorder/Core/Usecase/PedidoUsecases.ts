@@ -5,11 +5,11 @@ import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
 import { PedidoGatewayInterface, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
 import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
+import { DataNotFoundException, SystemErrorException } from "../Types/ExceptionType";
 
 export class PedidoUsecases {
 
     public static async CadastrarPedido(
-        pedidoGateway: PedidoGatewayInterface,
         cliente_identificado: boolean,
         clientId: string,
     ): Promise<PedidoEntity> {
@@ -19,7 +19,6 @@ export class PedidoUsecases {
         }
 
         return new PedidoEntity(clientId);
-
     }
 
     public static async ListarPedidosPorStatus(
@@ -42,11 +41,11 @@ export class PedidoUsecases {
         const pedidos = await pedidoGateway.listarPedidosPorStatus(filterStatusPedido, filter);
 
         if (!pedidos) {
-            throw new Error("Erro ao listar pedidos");
+            throw new SystemErrorException("Erro ao listar pedidos");
         }
 
         if (!pedidos.length) {
-            return [];
+            throw new DataNotFoundException("Nenhum pedido encontrado");
         }
 
         return pedidos;
