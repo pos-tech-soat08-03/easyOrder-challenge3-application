@@ -5,6 +5,11 @@ import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/Pagame
 
 export class PagamentoServiceMock implements PagamentoServiceInterface {
 
+    constructor() {
+        // mock connection
+    }
+    
+    
     async processPayment (transaction: TransactionEntity): Promise <TransactionEntity> {
         if (transaction.getStatusTransacao() === StatusTransacaoEnum.PENDENTE) {
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.EM_PROCESSAMENTO));
