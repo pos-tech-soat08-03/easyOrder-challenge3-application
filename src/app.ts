@@ -6,6 +6,7 @@ import { ApiClientes } from "./easyorder/Infrastructure/Api/ApiClientes";
 import { ApiPedidos } from "./easyorder/Infrastructure/Api/ApiPedidos";
 import { ApiPreparacao } from "./easyorder/Infrastructure/Api/ApiPreparacao";
 import { ApiProdutos } from "./easyorder/Infrastructure/Api/ApiProdutos";
+import { PagamentoServiceMock } from "./easyorder/Infrastructure/Service/PagamentoServiceMock";
 // import { ProdutoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ProdutoGatewayMock';
 // import { ClienteGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ClienteGatewayMock';
 // import { PedidoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/PedidoGatewayMock';
@@ -21,18 +22,19 @@ const mysqlConnection = new MySQLConnection({
   databaseType: 'mysql'
 });
 
-// Inicialização de framework Express 
+// Inicialização serviços
+const servicoPagamento = new PagamentoServiceMock();
+
+// Inicialização de framework Express + endpoints default
 const port = Number(process.env.SERVER_PORT || "3000");
 const app = express();
+DefaultApiEndpoints.start(app);
 
 // Inicialização de endpoints da aplicação
-DefaultApiEndpoints.start(app);
 ApiClientes.start(mysqlConnection, app);
 ApiPedidos.start(mysqlConnection, app);
 ApiProdutos.start(mysqlConnection, app);
 ApiPreparacao.start(mysqlConnection, app);
-
-
 
 // Inicialização do Express server
 app.listen(port, () => {
