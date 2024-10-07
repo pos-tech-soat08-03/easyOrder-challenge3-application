@@ -292,7 +292,7 @@ export class ApiPedidos {
                 #swagger.tags = ['Pedidos']
                 #swagger.path = '/pedido/:pedidoId/checkout'
                 #swagger.method = 'put'
-                #swagger.summary = 'registro de Checkout/Pagamento de um pedido de forma manual.'
+                #swagger.summary = 'registro de Checkout/Pagamento de um pedido (de forma manual).'
                 #swagger.description = 'Endpoint para efetuar o pagamento de um pedido'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
