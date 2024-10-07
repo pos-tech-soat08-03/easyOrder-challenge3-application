@@ -69,19 +69,19 @@ export class TransactionEntity {
             if (this.statusTransacao.getValue() === StatusTransacaoEnum.PENDENTE) {
                 this.statusTransacao = novoStatus;
             }
-            throw new Error('Não é possível retornar o status de transacao finalizada para EM PROCESSAMENTO');
+            else throw new Error('Não é possível retornar o status de transacao finalizada para EM PROCESSAMENTO');
         }
         if (novoStatus.getValue() === StatusTransacaoEnum.PAGO) {
             if (this.statusTransacao.getValue() === StatusTransacaoEnum.EM_PROCESSAMENTO) {
                 this.statusTransacao = novoStatus;
             }
-            throw new Error('Não é possível forçar a transação para status PAGO');
+            else throw new Error('Não é possível forçar a transação para status PAGO');
         }
         if (novoStatus.getValue() === StatusTransacaoEnum.NEGADO) {
             if (this.statusTransacao.getValue() === StatusTransacaoEnum.EM_PROCESSAMENTO) {
                 this.statusTransacao = novoStatus;
             }
-            throw new Error('Não é possível forçar a transação para status NEGADO');
+            else throw new Error('Não é possível forçar a transação para status NEGADO');
         }
         this.statusTransacao = novoStatus;
     }

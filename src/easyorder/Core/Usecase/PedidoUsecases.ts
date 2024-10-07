@@ -1,10 +1,13 @@
 import { PedidoComboEntity } from "../Entity/PedidoComboEntity";
 import { PedidoEntity } from "../Entity/PedidoEntity";
+import { TransactionEntity } from "../Entity/TransactionEntity";
 import { CategoriaEnum } from "../Entity/ValueObject/CategoriaEnum";
 import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
 import { PedidoGatewayInterface, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
 import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
+import { TransactionGatewayInterface } from "../Interfaces/Gateway/TransactionGatewayInterface";
+import { PagamentoServiceInterface } from "../Interfaces/Services/PagamentoServiceInterface";
 import { DataNotFoundException, ValidationErrorException } from "../Types/ExceptionType";
 
 export class PedidoUsecases {
@@ -99,30 +102,53 @@ export class PedidoUsecases {
             throw new ValidationErrorException("Pedido já cancelado");
         }
 
+        pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
+
         pedido.setStatusPedido(
             new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)
         );
 
-        pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
 
         return pedido;
     }
 
     public static async FecharPedido(
         pedidoGateway: PedidoGatewayInterface,
+        transactionGateway: TransactionGatewayInterface,
+        servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
     ): Promise<PedidoEntity> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
-
         if (!pedido) {
             throw new DataNotFoundException("Pedido não encontrado");
+        }
+        
+        const transacao = new TransactionEntity(pedido.getId(),pedido.getValorTotal());
+        try {
+            await transactionGateway.salvarTransaction(transacao);
+        }
+        catch (error:any) {
+            throw new Error(`Erro ao salvar transação inicial`);
+        }
+        const transacaoEnviada = await servicoPagamento.processPayment(transacao);    
+        if (!transacaoEnviada) {
+            throw new Error("Erro ao enviar transação para o pagamento");
+        }
+
+        const transacaoAtualizada = transactionGateway.atualizarTransactionsPorId(transacaoEnviada.getIdTransacao(), transacaoEnviada)
+        if (!transacaoAtualizada) {
+            throw new Error("Erro ao salvar transacao atualizada.");
         }
 
         pedido.setStatusPedido(
             new StatusPedidoValueObject(StatusPedidoEnum.AGUARDANDO_PAGAMENTO)
         );
 
-        return pedido;
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar o pedido atualizado.");
+        }
+        return pedidoSalvo;
     }
 
     public static async AdicionarComboAoPedido(

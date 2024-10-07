@@ -3,6 +3,7 @@ import express from "express";
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PedidoController } from "../../Application/Controller/PedidoController";
 import { PedidoAdapter, PedidoAdapterStatus } from "../../Application/Presenter/PedidoAdapter";
+import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
 
 export class ApiPedidos {
 
@@ -25,7 +26,7 @@ export class ApiPedidos {
         }
     }
 
-    static start(dbconnection: IDbConnection, app: Express): void {
+    static start(dbconnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, app: Express): void {
 
         app.use(express.json());
 
@@ -291,8 +292,8 @@ export class ApiPedidos {
                 #swagger.tags = ['Pedidos']
                 #swagger.path = '/pedido/:pedidoId/checkout'
                 #swagger.method = 'put'
-                #swagger.summary = 'Checkout/Pagamento de um pedido'
-                #swagger.description = 'Controller para efetuar o pagamento de um pedido'
+                #swagger.summary = 'registro de Checkout/Pagamento de um pedido (de forma manual).'
+                #swagger.description = 'Endpoint para efetuar o pagamento de um pedido'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -333,7 +334,7 @@ export class ApiPedidos {
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPresenter = await PedidoController.CheckoutPedido(dbconnection, pedidoId);
+            const pedidoPresenter = await PedidoController.CheckoutPedido(dbconnection, servicoPagamento, pedidoId);
 
             ApiPedidos.responseJson(pedidoPresenter, res);
         });
@@ -343,7 +344,7 @@ export class ApiPedidos {
                 #swagger.method = 'put'
                 #swagger.tags = ['Pedidos']
                 #swagger.summary = 'Fechar pedido'
-                #swagger.description = 'Controller para fechar um pedido'
+                #swagger.description = 'Endpoint para fechar um pedido'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -384,7 +385,7 @@ export class ApiPedidos {
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPresenter = await PedidoController.FecharPedido(dbconnection, pedidoId);
+            const pedidoPresenter = await PedidoController.FecharPedido(dbconnection, servicoPagamento, pedidoId);
 
             ApiPedidos.responseJson(pedidoPresenter, res);
         });

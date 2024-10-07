@@ -1,4 +1,5 @@
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
+import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
 import { DataNotFoundException, ValidationErrorException } from "../../Core/Types/ExceptionType";
 import { PedidoUsecases } from "../../Core/Usecase/PedidoUsecases";
 import { PedidoAdapter } from "../Presenter/PedidoAdapter";
@@ -140,10 +141,12 @@ export class PedidoController {
 
     public static async CheckoutPedido(
         dbConnection: IDbConnection,
+        servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
     ): Promise<PedidoAdapter> {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
+            const transactionGateway = dbConnection.gateways.transactionGateway;
 
             const pedido = await PedidoUsecases.CheckoutPedido(pedidoGateway, pedidoId);
 
@@ -173,25 +176,22 @@ export class PedidoController {
 
     public static async FecharPedido(
         dbConnection: IDbConnection,
+        servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
     ): Promise<PedidoAdapter> {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
+            const transactionGateway = dbConnection.gateways.transactionGateway;
 
-            const pedido = await PedidoUsecases.FecharPedido(pedidoGateway, pedidoId);
+            const pedido = await PedidoUsecases.FecharPedido(pedidoGateway, transactionGateway, servicoPagamento, pedidoId);
 
             if (!pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao fechar pedido.");
-            }
-
             return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
-        } catch (error) {
+
+        } catch (error:any) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
             }
@@ -199,9 +199,10 @@ export class PedidoController {
             if (error instanceof ValidationErrorException) {
                 return PedidoAdapter.validateError(error.message);
             }
-
+            console.log("Erro encontrado: "+error.message);
             return PedidoAdapter.systemError("Erro ao fechar pedido.");
         }
+
     }
 
     public static async AdicionarComboAoPedido(
