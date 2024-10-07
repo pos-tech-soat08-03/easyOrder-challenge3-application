@@ -32,7 +32,7 @@ DefaultApiEndpoints.start(app);
 
 // Inicialização de endpoints da aplicação
 ApiClientes.start(mysqlConnection, app);
-ApiPedidos.start(mysqlConnection, app);
+ApiPedidos.start(mysqlConnection, servicoPagamento, app);
 ApiProdutos.start(mysqlConnection, app);
 ApiPreparacao.start(mysqlConnection, app);
 

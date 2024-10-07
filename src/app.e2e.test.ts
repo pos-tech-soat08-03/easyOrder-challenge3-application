@@ -292,7 +292,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-  test("(/pedido/{pedidoId}/fechar) Fecha pedido: encaminha para Checkout", async () => {
+  test("(/pedido/{pedidoId}/fechar) Fecha pedido: encaminha para Serviço de Pagamento", async () => {
     try {
       const response = await axios.put(
         `${BASE_URL}/pedido/${pedidoId}/fechar`
