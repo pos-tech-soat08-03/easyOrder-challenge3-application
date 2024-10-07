@@ -56,24 +56,14 @@ export class PedidoAdapter {
         );
     }
 
-    public static adaptJsonError(mensagem: string): string {
-        return JSON.stringify({
-            message: mensagem
-        });
-    }
-
-    public static adaptJsonPedido(pedido: PedidoEntity, mensagem: string = "Pedido cadastrado com sucesso"): string {
-        return JSON.stringify({
-            mensagem: mensagem,
-            pedido: PedidoAdapter.adaptJsonPedidoObject(pedido)
-        });
-    }
-
-    public static adaptJsonPedidos(pedidos: PedidoEntity[]): string {
-        return JSON.stringify({
-            mensagem: pedidos.length > 0 ? "Pedidos listados com sucesso" : "Nenhum pedido encontrado",
-            pedidos: pedidos.map(pedido => PedidoAdapter.adaptJsonPedidoObject(pedido))
-        });
+    public static successPedidos(pedidos: PedidoEntity[], mensagem?: string): PedidoAdapter {
+        return new PedidoAdapter(
+            PedidoAdapterStatus.SUCCESS,
+            {
+                mensagem: mensagem || "Pedidos listados com sucesso",
+                pedidos: pedidos.map(pedido => PedidoAdapter.adaptJsonPedidoObject(pedido)),
+            },
+        );
     }
 
     private static adaptJsonPedidoObject(pedido: PedidoEntity): any {

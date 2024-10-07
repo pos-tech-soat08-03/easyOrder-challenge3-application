@@ -6,6 +6,25 @@ import { PedidoAdapter, PedidoAdapterStatus } from "../../Application/Presenter/
 
 export class ApiPedidos {
 
+    private static responseJson(pedidoPresenter: PedidoAdapter, res: any): void {
+        switch (pedidoPresenter.status) {
+            case PedidoAdapterStatus.DATA_NOT_FOUND:
+                res.status(404).type('json').send(pedidoPresenter.dataJsonString);
+                break;
+            case PedidoAdapterStatus.VALIDATE_ERROR:
+                res.status(400).type('json').send(pedidoPresenter.dataJsonString);
+                break;
+            case PedidoAdapterStatus.SYSTEM_ERROR:
+                res.status(500).type('json').send(pedidoPresenter.dataJsonString);
+                break;
+            case PedidoAdapterStatus.SYSTEM_ERROR:
+            case PedidoAdapterStatus.SUCCESS:
+            default:
+                res.status(200).type('json').send(pedidoPresenter.dataJsonString);
+                break;
+        }
+    }
+
     static start(dbconnection: IDbConnection, app: Express): void {
 
         app.use(express.json());
@@ -70,22 +89,7 @@ export class ApiPedidos {
             const clienteId: string = req.body.clienteId;
             const pedidoPresenter = await PedidoController.CadastrarPedido(dbconnection, clienteIdentificado, clienteId);
 
-            switch (pedidoPresenter.status) {
-                case PedidoAdapterStatus.DATA_NOT_FOUND:
-                    res.status(404).type('json').send(pedidoPresenter.dataJsonString);
-                    break;
-                case PedidoAdapterStatus.VALIDATE_ERROR:
-                    res.status(400).type('json').send(pedidoPresenter.dataJsonString);
-                    break;
-                case PedidoAdapterStatus.SYSTEM_ERROR:
-                    res.status(500).type('json').send(pedidoPresenter.dataJsonString);
-                    break;
-                case PedidoAdapterStatus.SYSTEM_ERROR:
-                case PedidoAdapterStatus.SUCCESS:
-                default:
-                    res.status(200).type('json').send(pedidoPresenter.dataJsonString);
-                    break;
-            }
+            ApiPedidos.responseJson(pedidoPresenter, res);
 
         });
 
@@ -187,9 +191,7 @@ export class ApiPedidos {
             */
 
             if (req.params.statusPedido === undefined || req.params.statusPedido === "" || req.params.statusPedido === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: Status do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: Status do pedido não informado."), res);
             }
 
             const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
@@ -197,7 +199,7 @@ export class ApiPedidos {
             const orderField = req.query.orderField ? req.query.orderField as string : 'DATA_CADASTRO';
             const orderDirection = req.query.orderDirection ? req.query.orderDirection as string : 'DESC';
 
-            const pedidosPayload = await PedidoController.ListarPedidosPorStatus(
+            const pedidoPresenter = await PedidoController.ListarPedidosPorStatus(
                 dbconnection,
                 req.params.statusPedido,
                 page,
@@ -206,7 +208,7 @@ export class ApiPedidos {
                 orderDirection
             );
 
-            res.status(200).type('json').send(pedidosPayload);
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.get("/pedido/:pedidoId", async (req, res) => {
@@ -263,27 +265,25 @@ export class ApiPedidos {
             */
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res);
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPayload = await PedidoController.BuscaPedidoPorId(dbconnection, pedidoId);
-            res.status(200).type('json').send(pedidoPayload);
+            const pedidoPresenter = await PedidoController.BuscaPedidoPorId(dbconnection, pedidoId);
+
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.put("/pedido/:pedidoId/cancelar", async (req, res) => {
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res);
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPayload = await PedidoController.CancelarPedido(dbconnection, pedidoId);
-            res.status(200).type('json').send(pedidoPayload);
+            const pedidoPresenter = await PedidoController.CancelarPedido(dbconnection, pedidoId);
+
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.put("/pedido/:pedidoId/checkout", async (req, res) => {
@@ -329,14 +329,13 @@ export class ApiPedidos {
             */
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res)
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPayload = await PedidoController.CheckoutPedido(dbconnection, pedidoId);
-            res.status(200).type('json').send(pedidoPayload);
+            const pedidoPresenter = await PedidoController.CheckoutPedido(dbconnection, pedidoId);
+
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.put("/pedido/:pedidoId/fechar", async (req, res) => {
@@ -381,14 +380,13 @@ export class ApiPedidos {
             */
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res)
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPayload = await PedidoController.FecharPedido(dbconnection, pedidoId);
-            res.status(200).type('json').send(pedidoPayload);
+            const pedidoPresenter = await PedidoController.FecharPedido(dbconnection, pedidoId);
+
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.post("/pedido/:pedidoId/combo", async (req, res) => {
@@ -470,13 +468,11 @@ export class ApiPedidos {
             */
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res)
             }
 
             if (req.body === undefined || Object.keys(req.body).length === 0) {
-                res.status(400).type('json').send(PedidoAdapter.adaptJsonError("Erro: Sem dados no Body da requisição."));
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: Sem dados no Body da requisição."), res);
             }
 
             const pedidoId = req.params.pedidoId;
@@ -485,7 +481,7 @@ export class ApiPedidos {
             const sobremesaId = req.body.sobremesaId;
             const acompanhamentoId = req.body.acompanhamentoId;
 
-            const pedidoPayload = await PedidoController.AdicionarComboAoPedido(
+            const pedidoPresenter = await PedidoController.AdicionarComboAoPedido(
                 dbconnection,
                 pedidoId,
                 lancheId,
@@ -494,7 +490,7 @@ export class ApiPedidos {
                 acompanhamentoId
             );
 
-            res.status(200).type('json').send(pedidoPayload);
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
         app.delete("/pedido/:pedidoId/combo/:comboId", async (req, res) => {
@@ -547,27 +543,23 @@ export class ApiPedidos {
             */
 
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do pedido não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res)
             }
 
             if (req.params.comboId === undefined || req.params.comboId === "" || req.params.comboId === null) {
-                res.status(400).type('json').send(
-                    PedidoAdapter.adaptJsonError("Erro: ID do combo não informado.")
-                );
+                ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do combo não informado."), res)
             }
 
             const pedidoId = req.params.pedidoId;
             const comboId = req.params.comboId;
 
-            const pedidoPayload = await PedidoController.RemoverComboDoPedido(
+            const pedidoPresenter = await PedidoController.RemoverComboDoPedido(
                 dbconnection,
                 pedidoId,
                 comboId
             );
 
-            res.status(200).type('json').send(pedidoPayload);
+            ApiPedidos.responseJson(pedidoPresenter, res);
         });
     }
 }

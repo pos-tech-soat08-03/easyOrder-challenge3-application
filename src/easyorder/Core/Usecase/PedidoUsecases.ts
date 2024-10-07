@@ -5,7 +5,7 @@ import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
 import { PedidoGatewayInterface, PedidoGatewayInterfaceFilterOrderDirection, PedidoGatewayInterfaceFilterOrderField } from "../Interfaces/Gateway/PedidoGatewayInterface";
 import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
-import { DataNotFoundException, SystemErrorException } from "../Types/ExceptionType";
+import { DataNotFoundException, ValidationErrorException } from "../Types/ExceptionType";
 
 export class PedidoUsecases {
 
@@ -41,7 +41,7 @@ export class PedidoUsecases {
         const pedidos = await pedidoGateway.listarPedidosPorStatus(filterStatusPedido, filter);
 
         if (!pedidos) {
-            throw new SystemErrorException("Erro ao listar pedidos");
+            throw new Error("Erro ao listar pedidos");
         }
 
         if (!pedidos.length) {
@@ -71,11 +71,11 @@ export class PedidoUsecases {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            throw new Error("Pedido não encontrado");
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
         if (pedido.getStatusPedido().getValue() === StatusPedidoEnum.CANCELADO) {
-            throw new Error("Pedido já cancelado");
+            throw new ValidationErrorException("Pedido já cancelado");
         }
 
         pedido.setStatusPedido(
@@ -92,11 +92,11 @@ export class PedidoUsecases {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            throw new Error("Pedido não encontrado");
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
         if (pedido.getStatusPedido().getValue() === StatusPedidoEnum.CANCELADO) {
-            throw new Error("Pedido já cancelado");
+            throw new ValidationErrorException("Pedido já cancelado");
         }
 
         pedido.setStatusPedido(
@@ -115,7 +115,7 @@ export class PedidoUsecases {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            throw new Error("Pedido não encontrado");
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
         pedido.setStatusPedido(
@@ -138,7 +138,7 @@ export class PedidoUsecases {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            throw new Error("Pedido não encontrado");
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
         let produtoLanche = null
@@ -146,12 +146,12 @@ export class PedidoUsecases {
             produtoLanche = await produtoGateway.buscarProdutoPorId(lancheId);
 
             if (!produtoLanche) {
-                throw new Error("Lanche não encontrado");
+                throw new DataNotFoundException("Lanche não encontrado");
             }
 
             // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
             if (produtoLanche.getCategoria() !== CategoriaEnum.LANCHE) {
-                throw new Error("Produto informado não é um lanche");
+                throw new ValidationErrorException("Produto informado não é um lanche");
             }
         }
 
@@ -160,12 +160,12 @@ export class PedidoUsecases {
             produtoBebida = await produtoGateway.buscarProdutoPorId(bebidaId);
 
             if (!produtoBebida) {
-                throw new Error("Bebida não encontrada");
+                throw new DataNotFoundException("Bebida não encontrada");
             }
 
             // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
             if (produtoBebida.getCategoria() !== CategoriaEnum.BEBIDA) {
-                throw new Error("Produto informado não é uma bebida");
+                throw new ValidationErrorException("Produto informado não é uma bebida");
             }
         }
 
@@ -174,12 +174,12 @@ export class PedidoUsecases {
             produtoSobremesa = await produtoGateway.buscarProdutoPorId(sobremesaId);
 
             if (!produtoSobremesa) {
-                throw new Error("Sobremesa não encontrada");
+                throw new DataNotFoundException("Sobremesa não encontrada");
             }
 
             // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
             if (produtoSobremesa.getCategoria() !== CategoriaEnum.SOBREMESA) {
-                throw new Error("Produto informado não é uma sobremesa");
+                throw new ValidationErrorException("Produto informado não é uma sobremesa");
             }
         }
 
@@ -188,12 +188,12 @@ export class PedidoUsecases {
             produtoAcompanhamento = await produtoGateway.buscarProdutoPorId(acompanhamentoId);
 
             if (!produtoAcompanhamento) {
-                throw new Error("Acompanhamento não encontrado");
+                throw new DataNotFoundException("Acompanhamento não encontrado");
             }
 
             // RN3. Quando adicionar um produto ao combo, devemos verificar se o tipo do produto informado corresponde ao tipo de produto solicitando a inserção no combo
             if (produtoAcompanhamento.getCategoria() !== CategoriaEnum.ACOMPANHAMENTO) {
-                throw new Error("Produto informado não é um acompanhamento");
+                throw new ValidationErrorException("Produto informado não é um acompanhamento");
             }
         }
 
@@ -217,7 +217,7 @@ export class PedidoUsecases {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            throw new Error("Pedido não encontrado");
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
         pedido.removerCombo(comboId);
