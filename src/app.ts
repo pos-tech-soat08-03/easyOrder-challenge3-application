@@ -7,6 +7,7 @@ import { ApiPedidos } from "./easyorder/Infrastructure/Api/ApiPedidos";
 import { ApiPreparacao } from "./easyorder/Infrastructure/Api/ApiPreparacao";
 import { ApiProdutos } from "./easyorder/Infrastructure/Api/ApiProdutos";
 import { PagamentoServiceMock } from "./easyorder/Infrastructure/Service/PagamentoServiceMock";
+import { ApiPagamentos } from "./easyorder/Infrastructure/Api/ApiPagamentos";
 // import { ProdutoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ProdutoGatewayMock';
 // import { ClienteGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ClienteGatewayMock';
 // import { PedidoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/PedidoGatewayMock';
@@ -35,6 +36,7 @@ ApiClientes.start(mysqlConnection, app);
 ApiPedidos.start(mysqlConnection, servicoPagamento, app);
 ApiProdutos.start(mysqlConnection, app);
 ApiPreparacao.start(mysqlConnection, app);
+ApiPagamentos.start(mysqlConnection, servicoPagamento, app);
 
 // Inicialização do Express server
 app.listen(port, () => {

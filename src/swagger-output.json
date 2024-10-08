@@ -288,6 +288,60 @@
         }
       }
     },
+    "/pagamento/confirmacao/{transacaoId}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "transacaoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/pagamento/webhook/{transacaoId}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "transacaoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/pagamento/listar-transacoes/{pedidoId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/pedido": {
       "post": {
         "tags": [
@@ -539,7 +593,7 @@
         "tags": [
           "Pedidos"
         ],
-        "summary": "registro de Checkout/Pagamento de um pedido de forma manual.",
+        "summary": "registro de Checkout/Pagamento de um pedido (de forma manual).",
         "description": "Endpoint para efetuar o pagamento de um pedido",
         "produces": [
           "application/json"
