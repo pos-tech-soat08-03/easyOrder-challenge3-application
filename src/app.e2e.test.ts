@@ -292,10 +292,10 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-  test("(/pedido/{pedidoId}/fechar) Fecha pedido: encaminha para Serviço de Pagamento", async () => {
+  test("(/pedido/{pedidoId}/checkout) Fecha pedido: encaminha para Serviço de Pagamento", async () => {
     try {
       const response = await axios.put(
-        `${BASE_URL}/pedido/${pedidoId}/fechar`
+        `${BASE_URL}/pedido/${pedidoId}/checkout`
       ).catch((error: any) => {
         throw new Error(JSON.stringify(error.response.data) || error.message);
       });;
@@ -308,14 +308,14 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
 
       pedidoId = response.data.pedido.id;
     } catch (error: any) {
-      expect(error.message).toEqual("Falha ao fechar pedido: " + error.text);
+      expect(error.message).toEqual("Falha do Checkout pedido: " + error.text);
     }
   });
 
-  test("(/pedido/{pedidoId}/checkout) Checkout pedido: encaminha para Fila de Preparação", async () => {
+  test("(/pedido/{pedidoId}/confirmacao-pagamento) Confirma pagamento pedido: encaminha para Fila de Preparação", async () => {
     try {
       const response = await axios.put(
-        `${BASE_URL}/pedido/${pedidoId}/checkout`,
+        `${BASE_URL}/pedido/${pedidoId}/confirmacao-pagamento`,
       ).catch((error: any) => {
         throw new Error(JSON.stringify(error.response.data) || error.message);
       });
@@ -324,7 +324,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       expect(response.data).toHaveProperty("mensagem");
       expect(response.data.mensagem).toEqual("Pedido fechado com sucesso");
     } catch (error: any) {
-      expect(error.message).toEqual("Falha ao realizar checkout do pedido " + error.text);
+      expect(error.message).toEqual("Falha ao realizar confirmação manual do pagamento do pedido " + error.text);
     }
   });
 

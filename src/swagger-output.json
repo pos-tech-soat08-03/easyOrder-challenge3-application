@@ -300,41 +300,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/pagamento/webhook/{transacaoId}": {
+    "/pagamento/webhook/": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "transacaoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/pagamento/listar-transacoes/{pedidoId}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "pedidoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -588,13 +562,13 @@
         }
       }
     },
-    "/pedido/:pedidoId/checkout": {
+    "/pedido/:pedidoId/confirmacao-pagamento": {
       "put": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "registro de Checkout/Pagamento de um pedido (de forma manual).",
-        "description": "Endpoint para efetuar o pagamento de um pedido",
+        "summary": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
+        "description": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
         "produces": [
           "application/json"
         ],
@@ -634,16 +608,17 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
-    "/pedido/{pedidoId}/fechar": {
+    "/pedido/{pedidoId}/checkout": {
       "put": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Fechar pedido",
-        "description": "Endpoint para fechar um pedido",
+        "summary": "Checkout pedido",
+        "description": "Endpoint para Checkout de um pedido + envio para serviço de Pagamento",
         "produces": [
           "application/json"
         ],

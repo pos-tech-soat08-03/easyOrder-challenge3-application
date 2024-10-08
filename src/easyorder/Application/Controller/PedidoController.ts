@@ -139,7 +139,7 @@ export class PedidoController {
         }
     }
 
-    public static async CheckoutPedido(
+    public static async ConfirmarPagamentoPedido(
         dbConnection: IDbConnection,
         servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
@@ -148,7 +148,7 @@ export class PedidoController {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
             const transactionGateway = dbConnection.gateways.transactionGateway;
 
-            const pedido = await PedidoUsecases.CheckoutPedido(pedidoGateway, pedidoId);
+            const pedido = await PedidoUsecases.ConfirmarPagamentoPedido(pedidoGateway, pedidoId);
 
             if (!pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
@@ -174,7 +174,7 @@ export class PedidoController {
         }
     }
 
-    public static async FecharPedido(
+    public static async CheckoutPedido(
         dbConnection: IDbConnection,
         servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
@@ -183,7 +183,7 @@ export class PedidoController {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
             const transactionGateway = dbConnection.gateways.transactionGateway;
 
-            const pedido = await PedidoUsecases.FecharPedido(pedidoGateway, transactionGateway, servicoPagamento, pedidoId);
+            const pedido = await PedidoUsecases.CheckoutPedido(pedidoGateway, transactionGateway, servicoPagamento, pedidoId);
 
             if (!pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
@@ -200,7 +200,7 @@ export class PedidoController {
                 return PedidoAdapter.validateError(error.message);
             }
             console.log("Erro encontrado: "+error.message);
-            return PedidoAdapter.systemError("Erro ao fechar pedido.");
+            return PedidoAdapter.systemError("Erro ao Checkout pedido.");
         }
 
     }

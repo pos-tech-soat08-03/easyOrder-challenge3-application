@@ -88,7 +88,7 @@ export class PedidoUsecases {
         return pedido;
     }
 
-    public static async CheckoutPedido(
+    public static async ConfirmarPagamentoPedido(
         pedidoGateway: PedidoGatewayInterface,
         pedidoId: string,
     ): Promise<PedidoEntity> {
@@ -112,7 +112,7 @@ export class PedidoUsecases {
         return pedido;
     }
 
-    public static async FecharPedido(
+    public static async CheckoutPedido(
         pedidoGateway: PedidoGatewayInterface,
         transactionGateway: TransactionGatewayInterface,
         servicoPagamento: PagamentoServiceInterface,
