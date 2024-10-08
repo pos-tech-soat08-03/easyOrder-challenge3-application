@@ -1,8 +1,9 @@
-import { Sequelize, Model, DataTypes, where } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { ProdutoEntity } from "../../Core/Entity/ProdutoEntity";
 import { CategoriaEnum } from "../../Core/Entity/ValueObject/CategoriaEnum";
-import { ConnectionInfo } from "../../Core/Types/ConnectionInfo";
 import { ProdutoGatewayInterface } from "../../Core/Interfaces/Gateway/ProdutoGatewayInterface";
+import { ConnectionInfo } from "../../Core/Types/ConnectionInfo";
+import { DataNotFoundException } from "../../Core/Types/ExceptionType";
 
 class LocalModel extends Model {
   public id!: string;
@@ -85,14 +86,14 @@ export class ProdutoGateway implements ProdutoGatewayInterface {
   }
   public async buscarProdutoPorId(
     id: string
-  ): Promise<ProdutoEntity | undefined> {
+  ): Promise<ProdutoEntity> {
     const produto = await LocalModel.findOne({
       where: {
         id: id,
       },
     });
     if (!produto) {
-      return undefined;
+      throw new DataNotFoundException("Produto não encontrado");
     }
     return new ProdutoEntity(
       produto.nome,
