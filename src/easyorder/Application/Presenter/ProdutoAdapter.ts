@@ -38,5 +38,11 @@ export class ProdutoAdapter {
         }
       });
     }
+    public static adaptJsonProdutoId (id: string, mensagem: string): string {
+      return JSON.stringify({
+        mensagem,
+        id
+      });
+    }
 
 }

@@ -4,45 +4,54 @@ import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInt
 
 export class ProdutoUsesCases {
     public static async listarProdutosUsecase(produtoGateway: ProdutoGatewayInterface): Promise<{ produtos: ProdutoEntity[] | undefined, mensagem: string }> {
-        const produtos = await produtoGateway.listarProdutos();
-        if (produtos === undefined) {
-            return { produtos: undefined, mensagem: "Não foram encontrados produtos." };
+        try {
+            const produtos = await produtoGateway.listarProdutos();
+            return {produtos, mensagem:"Produtos listado com sucesso." };
+        } catch (error) {
+            throw new Error("Erro ao listar produtos por categoria.");
         }
-        return { produtos, mensagem: `Sucesso. ${produtos.length} produto(s) retornado(s).` };
     }
 
     public static async listarProdutosPorCategoriaUsecase(produtoGateway: ProdutoGatewayInterface, categoria: CategoriaEnum): Promise<{ produtos: ProdutoEntity[] | undefined, mensagem: string }> {
-        const produtos = await produtoGateway.listarProdutoCategoria(categoria);
-        if (produtos === undefined) {
-            return { produtos: undefined, mensagem: "Não foram encontrados produtos." };
+
+        try {
+            const produtos = await produtoGateway.listarProdutoCategoria(categoria);
+            return {produtos, mensagem:"Produtos listado com sucesso." };
+        } catch (error) {
+            throw new Error("Erro ao listar produtos por categoria.");
         }
-        return { produtos, mensagem: `Sucesso. ${produtos.length} produto(s) da categoria ${categoria} retornado(s).` };
+
     }
 
     public static async salvarProdutoUsecase(produtoGateway: ProdutoGatewayInterface, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<{ produto: ProdutoEntity | undefined, mensagem: string }> {
-        const produtoNovo = new ProdutoEntity(nome, descricao, preco, categoria, imagemURL);
-        const produto = await produtoGateway.salvarProduto(produtoNovo);
-        if (produto === undefined) {
-            return { produto: undefined, mensagem: "Erro ao salvar o produto." };
-        } else {
-            return { produto, mensagem: "Sucesso ao salvar o produto." };
+        const produto = new ProdutoEntity(nome, descricao, preco, categoria, imagemURL);
+        try {
+            await produtoGateway.salvarProduto(produto);
+            return {produto, mensagem:"Produto salvo com sucesso." };
+        } catch (error) {
+            throw new Error("Erro ao salvar produto.");
         }
     }
 
     public static async buscarProdutoPorIdUsecase(produtoGateway: ProdutoGatewayInterface, id: string): Promise<{ produto: ProdutoEntity | undefined, mensagem: string }> {
-        const produto = await produtoGateway.buscarProdutoPorId(id);
-        if (produto === undefined) {
-            return { produto: undefined, mensagem: "Produto não encontrado." };
+        try {
+            const produto = await produtoGateway.buscarProdutoPorId(id);
+            return { produto, mensagem: "Sucesso ao buscar o produto." };
+        } catch (error) {
+            throw new Error("Erro ao buscar");
         }
-        return { produto, mensagem: "Sucesso ao buscar o produto." };
     }
 
-    public static async removerProdutoPorIdUsecase(produtoGateway: ProdutoGatewayInterface, id: string): Promise<{ produtoRemovido: ProdutoEntity | undefined, mensagem: string }> {
-        const produtoRemovido = await produtoGateway.removerPorId(id);
-        if (produtoRemovido === undefined) {
-            return { produtoRemovido: undefined, mensagem: "Produto não encontrado." };
+    public static async removerProdutoPorIdUsecase(produtoGateway: ProdutoGatewayInterface, produtoID: string): Promise<{produtoID: string , mensagem: string}> {
+       
+        try {
+            await produtoGateway.removerPorId(produtoID);
+            return { produtoID, mensagem: "Sucesso ao remover o produto."};
+        } catch (error) {
+            throw new Error("Erro ao remover Produto: " + produtoID);
         }
-        return { produtoRemovido, mensagem: "Sucesso ao remover o produto." };
+
+
     }
 
     public static async atualizarProdutoUsecase(produtoGateway: ProdutoGatewayInterface, id: string, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<{ produto: ProdutoEntity | undefined, mensagem: string }> {

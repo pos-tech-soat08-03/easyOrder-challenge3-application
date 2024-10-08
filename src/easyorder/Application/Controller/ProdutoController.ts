@@ -53,11 +53,9 @@ export class ProdutoController {
 
     public static async removerProdutoPorId(dbConnection: IDbConnection, id: string): Promise<string>{
         const produtoGateway = dbConnection.gateways.produtoGateway;
-        const {produtoRemovido, mensagem } = await ProdutoUsesCases.removerProdutoPorIdUsecase(produtoGateway, id);
-        if(produtoRemovido === undefined){
-            return ProdutoAdapter.adaptPrudoJsonError(mensagem);
-        }
-        return ProdutoAdapter.adaptJsonProduto(produtoRemovido,mensagem);   
+        const {produtoID, mensagem} = await ProdutoUsesCases.removerProdutoPorIdUsecase(produtoGateway, id);
+
+        return ProdutoAdapter.adaptJsonProdutoId(produtoID ,mensagem);   
     }
 
 }
