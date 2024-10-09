@@ -29,7 +29,7 @@ export class PedidoUsecases {
             throw new Error("Erro ao salvar pedido");
         }
 
-        return pedidoSalvo;
+        return pedido;
     }
 
     public static async ListarPedidosPorStatus(
@@ -99,7 +99,7 @@ export class PedidoUsecases {
             throw new Error("Erro ao salvar pedido");
         }
 
-        return pedidoSalvo;
+        return pedido;
     }
 
     public static async CheckoutPedido(
@@ -128,7 +128,7 @@ export class PedidoUsecases {
             throw new Error("Erro ao salvar pedido");
         }
 
-        return pedidoSalvo;
+        return pedido;
     }
 
     public static async FecharPedido(
@@ -167,7 +167,8 @@ export class PedidoUsecases {
         if (!pedidoSalvo) {
             throw new Error("Erro ao salvar o pedido atualizado.");
         }
-        return pedidoSalvo;
+
+        return pedido;
     }
 
     public static async AdicionarComboAoPedido(
@@ -250,6 +251,12 @@ export class PedidoUsecases {
         );
 
         pedido.adicionarCombos([pedidoCombo]);
+
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao adicionar combo ao pedido");
+        }
 
         return pedido;
     }
