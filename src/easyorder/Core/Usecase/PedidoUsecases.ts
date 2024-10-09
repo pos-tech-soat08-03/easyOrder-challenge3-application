@@ -274,6 +274,12 @@ export class PedidoUsecases {
 
         pedido.removerCombo(comboId);
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao remover combo do pedido");
+        }
+
         return pedido;
     }
 }

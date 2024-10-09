@@ -242,12 +242,6 @@ export class PedidoController {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao remover combo do pedido.");
-            }
-
             return PedidoAdapter.successPedido(pedido, "Combo removido com sucesso");
         } catch (error) {
             if (error instanceof DataNotFoundException) {
