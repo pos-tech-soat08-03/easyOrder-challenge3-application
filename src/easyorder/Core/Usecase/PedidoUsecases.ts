@@ -93,6 +93,12 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO)
         );
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
         return pedido;
     }
 
