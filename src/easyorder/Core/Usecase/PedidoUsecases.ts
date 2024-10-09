@@ -13,15 +13,23 @@ import { DataNotFoundException, ValidationErrorException } from "../Types/Except
 export class PedidoUsecases {
 
     public static async CadastrarPedido(
-        cliente_identificado: boolean,
-        clientId: string,
+        clientId: string | undefined,
+        pedidoGateway: PedidoGatewayInterface,
     ): Promise<PedidoEntity> {
 
-        if (!cliente_identificado) {
+        if (clientId === undefined) {
             clientId = "NAO_IDENTIFICADO";
         }
 
-        return new PedidoEntity(clientId);
+        const pedido = new PedidoEntity(clientId);
+
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return pedidoSalvo;
     }
 
     public static async ListarPedidosPorStatus(
@@ -122,15 +130,15 @@ export class PedidoUsecases {
         if (!pedido) {
             throw new DataNotFoundException("Pedido não encontrado");
         }
-        
-        const transacao = new TransactionEntity(pedido.getId(),pedido.getValorTotal());
+
+        const transacao = new TransactionEntity(pedido.getId(), pedido.getValorTotal());
         try {
             await transactionGateway.salvarTransaction(transacao);
         }
-        catch (error:any) {
+        catch (error: any) {
             throw new Error(`Erro ao salvar transação inicial`);
         }
-        const transacaoEnviada = await servicoPagamento.processPayment(transacao);    
+        const transacaoEnviada = await servicoPagamento.processPayment(transacao);
         if (!transacaoEnviada) {
             throw new Error("Erro ao enviar transação para o pagamento");
         }

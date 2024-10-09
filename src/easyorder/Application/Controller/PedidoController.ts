@@ -20,15 +20,10 @@ export class PedidoController {
                 return PedidoAdapter.validateError("Falha ao criar pedido");
             }
 
-            const pedido = await PedidoUsecases.CadastrarPedido(clienteIdentificado, clienteId);
-
-            const pedidoGateway = dbConnection.gateways.pedidoGateway;
-
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                return PedidoAdapter.dataNotFound("Erro ao cadastrar pedido.");
-            }
+            const pedido = await PedidoUsecases.CadastrarPedido(
+                clienteId ? clienteId : undefined,
+                dbConnection.gateways.pedidoGateway,
+            );
 
             return PedidoAdapter.successPedido(pedido);
 
@@ -191,7 +186,7 @@ export class PedidoController {
 
             return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
 
-        } catch (error:any) {
+        } catch (error: any) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
             }
@@ -199,7 +194,7 @@ export class PedidoController {
             if (error instanceof ValidationErrorException) {
                 return PedidoAdapter.validateError(error.message);
             }
-            console.log("Erro encontrado: "+error.message);
+            console.log("Erro encontrado: " + error.message);
             return PedidoAdapter.systemError("Erro ao fechar pedido.");
         }
 
