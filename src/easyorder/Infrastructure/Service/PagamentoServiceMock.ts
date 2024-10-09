@@ -6,14 +6,22 @@ import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/Pagame
 export class PagamentoServiceMock implements PagamentoServiceInterface {
 
     constructor() {
-        // mock connection
     }
-    
     
     async processPayment (transaction: TransactionEntity): Promise <TransactionEntity> {
         if (transaction.getStatusTransacao() === StatusTransacaoEnum.PENDENTE) {
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.EM_PROCESSAMENTO));
-            transaction.setMsgTransacao(`Transacao ID ${transaction.getIdTransacao()} pedido ${transaction.getIdPedido()} valor ${transaction.getValorTransacao()} enviado para pagamento`);
+            transaction.setMsgEnvio(
+                JSON.stringify({
+                    idTransacao: transaction.getIdTransacao(),
+                    idPedido: transaction.getIdPedido(),
+                    valorTransacao: transaction.getValorTransacao(),
+                    dataCriacaoTransacao: transaction.getDataCriacaoTransacao().toISOString(),
+                    dataEnvioTransacao: new Date().toISOString(),
+                    statusTransacao: StatusTransacaoEnum.EM_PROCESSAMENTO
+                })
+            );
+            transaction.setHash_EMVCo("MOCK####021243650016COM.MERCADOLIBRE02013063638f1192a-5fd1-4180-a180-8bcae3556bc35204000053039865802BR5925IZABEL AAAA DE MELO6007BARUERI62070503***63040B6D");
         }
         return transaction;
     }
@@ -21,8 +29,16 @@ export class PagamentoServiceMock implements PagamentoServiceInterface {
     async handlePaymentResponse (transaction: TransactionEntity): Promise <TransactionEntity> {
         if (transaction.getStatusTransacao() === StatusTransacaoEnum.EM_PROCESSAMENTO) {
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.PAGO));
-            transaction.setMsgTransacao(`Transacao ID ${transaction.getIdTransacao()} pedido ${transaction.getIdPedido()} valor ${transaction.getValorTransacao()} pago com sucesso`);
-            transaction.setHashTransacao(uuidv4());
+            transaction.setMsgRetorno(
+                JSON.stringify({
+                    idTransacao: transaction.getIdTransacao(),
+                    idPedido: transaction.getIdPedido(),
+                    valorTransacao: transaction.getValorTransacao(),
+                    dataCriacaoTransacao: transaction.getDataCriacaoTransacao().toISOString(),
+                    dataRetornoTransacao: new Date().toISOString(),
+                    statusTransacao: StatusTransacaoEnum.PAGO
+                })
+            );
         }
         return transaction;
     }

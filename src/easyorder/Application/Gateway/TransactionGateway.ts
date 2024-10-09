@@ -10,8 +10,9 @@ class LocalModel extends Model {
   public dataCriacao!: Date;
   public statusTransacao!: string;
   public valorTransacao!: number;
-  public msgTransacao!: string;
-  public hashTransacao!: string;
+  public msgEnvio!: string;
+  public msgRetorno!: string;
+  public hash_EMVCo!: string;
 }
 
 export class TransactionGateway implements TransactionGatewayInterface {
@@ -49,10 +50,13 @@ export class TransactionGateway implements TransactionGatewayInterface {
         valorTransacao: {
           type: DataTypes.DOUBLE,
         },
-        mensagemTransacao: {
-          type: DataTypes.STRING,
+        msgEnvio: {
+          type: DataTypes.TEXT,
         },
-        hashTransacao: {
+        msgRetorno: {
+          type: DataTypes.TEXT,
+        },
+        hash_EMVCo: {
           type: DataTypes.STRING,
         },
       },
@@ -75,8 +79,9 @@ export class TransactionGateway implements TransactionGatewayInterface {
       dataCriacao: transaction.getDataCriacaoTransacao(),
       statusTransacao: transaction.getStatusTransacao(),
       valorTransacao: transaction.getValorTransacao(),
-      msgTransacao: transaction.getMsgTransacao(),
-      hashTransacao: transaction.getHashTransacao()
+      msgEnvio: transaction.getMsgEnvio(),
+      msgRetorno: transaction.getMsgRetorno(),
+      hash_EMVCo: transaction.getHash_EMVCo()
     };
     await LocalModel.upsert(dto);
   }
@@ -89,8 +94,9 @@ export class TransactionGateway implements TransactionGatewayInterface {
         dataCriacao: transaction.getDataCriacaoTransacao(),
         statusTransacao: transaction.getStatusTransacao(),
         valorTransacao: transaction.getValorTransacao(),
-        msgTransacao: transaction.getMsgTransacao(),
-        hashTransacao: transaction.getHashTransacao()
+        msgEnvio: transaction.getMsgEnvio(),
+        msgRetorno: transaction.getMsgRetorno(),
+        hash_EMVCo: transaction.getHash_EMVCo()
       },
       {
         where: {
@@ -115,8 +121,9 @@ export class TransactionGateway implements TransactionGatewayInterface {
         transaction.idTransacao,
         transaction.dataCriacao as Date,
         new StatusTransacaoValueObject(transaction.statusTransacao as StatusTransacaoEnum),
-        transaction.msgTransacao,
-        transaction.hashTransacao);
+        transaction.msgEnvio,
+        transaction.msgRetorno,
+        transaction.hash_EMVCo);
 
   }
 
@@ -137,8 +144,9 @@ export class TransactionGateway implements TransactionGatewayInterface {
           transaction.idTransacao,
           transaction.dataCriacao as Date,
           new StatusTransacaoValueObject(transaction.statusTransacao as StatusTransacaoEnum),
-          transaction.msgTransacao,
-          transaction.hashTransacao);
+          transaction.msgEnvio,
+          transaction.msgRetorno,
+          transaction.hash_EMVCo);
       });
 
   }
