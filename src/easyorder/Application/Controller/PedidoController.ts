@@ -20,15 +20,10 @@ export class PedidoController {
                 return PedidoAdapter.validateError("Falha ao criar pedido");
             }
 
-            const pedido = await PedidoUsecases.CadastrarPedido(clienteIdentificado, clienteId);
-
-            const pedidoGateway = dbConnection.gateways.pedidoGateway;
-
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                return PedidoAdapter.dataNotFound("Erro ao cadastrar pedido.");
-            }
+            const pedido = await PedidoUsecases.CadastrarPedido(
+                clienteId ? clienteId : undefined,
+                dbConnection.gateways.pedidoGateway,
+            );
 
             return PedidoAdapter.successPedido(pedido);
 
@@ -119,12 +114,6 @@ export class PedidoController {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao cancelar pedido.");
-            }
-
             return PedidoAdapter.successPedido(pedido, "Pedido cancelado com sucesso");
         } catch (error) {
             if (error instanceof DataNotFoundException) {
@@ -152,12 +141,6 @@ export class PedidoController {
 
             if (!pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
-            }
-
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao finalizar pedido.");
             }
 
             return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
@@ -191,7 +174,7 @@ export class PedidoController {
 
             return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
 
-        } catch (error:any) {
+        } catch (error: any) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
             }
@@ -199,7 +182,7 @@ export class PedidoController {
             if (error instanceof ValidationErrorException) {
                 return PedidoAdapter.validateError(error.message);
             }
-            console.log("Erro encontrado: "+error.message);
+            console.log("Erro encontrado: " + error.message);
             return PedidoAdapter.systemError("Erro ao fechar pedido.");
         }
 
@@ -231,12 +214,6 @@ export class PedidoController {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao adicionar combo ao pedido.");
-            }
-
             return PedidoAdapter.successPedido(pedido, "Combo adicionado com sucesso");
         } catch (error) {
             if (error instanceof DataNotFoundException) {
@@ -263,12 +240,6 @@ export class PedidoController {
 
             if (!pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
-            }
-
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao remover combo do pedido.");
             }
 
             return PedidoAdapter.successPedido(pedido, "Combo removido com sucesso");

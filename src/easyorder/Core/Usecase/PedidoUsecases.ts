@@ -13,15 +13,23 @@ import { DataNotFoundException, ValidationErrorException } from "../Types/Except
 export class PedidoUsecases {
 
     public static async CadastrarPedido(
-        cliente_identificado: boolean,
-        clientId: string,
+        clientId: string | undefined,
+        pedidoGateway: PedidoGatewayInterface,
     ): Promise<PedidoEntity> {
 
-        if (!cliente_identificado) {
+        if (clientId === undefined) {
             clientId = "NAO_IDENTIFICADO";
         }
 
-        return new PedidoEntity(clientId);
+        const pedido = new PedidoEntity(clientId);
+
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return pedido;
     }
 
     public static async ListarPedidosPorStatus(
@@ -85,6 +93,12 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO)
         );
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
         return pedido;
     }
 
@@ -108,6 +122,11 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)
         );
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
 
         return pedido;
     }
@@ -122,15 +141,15 @@ export class PedidoUsecases {
         if (!pedido) {
             throw new DataNotFoundException("Pedido não encontrado");
         }
-        
-        const transacao = new TransactionEntity(pedido.getId(),pedido.getValorTotal());
+
+        const transacao = new TransactionEntity(pedido.getId(), pedido.getValorTotal());
         try {
             await transactionGateway.salvarTransaction(transacao);
         }
-        catch (error:any) {
+        catch (error: any) {
             throw new Error(`Erro ao salvar transação inicial`);
         }
-        const transacaoEnviada = await servicoPagamento.processPayment(transacao);    
+        const transacaoEnviada = await servicoPagamento.processPayment(transacao);
         if (!transacaoEnviada) {
             throw new Error("Erro ao enviar transação para o pagamento");
         }
@@ -148,7 +167,8 @@ export class PedidoUsecases {
         if (!pedidoSalvo) {
             throw new Error("Erro ao salvar o pedido atualizado.");
         }
-        return pedidoSalvo;
+
+        return pedido;
     }
 
     public static async AdicionarComboAoPedido(
@@ -232,6 +252,12 @@ export class PedidoUsecases {
 
         pedido.adicionarCombos([pedidoCombo]);
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao adicionar combo ao pedido");
+        }
+
         return pedido;
     }
 
@@ -247,6 +273,12 @@ export class PedidoUsecases {
         }
 
         pedido.removerCombo(comboId);
+
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao remover combo do pedido");
+        }
 
         return pedido;
     }
