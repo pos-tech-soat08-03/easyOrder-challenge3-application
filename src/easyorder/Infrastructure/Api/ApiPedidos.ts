@@ -276,7 +276,14 @@ export class ApiPedidos {
         });
 
         app.put("/pedido/:pedidoId/cancelar", async (req, res) => {
-
+            /**
+                #swagger.tags = ['Pedidos']
+                #swagger.path = '/pedido/:pedidoId/cancelar'
+                #swagger.method = 'put'
+                #swagger.summary = 'Cancelamento de Pedido'
+                #swagger.description = 'Endpoint para cancelamento de um Pedido com base no id.'
+                #swagger.produces = ["application/json"]
+            */
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
                 ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res);
             }

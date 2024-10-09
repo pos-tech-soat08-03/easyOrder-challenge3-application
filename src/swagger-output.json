@@ -293,8 +293,8 @@
         "tags": [
           "Pagamentos"
         ],
-        "summary": "Atualização de status de transação",
-        "description": "Este Endpoint é utilizado para atualização de status de transação, em modelo simulado (mock)",
+        "summary": "Retorno de status de transação",
+        "description": "Este Endpoint é utilizado para retorno de status de transação, em modelo simulado (mock)",
         "produces": [
           "application/json"
         ],
@@ -310,6 +310,44 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/pagamento/webhook/": {
+      "put": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Webhook de retorno de status de transação",
+        "description": "Este Endpoint é utilizado para capturar o retorno de status de transação a partir de webhook do Serviço de Pagamento",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -578,16 +616,15 @@
         }
       }
     },
-    "/pedido/{pedidoId}/cancelar": {
+    "/pedido/:pedidoId/cancelar": {
       "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "pedidoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Cancelamento de Pedido",
+        "description": "Endpoint para cancelamento de um Pedido com base no id.",
+        "produces": [
+          "application/json"
         ],
         "responses": {
           "default": {
