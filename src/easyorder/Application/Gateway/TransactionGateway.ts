@@ -80,7 +80,7 @@ export class TransactionGateway implements TransactionGatewayInterface {
       statusTransacao: transaction.getStatusTransacao(),
       valorTransacao: transaction.getValorTransacao(),
       msgEnvio: transaction.getMsgEnvio(),
-      msgRetorno: transaction.getMsgRetorno(),
+      msgRetorno: transaction.getMsgRetorno().toString(),
       hash_EMVCo: transaction.getHash_EMVCo()
     };
     await LocalModel.upsert(dto);
@@ -95,7 +95,7 @@ export class TransactionGateway implements TransactionGatewayInterface {
         statusTransacao: transaction.getStatusTransacao(),
         valorTransacao: transaction.getValorTransacao(),
         msgEnvio: transaction.getMsgEnvio(),
-        msgRetorno: transaction.getMsgRetorno(),
+        msgRetorno: transaction.getMsgRetorno().toString(),
         hash_EMVCo: transaction.getHash_EMVCo()
       },
       {

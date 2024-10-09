@@ -4,11 +4,12 @@ import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject
 import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../Entity/ValueObject/StatusTransacaoValueObject";
 import { PedidoGatewayInterface } from "../Interfaces/Gateway/PedidoGatewayInterface";
 import { TransactionGatewayInterface } from "../Interfaces/Gateway/TransactionGatewayInterface";
+import { PagamentoServiceInterface } from "../Interfaces/Services/PagamentoServiceInterface";
 import { PagamentoDTO } from "../Types/dto/PagamentoDTO";
 
 export class PagamentoUsecases {
 
-    public static async ConfirmarPagamentoUsecase(transactionGateway: TransactionGatewayInterface, pedidoGateway: PedidoGatewayInterface, transactionDTO: PagamentoDTO): Promise<{ transacao: TransactionEntity | undefined, mensagem: string }> {
+    public static async ConfirmarPagamentoUsecase(transactionGateway: TransactionGatewayInterface, pedidoGateway: PedidoGatewayInterface, pagamentoService: PagamentoServiceInterface,transactionDTO: PagamentoDTO): Promise<{ transacao: TransactionEntity | undefined, mensagem: string }> {
         const idTransaction = transactionDTO.id;
         const transactionStatus = transactionDTO.status;
         const payload = transactionDTO.payload;
@@ -27,7 +28,7 @@ export class PagamentoUsecases {
 
         if (transactionStatus === "approved") {
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.PAGO));
-            transaction.setMsgRetorno(payload);
+            transaction.setMsgRetorno(JSON.stringify(payload));
             const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(idTransaction, transaction);
             if (!transacaoSalva) {
                 return { transacao: undefined, mensagem: "Erro ao salvar a transação." };

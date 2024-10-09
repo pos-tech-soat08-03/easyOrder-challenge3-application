@@ -48,7 +48,7 @@ export class ApiPagamentos {
         });
 
         
-        app.post("/pagamento/webhook/", async (req, res) => {
+        app.put("/pagamento/webhook/", async (req, res) => {
             // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
             /**
                 #swagger.tags = ['Pagamentos']

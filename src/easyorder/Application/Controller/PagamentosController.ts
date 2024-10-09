@@ -9,7 +9,7 @@ export class PagamentosController {
     public static async ConfirmarPagamento (dbConnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, transactionDTO: PagamentoDTO): Promise<string> {
         const transactionGateway = dbConnection.gateways.transactionGateway;
         const pedidoGateway = dbConnection.gateways.pedidoGateway;
-        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, transactionDTO);
+        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, servicoPagamento, transactionDTO);
         if (transacao === undefined) {
             return PagamentoAdapter.adaptPagamentoJsonError(mensagem);
         }
