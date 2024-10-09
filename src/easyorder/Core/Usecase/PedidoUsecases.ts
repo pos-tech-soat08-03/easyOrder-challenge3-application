@@ -99,7 +99,7 @@ export class PedidoUsecases {
             throw new Error("Erro ao salvar pedido");
         }
 
-        return pedido;
+        return pedidoSalvo;
     }
 
     public static async CheckoutPedido(
@@ -122,8 +122,13 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)
         );
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
 
-        return pedido;
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return pedidoSalvo;
     }
 
     public static async FecharPedido(

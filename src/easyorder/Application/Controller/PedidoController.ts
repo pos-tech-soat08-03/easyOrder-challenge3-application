@@ -143,12 +143,6 @@ export class PedidoController {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
-
-            if (!pedidoSalvo) {
-                throw new Error("Erro ao finalizar pedido.");
-            }
-
             return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
         } catch (error) {
             if (error instanceof DataNotFoundException) {
