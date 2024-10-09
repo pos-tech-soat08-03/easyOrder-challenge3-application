@@ -1,14 +1,15 @@
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
+import { PagamentoDTO } from "../../Core/Types/dto/PagamentoDTO";
 import { PagamentoUsecases } from "../../Core/Usecase/PagamentoUsecases";
 import { PagamentoAdapter } from "../Presenter/PagamentoAdapter";
 
 export class PagamentosController {
 
-    public static async ConfirmarPagamento (dbConnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, idTransaction: string, transactionStatus: string): Promise<string> {
+    public static async ConfirmarPagamento (dbConnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, transactionDTO: PagamentoDTO): Promise<string> {
         const transactionGateway = dbConnection.gateways.transactionGateway;
         const pedidoGateway = dbConnection.gateways.pedidoGateway;
-        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, idTransaction);
+        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, transactionDTO);
         if (transacao === undefined) {
             return PagamentoAdapter.adaptPagamentoJsonError(mensagem);
         }

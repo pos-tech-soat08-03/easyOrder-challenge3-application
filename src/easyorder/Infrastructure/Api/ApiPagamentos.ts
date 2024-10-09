@@ -3,6 +3,7 @@ import express from 'express';
 import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { PagamentosController } from '../../Application/Controller/PagamentosController';
 import { PagamentoServiceInterface } from '../../Core/Interfaces/Services/PagamentoServiceInterface';
+import { PagamentoDTO } from '../../Core/Types/dto/PagamentoDTO';
 
 export class ApiPagamentos {
 
@@ -27,9 +28,17 @@ export class ApiPagamentos {
                     throw new Error("Status de Retorno da Transação não informado")
                 }
 
-                const transactionId = req.params.transacaoId;
-                const transactionStatus = req.params.transacaoStatus;
-                const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, transactionId, transactionStatus);
+                var bodyPayload = "";
+                if (req.body === undefined || Object.keys(req.body).length === 0) {
+                    bodyPayload = "" ;
+                }
+                const transactionDTO:PagamentoDTO = { 
+                    id: req.params.transacaoId, 
+                    status: req.params.transacaoStatus,
+                    payload: bodyPayload
+                };
+                
+                const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, transactionDTO);
                 res.send(pagamentoPayload); 
             }
             catch (error:any) {
@@ -37,6 +46,11 @@ export class ApiPagamentos {
             }
         });
 
+        
+    // app.post("/pagamento/webhook/", async (req, res) => {
+    //      implementar webhook ML
+    //      https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
+    // });
 
         app.get ("/pagamento/listar-transacoes/:pedidoId", async (req, res) => {
             /**
@@ -60,9 +74,6 @@ export class ApiPagamentos {
             }
         });
 
-        // app.post("/pagamento/webhook/", async (req, res) => {
-        //     // implementar webhook ML
-        // });
 
     }
 }
