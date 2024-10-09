@@ -30,7 +30,6 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-
   test("(/produto/cadastrar) Cadastra Lanches para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Hamburger de Frango",
@@ -162,25 +161,6 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-  // test("(/cliente/atualizar) Atualiza Cliente: remove dados de identificação", async () => {
-
-  //   try {
-  //     const response = await axios.put(`${BASE_URL}/cliente/atualizar`, {
-  //       cpf: `${cpfAleatorio}`,
-  //       nome: "",
-  //       email: "",
-  //     });
-
-  //     expect(response.status).toBe(200);
-  //     expect(response.data).toHaveProperty("cliente");
-  //     expect(response.data.cliente).toHaveProperty("id");
-
-  //   } catch (error: any) {
-  //     expect(error.message).toEqual("Falha ao atualizar cliente");
-  //   }
-  // });
-
-
   test("(/cliente/buscar/{cpf}) Busca Cliente por CPF", async () => {
     try {
       const response = await axios.get(
@@ -213,23 +193,6 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
       console.log(error.message);
     }
   });
-
-
-  // test("(/pedido) Alternativa: Cria a etapa inicial do Pedido, cliente não identificado", async () => {
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/pedido`, {
-  //       cliente_identificado: "false",
-  //       clienteId: "null",
-  //     });
-
-  //     expect(response.status).toBe(200);
-  //     expect(response.data).toHaveProperty("pedido");
-  //     expect(response.data.pedido).toHaveProperty("id");
-
-  //   } catch (error: any) {
-  //     expect(error.message).toEqual("Falha ao criar pedido");
-  //   }
-  // });
 
   test("(/pedido/{pedidoId} Busca pedido do Cliente identificado", async () => {
     try {
