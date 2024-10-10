@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: easyorder-container
-        image: brunomoreirareis/easyorder:v1.0
+        image: brunomoreirareis/easyorder:v2.0snapshot
         resources:
           limits:
             memory: "128Mi"

@@ -1,6 +1,7 @@
 import { ProdutoEntity } from "../Entity/ProdutoEntity";
 import { CategoriaEnum } from "../Entity/ValueObject/CategoriaEnum";
 import { ProdutoGatewayInterface } from "../Interfaces/Gateway/ProdutoGatewayInterface";
+import { DataNotFoundException } from "../Types/ExceptionType";
 
 export class ProdutoUsesCases {
     public static async listarProdutosUsecase(produtoGateway: ProdutoGatewayInterface): Promise<{ produtos: ProdutoEntity[] | undefined, mensagem: string }> {
@@ -38,7 +39,11 @@ export class ProdutoUsesCases {
             const produto = await produtoGateway.buscarProdutoPorId(id);
             return { produto, mensagem: "Sucesso ao buscar o produto." };
         } catch (error) {
-            throw new Error("Erro ao buscar");
+            if(error instanceof DataNotFoundException){
+                throw new Error("Produto não encontrado: " + id);
+            }
+            throw new Error("Erro ao bucar produto: " + id );
+            
         }
     }
 
@@ -48,20 +53,24 @@ export class ProdutoUsesCases {
             await produtoGateway.removerPorId(produtoID);
             return { produtoID, mensagem: "Sucesso ao remover o produto."};
         } catch (error) {
-            throw new Error("Erro ao remover Produto: " + produtoID);
+            throw new Error("Erro ao remover produto: " + produtoID);
         }
 
 
     }
 
     public static async atualizarProdutoUsecase(produtoGateway: ProdutoGatewayInterface, id: string, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<{ produto: ProdutoEntity | undefined, mensagem: string }> {
-        const produto = await produtoGateway.buscarProdutoPorId(id);
-        if (produto === undefined) {
-            return { produto, mensagem: "Produto não encontrado." }
-        } else {
+       
+        try {
+            await produtoGateway.buscarProdutoPorId(id);
             const produto = new ProdutoEntity(nome, descricao, preco, categoria, imagemURL, id);
-
             return { produto, mensagem: "Sucesso ao atualizar o produto." };
+        } catch (error) {
+            if(error instanceof DataNotFoundException){
+                throw new Error("Produto não encontrado: " + id);
+            }
+            throw new Error("Erro ao atualizar produto: " + id );
+            
         }
 
     }
