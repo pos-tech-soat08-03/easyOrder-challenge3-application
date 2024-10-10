@@ -13,15 +13,26 @@ import { DataNotFoundException, ValidationErrorException } from "../Types/Except
 export class PedidoUsecases {
 
     public static async CadastrarPedido(
-        cliente_identificado: boolean,
-        clientId: string,
-    ): Promise<PedidoEntity> {
+        clientId: string | undefined,
+        pedidoGateway: PedidoGatewayInterface,
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
 
-        if (!cliente_identificado) {
+        if (clientId === undefined) {
             clientId = "NAO_IDENTIFICADO";
         }
 
-        return new PedidoEntity(clientId);
+        const pedido = new PedidoEntity(clientId);
+
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return {
+            pedido: pedidoSalvo,
+            mensagem: "Pedido cadastrado com sucesso"
+        };
     }
 
     public static async ListarPedidosPorStatus(
@@ -31,7 +42,8 @@ export class PedidoUsecases {
         limit: number,
         orderField: string,
         orderDirection: string,
-    ): Promise<PedidoEntity[]> {
+        // ): Promise<PedidoEntity[]> {
+    ): Promise<{ pedidos: PedidoEntity[], mensagem: string }> {
         const filter = {
             page: page,
             limit: limit,
@@ -51,26 +63,32 @@ export class PedidoUsecases {
             throw new DataNotFoundException("Nenhum pedido encontrado");
         }
 
-        return pedidos;
+        return {
+            pedidos: pedidos,
+            mensagem: "Pedidos listados com sucesso"
+        };
     }
 
     public static async BuscaPedidoPorId(
         pedidoGateway: PedidoGatewayInterface,
         pedidoId: string,
-    ): Promise<PedidoEntity | null> {
+    ): Promise<{ pedido: PedidoEntity | null, mensagem: string }> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
-            return null;
+            throw new DataNotFoundException("Pedido não encontrado");
         }
 
-        return pedido;
+        return {
+            pedido: pedido,
+            mensagem: "Pedido encontrado"
+        };
     }
 
     public static async CancelarPedido(
         pedidoGateway: PedidoGatewayInterface,
         pedidoId: string,
-    ): Promise<PedidoEntity> {
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
@@ -85,13 +103,22 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.CANCELADO)
         );
 
-        return pedido;
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return {
+            pedido: pedido,
+            mensagem: "Pedido cancelado com sucesso"
+        };
     }
 
     public static async ConfirmarPagamentoPedido(
         pedidoGateway: PedidoGatewayInterface,
         pedidoId: string,
-    ): Promise<PedidoEntity> {
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
@@ -108,8 +135,16 @@ export class PedidoUsecases {
             new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)
         );
 
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
 
-        return pedido;
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao salvar pedido");
+        }
+
+        return {
+            pedido: pedido,
+            mensagem: "Pedido fechado com sucesso"
+        };
     }
 
     public static async CheckoutPedido(
@@ -117,20 +152,20 @@ export class PedidoUsecases {
         transactionGateway: TransactionGatewayInterface,
         servicoPagamento: PagamentoServiceInterface,
         pedidoId: string,
-    ): Promise<PedidoEntity> {
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
         if (!pedido) {
             throw new DataNotFoundException("Pedido não encontrado");
         }
-        
-        const transacao = new TransactionEntity(pedido.getId(),pedido.getValorTotal());
+
+        const transacao = new TransactionEntity(pedido.getId(), pedido.getValorTotal());
         try {
             await transactionGateway.salvarTransaction(transacao);
         }
-        catch (error:any) {
+        catch (error: any) {
             throw new Error(`Erro ao salvar transação inicial`);
         }
-        const transacaoEnviada = await servicoPagamento.processPayment(transacao);    
+        const transacaoEnviada = await servicoPagamento.processPayment(transacao);
         if (!transacaoEnviada) {
             throw new Error("Erro ao enviar transação para o pagamento");
         }
@@ -148,7 +183,11 @@ export class PedidoUsecases {
         if (!pedidoSalvo) {
             throw new Error("Erro ao salvar o pedido atualizado.");
         }
-        return pedidoSalvo;
+
+        return {
+            pedido: pedido,
+            mensagem: "Pedido fechado com sucesso"
+        };
     }
 
     public static async AdicionarComboAoPedido(
@@ -159,7 +198,7 @@ export class PedidoUsecases {
         bebidaId: string,
         sobremesaId: string,
         acompanhamentoId: string,
-    ): Promise<PedidoEntity> {
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
 
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
@@ -232,14 +271,23 @@ export class PedidoUsecases {
 
         pedido.adicionarCombos([pedidoCombo]);
 
-        return pedido;
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao adicionar combo ao pedido");
+        }
+
+        return {
+            pedido: pedido,
+            mensagem: "Combo adicionado com sucesso"
+        };
     }
 
     public static async RemoverComboDoPedido(
         pedidoGateway: PedidoGatewayInterface,
         pedidoId: string,
         comboId: string,
-    ): Promise<PedidoEntity> {
+    ): Promise<{ pedido: PedidoEntity, mensagem: string }> {
         const pedido = await pedidoGateway.buscaPedidoPorId(pedidoId);
 
         if (!pedido) {
@@ -248,6 +296,15 @@ export class PedidoUsecases {
 
         pedido.removerCombo(comboId);
 
-        return pedido;
+        const pedidoSalvo = await pedidoGateway.salvarPedido(pedido);
+
+        if (!pedidoSalvo) {
+            throw new Error("Erro ao remover combo do pedido");
+        }
+
+        return {
+            pedido: pedido,
+            mensagem: "Combo removido do pedido"
+        };
     }
 }
