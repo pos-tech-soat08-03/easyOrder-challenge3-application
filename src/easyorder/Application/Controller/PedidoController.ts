@@ -20,12 +20,12 @@ export class PedidoController {
                 return PedidoAdapter.validateError("Falha ao criar pedido");
             }
 
-            const pedido = await PedidoUsecases.CadastrarPedido(
+            const response = await PedidoUsecases.CadastrarPedido(
                 clienteId ? clienteId : undefined,
                 dbConnection.gateways.pedidoGateway,
             );
 
-            return PedidoAdapter.successPedido(pedido);
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
 
         } catch (error) {
             if (error instanceof DataNotFoundException) {
@@ -51,7 +51,7 @@ export class PedidoController {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
 
-            const pedidos = await PedidoUsecases.ListarPedidosPorStatus(
+            const response = await PedidoUsecases.ListarPedidosPorStatus(
                 pedidoGateway,
                 statusPedido,
                 page,
@@ -60,7 +60,7 @@ export class PedidoController {
                 orderDirection
             );
 
-            return PedidoAdapter.successPedidos(pedidos);
+            return PedidoAdapter.successPedidos(response.pedidos, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
@@ -81,13 +81,13 @@ export class PedidoController {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
 
-            const pedido = await PedidoUsecases.BuscaPedidoPorId(pedidoGateway, pedidoId);
+            const response = await PedidoUsecases.BuscaPedidoPorId(pedidoGateway, pedidoId);
 
-            if (!pedido) {
+            if (!response.pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido);
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
@@ -108,13 +108,13 @@ export class PedidoController {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
 
-            const pedido = await PedidoUsecases.CancelarPedido(pedidoGateway, pedidoId);
+            const response = await PedidoUsecases.CancelarPedido(pedidoGateway, pedidoId);
 
-            if (!pedido) {
+            if (!response.pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido, "Pedido cancelado com sucesso");
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
@@ -137,13 +137,13 @@ export class PedidoController {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
             const transactionGateway = dbConnection.gateways.transactionGateway;
 
-            const pedido = await PedidoUsecases.CheckoutPedido(pedidoGateway, pedidoId);
+            const response = await PedidoUsecases.CheckoutPedido(pedidoGateway, pedidoId);
 
-            if (!pedido) {
+            if (!response.pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
@@ -166,13 +166,13 @@ export class PedidoController {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
             const transactionGateway = dbConnection.gateways.transactionGateway;
 
-            const pedido = await PedidoUsecases.FecharPedido(pedidoGateway, transactionGateway, servicoPagamento, pedidoId);
+            const response = await PedidoUsecases.FecharPedido(pedidoGateway, transactionGateway, servicoPagamento, pedidoId);
 
-            if (!pedido) {
+            if (!response) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido, "Pedido fechado com sucesso");
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
 
         } catch (error: any) {
             if (error instanceof DataNotFoundException) {
@@ -200,7 +200,7 @@ export class PedidoController {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
             const produtoGateway = dbConnection.gateways.produtoGateway;
 
-            const pedido = await PedidoUsecases.AdicionarComboAoPedido(
+            const response = await PedidoUsecases.AdicionarComboAoPedido(
                 pedidoGateway,
                 produtoGateway,
                 pedidoId,
@@ -210,11 +210,11 @@ export class PedidoController {
                 acompanhamentoId
             );
 
-            if (!pedido) {
+            if (!response.pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido, "Combo adicionado com sucesso");
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
@@ -236,13 +236,13 @@ export class PedidoController {
         try {
             const pedidoGateway = dbConnection.gateways.pedidoGateway;
 
-            const pedido = await PedidoUsecases.RemoverComboDoPedido(pedidoGateway, pedidoId, comboId);
+            const response = await PedidoUsecases.RemoverComboDoPedido(pedidoGateway, pedidoId, comboId);
 
-            if (!pedido) {
+            if (!response.pedido) {
                 throw new DataNotFoundException("Pedido não encontrado.");
             }
 
-            return PedidoAdapter.successPedido(pedido, "Combo removido com sucesso");
+            return PedidoAdapter.successPedido(response.pedido, response.mensagem);
         } catch (error) {
             if (error instanceof DataNotFoundException) {
                 return PedidoAdapter.dataNotFound(error.message);
