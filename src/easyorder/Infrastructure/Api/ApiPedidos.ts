@@ -276,7 +276,14 @@ export class ApiPedidos {
         });
 
         app.put("/pedido/:pedidoId/cancelar", async (req, res) => {
-
+            /**
+                #swagger.tags = ['Pedidos']
+                #swagger.path = '/pedido/:pedidoId/cancelar'
+                #swagger.method = 'put'
+                #swagger.summary = 'Cancelamento de Pedido'
+                #swagger.description = 'Endpoint para cancelamento de um Pedido com base no id.'
+                #swagger.produces = ["application/json"]
+            */
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
                 ApiPedidos.responseJson(PedidoAdapter.validateError("Erro: ID do pedido não informado."), res);
             }
@@ -287,13 +294,14 @@ export class ApiPedidos {
             ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
-        app.put("/pedido/:pedidoId/checkout", async (req, res) => {
+        app.put("/pedido/:pedidoId/confirmacao-pagamento", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId/checkout'
+                #swagger.path = '/pedido/:pedidoId/confirmacao-pagamento'
                 #swagger.method = 'put'
-                #swagger.summary = 'registro de Checkout/Pagamento de um pedido (de forma manual).'
-                #swagger.description = 'Endpoint para efetuar o pagamento de um pedido'
+                #swagger.deprecated = true
+                #swagger.summary = 'Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).'
+                #swagger.description = 'Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -334,17 +342,17 @@ export class ApiPedidos {
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPresenter = await PedidoController.CheckoutPedido(dbconnection, servicoPagamento, pedidoId);
+            const pedidoPresenter = await PedidoController.ConfirmarPagamentoPedido(dbconnection, servicoPagamento, pedidoId);
 
             ApiPedidos.responseJson(pedidoPresenter, res);
         });
 
-        app.put("/pedido/:pedidoId/fechar", async (req, res) => {
+        app.put("/pedido/:pedidoId/checkout", async (req, res) => {
             /**
                 #swagger.method = 'put'
                 #swagger.tags = ['Pedidos']
-                #swagger.summary = 'Fechar pedido'
-                #swagger.description = 'Endpoint para fechar um pedido'
+                #swagger.summary = 'Checkout pedido'
+                #swagger.description = 'Endpoint para Checkout de um pedido + envio para serviço de Pagamento'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -385,7 +393,7 @@ export class ApiPedidos {
             }
 
             const pedidoId = req.params.pedidoId;
-            const pedidoPresenter = await PedidoController.FecharPedido(dbconnection, servicoPagamento, pedidoId);
+            const pedidoPresenter = await PedidoController.CheckoutPedido(dbconnection, servicoPagamento, pedidoId);
 
             ApiPedidos.responseJson(pedidoPresenter, res);
         });

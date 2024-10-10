@@ -85,9 +85,9 @@ export class PedidoEntity {
         }
 
         if (status.getValue() === StatusPedidoEnum.AGUARDANDO_PAGAMENTO) {
-            // RN2. Para fechar um pedido, deve existir ao menos um combo vinculado
+            // RN2. Para Checkout um pedido, deve existir ao menos um combo vinculado
             if (this.combos.length === 0) {
-                throw new Error('Para fechar um pedido, deve existir ao menos um combo selecionado');
+                throw new Error('Para Checkout um pedido, deve existir ao menos um combo selecionado');
             }
 
             if (this.statusPedido.getValue() !== StatusPedidoEnum.EM_ABERTO) {

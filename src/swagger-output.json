@@ -288,6 +288,106 @@
         }
       }
     },
+    "/pagamento/webhook/{status}/{transacaoId}": {
+      "put": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Retorno de status de transação",
+        "description": "Este Endpoint é utilizado para retorno de status de transação, em modelo simulado (mock)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "transacaoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/pagamento/webhook/": {
+      "put": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Webhook de retorno de status de transação",
+        "description": "Este Endpoint é utilizado para capturar o retorno de status de transação a partir de webhook do Serviço de Pagamento",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/pagamento/listar-transacoes/{pedidoId}": {
+      "get": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Obter lista de transações",
+        "description": "Este Endpoint é utilizado para obter a lista de transações associadas a um pedido",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/pedido": {
       "post": {
         "tags": [
@@ -516,16 +616,15 @@
         }
       }
     },
-    "/pedido/{pedidoId}/cancelar": {
+    "/pedido/:pedidoId/cancelar": {
       "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "pedidoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Cancelamento de Pedido",
+        "description": "Endpoint para cancelamento de um Pedido com base no id.",
+        "produces": [
+          "application/json"
         ],
         "responses": {
           "default": {
@@ -534,13 +633,13 @@
         }
       }
     },
-    "/pedido/:pedidoId/checkout": {
+    "/pedido/:pedidoId/confirmacao-pagamento": {
       "put": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "registro de Checkout/Pagamento de um pedido de forma manual.",
-        "description": "Endpoint para efetuar o pagamento de um pedido",
+        "summary": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
+        "description": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
         "produces": [
           "application/json"
         ],
@@ -580,16 +679,17 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
-    "/pedido/{pedidoId}/fechar": {
+    "/pedido/{pedidoId}/checkout": {
       "put": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Fechar pedido",
-        "description": "Endpoint para fechar um pedido",
+        "summary": "Checkout pedido",
+        "description": "Endpoint para Checkout de um pedido + envio para serviço de Pagamento",
         "produces": [
           "application/json"
         ],
