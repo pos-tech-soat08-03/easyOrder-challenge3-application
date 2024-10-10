@@ -11,43 +11,6 @@ export class ApiPagamentos {
 
         app.use(express.json());
 
-        app.put("/pagamento/webhook/:transacaoStatus/:transacaoId", async (req, res) => {
-            /**
-                #swagger.tags = ['Pagamentos']
-                #swagger.path = '/pagamento/webhook/{status}/{transacaoId}'
-                #swagger.method = 'put'
-                #swagger.deprecated = true
-                #swagger.summary = 'Retorno de status de transação'
-                #swagger.description = 'Este Endpoint é utilizado para retorno de status de transação, em modelo simulado (mock)'
-                #swagger.produces = ["application/json"]  
-            */            
-            try {            
-                if (req.params.transacaoId === undefined || req.params.transacaoId === "" || req.params.transacaoId === null) {
-                    throw new Error("Transação ID não informada")
-                }
-                if (req.params.transacaoStatus === undefined || req.params.transacaoStatus === "" || req.params.transacaoStatus === null) {
-                    throw new Error("Status de Retorno da Transação não informado")
-                }
-
-                var bodyPayload = "";
-                if (req.body === undefined || Object.keys(req.body).length === 0) {
-                    bodyPayload = "" ;
-                }
-                const transactionDTO:PagamentoDTO = { 
-                    id: req.params.transacaoId, 
-                    status: req.params.transacaoStatus,
-                    payload: bodyPayload
-                };
-                
-                const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, transactionDTO);
-                res.send(pagamentoPayload); 
-            }
-            catch (error:any) {
-                res.status(400).send(error.message);
-            }
-        });
-
-        
         app.put("/pagamento/webhook/", async (req, res) => {
             // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
             /**
@@ -69,12 +32,8 @@ export class ApiPagamentos {
                     if (req.body.status === undefined || req.body.status === "" || req.body.status === null) {
                         throw new Error("Status de Retorno da Transação não informado no body")
                     }
-                    const transactionDTO:PagamentoDTO = {
-                        id: req.body.id, 
-                        status: req.body.status,
-                        payload: req.body
-                    }
-                    const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, transactionDTO);
+                    const payload:string = req.body;
+                    const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, payload);
                     res.send(pagamentoPayload); 
                 }
                 catch (error:any) {

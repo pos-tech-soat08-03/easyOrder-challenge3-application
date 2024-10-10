@@ -1,4 +1,5 @@
 import { TransactionEntity } from "../Entity/TransactionEntity";
+import { RetornoPagamentoEnum } from "../Entity/ValueObject/RetornoPagamentoEnum";
 import { StatusPagamentoEnum } from "../Entity/ValueObject/StatusPagamentoEnum";
 import { StatusPedidoEnum, StatusPedidoValueObject } from "../Entity/ValueObject/StatusPedidoValueObject";
 import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../Entity/ValueObject/StatusTransacaoValueObject";
@@ -9,12 +10,11 @@ import { PagamentoDTO } from "../Types/dto/PagamentoDTO";
 
 export class PagamentoUsecases {
 
-    public static async ConfirmarPagamentoUsecase(transactionGateway: TransactionGatewayInterface, pedidoGateway: PedidoGatewayInterface, pagamentoService: PagamentoServiceInterface,transactionDTO: PagamentoDTO): Promise<{ transacao: TransactionEntity | undefined, mensagem: string }> {
-        const idTransaction = transactionDTO.id;
-        const transactionStatus = transactionDTO.status;
-        const payload = transactionDTO.payload;
+    public static async ConfirmarPagamentoUsecase(transactionGateway: TransactionGatewayInterface, pedidoGateway: PedidoGatewayInterface, pagamentoService: PagamentoServiceInterface, payload:string): Promise<{ transacao: TransactionEntity | undefined, mensagem: string }> {
 
-        const transaction = await transactionGateway.buscarTransactionPorId(idTransaction);
+        const transactionDTO:PagamentoDTO = await pagamentoService.handlePaymentResponse(payload);
+
+        const transaction = await transactionGateway.buscarTransactionPorId(transactionDTO.id);
         if (transaction === undefined) {
             return { transacao: undefined, mensagem: "Transação não encontrada." };
         }
@@ -22,14 +22,14 @@ export class PagamentoUsecases {
         if (pedido === undefined || pedido === null) {
             return { transacao: undefined, mensagem: "Pedido associado à transação não foi encontrado." };
         }
-        if (transaction.getStatusTransacao() === StatusTransacaoEnum.PAGO) {
-            return { transacao: undefined, mensagem: "Transação já confirmada." };
+        if (transaction.getStatusTransacao() === StatusTransacaoEnum.PAGO || transaction.getStatusTransacao() === StatusTransacaoEnum.NEGADO || transaction.getStatusTransacao() === StatusTransacaoEnum.CANCELADO) {
+            return { transacao: undefined, mensagem: "Transação já finalizada." };
         }
 
-        if (transactionStatus === "approved") {
+        if (transactionDTO.status === RetornoPagamentoEnum.APROVADO) {
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.PAGO));
             transaction.setMsgRetorno(JSON.stringify(payload));
-            const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(idTransaction, transaction);
+            const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(transactionDTO.id, transaction);
             if (!transacaoSalva) {
                 return { transacao: undefined, mensagem: "Erro ao salvar a transação." };
             }
@@ -42,7 +42,7 @@ export class PagamentoUsecases {
         // TODO: criar os outros casos de tratamento de status de transação - qualquer diferente de approved irá negar
         transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.NEGADO));
         transaction.setMsgRetorno(payload);
-        const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(idTransaction, transaction);
+        const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(transactionDTO.id, transaction);
         if (!transacaoSalva) {
             return { transacao: undefined, mensagem: "Erro ao salvar a transação." };
         }

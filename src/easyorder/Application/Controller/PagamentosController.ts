@@ -6,10 +6,10 @@ import { PagamentoAdapter } from "../Presenter/PagamentoAdapter";
 
 export class PagamentosController {
 
-    public static async ConfirmarPagamento (dbConnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, transactionDTO: PagamentoDTO): Promise<string> {
+    public static async ConfirmarPagamento (dbConnection: IDbConnection, servicoPagamento: PagamentoServiceInterface, payload:string): Promise<string> {
         const transactionGateway = dbConnection.gateways.transactionGateway;
         const pedidoGateway = dbConnection.gateways.pedidoGateway;
-        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, servicoPagamento, transactionDTO);
+        const { transacao, mensagem }  = await PagamentoUsecases.ConfirmarPagamentoUsecase(transactionGateway, pedidoGateway, servicoPagamento, payload);
         if (transacao === undefined) {
             return PagamentoAdapter.adaptPagamentoJsonError(mensagem);
         }

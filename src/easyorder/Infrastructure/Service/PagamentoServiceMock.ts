@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { TransactionEntity } from "../../Core/Entity/TransactionEntity";
 import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../../Core/Entity/ValueObject/StatusTransacaoValueObject";
 import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
+import { PagamentoDTO } from '../../Core/Types/dto/PagamentoDTO';
+import { RetornoPagamentoEnum } from '../../Core/Entity/ValueObject/RetornoPagamentoEnum';
 
 export class PagamentoServiceMock implements PagamentoServiceInterface {
 
@@ -26,21 +28,29 @@ export class PagamentoServiceMock implements PagamentoServiceInterface {
         return transaction;
     }
     
-    async handlePaymentResponse (transaction: TransactionEntity): Promise <TransactionEntity> {
-        if (transaction.getStatusTransacao() === StatusTransacaoEnum.EM_PROCESSAMENTO) {
-            transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.PAGO));
-            transaction.setMsgRetorno(
-                JSON.stringify({
-                    idTransacao: transaction.getIdTransacao(),
-                    idPedido: transaction.getIdPedido(),
-                    valorTransacao: transaction.getValorTransacao(),
-                    dataCriacaoTransacao: transaction.getDataCriacaoTransacao().toISOString(),
-                    dataRetornoTransacao: new Date().toISOString(),
-                    statusTransacao: StatusTransacaoEnum.PAGO
-                })
-            );
+    async handlePaymentResponse (payload: string): Promise <PagamentoDTO> {
+        try {
+            const parsedPayload = JSON.parse(payload);
+            const transactionId = parsedPayload.id;
+            const receivedStatus = parsedPayload.status;
+            let transactionStatus: RetornoPagamentoEnum;
+
+            if (receivedStatus === "approved") transactionStatus = RetornoPagamentoEnum.APROVADO;
+            else if (receivedStatus === "denied") transactionStatus = RetornoPagamentoEnum.NEGADO;
+            else transactionStatus = RetornoPagamentoEnum.PENDENTE; 
+
+            const pagamentoDto: PagamentoDTO = {
+                id: transactionId,
+                status: transactionStatus,
+                payload: parsedPayload
+            };
+            
+            return pagamentoDto;
+        } 
+        catch (error: any) {
+            throw new Error("Erro parsing transaction");
         }
-        return transaction;
+
     }
     
 }
