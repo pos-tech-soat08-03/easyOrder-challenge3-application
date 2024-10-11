@@ -56,7 +56,7 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 
 - Swagger / collection de APIs do Projeto ✔️
   - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:3000/doc/](http://localhost:3000/doc/)
-  - Arquivo de referência pode ser acessada também no [swagger-output.json](https://github.com/pos-tech-soat08-03/easyOrder-challenge2/tree/main/src/swagger-output.json) em formato OpenAPI 2.0
+  - Arquivo de referência pode ser acessada também no [swagger-output.json](./src/swagger-output.json) em formato OpenAPI 2.0
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
   - Adicional: Explicação do [Teste fim-a-fim](#-rodando-testes-ponta-a-ponta-end-to-end---e2e-e-entendendo-o-fluxo-de-execução) com todas as etapas em sequência de execução 

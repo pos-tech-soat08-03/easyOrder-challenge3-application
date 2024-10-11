@@ -1,20 +1,39 @@
 
-## Jornada do Cliente - Macro
+## Fluxo Aplicação - Visão Geral
 
-```mermaid
-journey
-    title Pedido
-    section Criação Pedido
-      Novo Pedido: 9 : Usuário
-      Adiciona combo ao pedido: 9 : Usuário
-      Fecha Pedido: 9 : Usuário
-      Checkout: 9 : Usuário
-    section Cozinha
-      Recebe Pedido: 9 : Cozinheiro
-      Inicia Preparação: 9 : Cozinheiro
-      Finaliza Preparação: 9 : Cozinheiro
-      Avisa Usuário: 9 : Painel
-    section Entrega
-      Entrega Pedido: 9 : Atendente
-      Finaliza Pedido: 9 : Atendente
+Utilizando os conceitos do Clean Architecture, uma sequência geral de chamadas considera a responsabilidade de cada camada e os princícios SOLID. Desta forma, a partir das camadas externas, as instâncias das implementações (definidas por interfaces no core) são injetadas em cada camada, até onde serão utilizadas. Um fluxo geral é como mostrado abaixo:
+
+``` mermaid
+sequenceDiagram
+    actor Cliente as Cliente
+    participant API as /Infrastructure/Api/*
+    participant Controller as /Application/Controller/*
+    participant Usecase as /Core/Usecase/*
+    participant Entity as /Core/Entity/*
+    participant Gateway as /Application/Gateway/*
+    participant Presenter as /Application/Presenter/*
+    participant DB as /Infrastructure/DB/*
+    
+    API -->> Controller: injeta Gateway (DB)
+    Controller -->> Usecase: injeta Gateway (DB)
+    Usecase -->> Gateway: injeta Gateway (DB)
+    
+    Cliente ->> API: HTTP Request (HTTP/JSON)
+    API ->> Controller: roteamento (DTO)
+    
+    Controller ->> Usecase: execute (DTO)
+    opt executa todas as interações necessárias pela regra do negócio
+    Usecase ->> Entity: interage com Entidade (DTO)
+    Entity -->> Usecase: retorna resultado (Entity)
+    Usecase -) Gateway: interage com DB (Entity)
+    %%Gateway -) DB: interage com DB (DTO)
+    DB --) Gateway: retorna resultado (DTO)
+    Gateway --) Usecase: confirmação persistência (Entity)
+    end
+
+    Usecase --) Controller: retorna resposta (Entity)
+    Controller ->> Presenter: formata ResponseData (Entity)
+    Presenter -->> Controller: retorna FormattedResponse (DTO)
+    Controller --) API: retorna FormattedResponse (DTO)
+    API --) Cliente: HTTP Response (HTTP/JSON)
 ```
