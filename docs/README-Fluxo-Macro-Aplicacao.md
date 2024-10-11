@@ -16,7 +16,7 @@ sequenceDiagram
     
     API -->> Controller: injeta Gateway (DB)
     Controller -->> Usecase: injeta Gateway (DB)
-    Usecase -->> Gateway: injeta Gateway (DB)
+    Usecase -->> Gateway: injeta (DB)
     
     Cliente ->> API: HTTP Request (HTTP/JSON)
     API ->> Controller: roteamento (DTO)
