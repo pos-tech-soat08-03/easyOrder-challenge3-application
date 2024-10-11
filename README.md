@@ -23,7 +23,7 @@ Os requisitos adicionais (funcionais, não funcionais e desenhos de arquitetura)
 ## Links importantes da Fase 2 🌟
 - Repositório da solução no Github: [https://github.com/pos-tech-soat08-03/easyOrder-challenge2](https://github.com/pos-tech-soat08-03/easyOrder-challenge2) 
 
-- Link do Vídeo com a explicação sobre a arquitetura, e demonstração do funcionamento da aplicação: [adicionar o link do video](adicionar a descricao do video) 🚧
+- <mark>Link do Vídeo com a explicação sobre a arquitetura, e demonstração do funcionamento da aplicação: [adicionar o link do video](adicionar a descricao do video) 🚧</mark>
 
 - Miro aberto da Fase 1 para referência: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). 
 
@@ -39,30 +39,30 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 - Webhook de confirmação de pagamento ✔️
 - Lista de pedidos respeitando critérios de ordenacão ✔️
 - Atualização de status de pedido (considerando novo fluxo de pagamento) ✔️
-- Integração com Serviço de Pagamento Mercado Pago (QRCode) 🚧
-  - Como este requisito depende de etapas adicionais para o teste, está demonstrado somente no vídeo explicativo 🎥
+- <mark>Integração com Serviço de Pagamento Mercado Pago (QRCode) 🚧
+  - Como este requisito depende de etapas adicionais para o teste, está demonstrado somente no vídeo explicativo 🎥</mark>
 
 ## Requisitos de Arquitetura da Fase 2
 
 - Arquitetura da aplicação em Clean Architecture e seguindo padrões Clean Code ✔️
 
-- Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 🚧
+- <mark>Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 🚧
   - Inclui todos so arquivos yaml na pasta [manifesto_kubernetes](./manifesto_kubernetes/)
-  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥
+  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥</mark>
 
 ## Documentações adicionais necessárias para a Fase 2
 
-- Desenho de arquitetura detalhada pode ser [encontrado aqui](./) 🚧
+- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./) 🚧</mark>
 
 - Swagger / collection de APIs do Projeto ✔️
   - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:3000/doc/](http://localhost:3000/doc/)
   - Arquivo de referência pode ser acessada também no [swagger-output.json](./src/swagger-output.json) em formato OpenAPI 2.0
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
-  - Explicação do Teste fim-a-fim com todas as etapas em sequência de execução, 
-  - Detalhamento de cada etapa de execução
+  - Explicação do Teste fim-a-fim com todas as etapas em sequência de execução 
+  - <mark>Detalhamento de cada etapa de execução</mark>
 
-- Vídeos demonstrativo da arquitetura e execução do projeto 🚧
+- <mark>Vídeos demonstrativo da arquitetura e execução do projeto 🚧</mark>
 
 ## Sobre a aplicação
 
@@ -110,11 +110,11 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 
 ### 📋 Pré-requisitos
 
-TODO: adicionar conteúdos 🚨
+<mark>TODO: adicionar conteúdos 🚨</mark>
 
 ### ⚙️ Iniciando Em Modo "Produção"
 
-TODO: adicionar conteúdos 🚨
+<mark>TODO: adicionar conteúdos 🚨</mark>
 
 ### ✅ Verificar se está funcionando
 
@@ -147,23 +147,27 @@ O resultado dos testes Ponta a Ponta apresenta a sugestão de sequência de exec
 
 Teste Fim-a-fim: Pedido a Produção<br>
 
-✅ (/produto/cadastrar) Cadastra Lanches para serem utilizados nos Combos<br>
-✅ (/produto/cadastrar) Cadastra Sobremesas para serem utilizados nos Combos<br>
-✅ (/produto/cadastrar) Cadastra Bebidas para serem utilizados nos Combos<br>
-✅ (/produto/cadastrar) Cadastra Acompanhamentos para serem utilizados nos Combos<br>
-✅ (/cliente/cadastrar) Cria um Novo Cliente com CPF aleatório<br>
-✅ (/cliente/buscar/{cpf}) Busca Cliente por CPF<br>
-✅ (/pedido) Cria a etapa inicial do Pedido, cliente identificado<br>
-✅ (/pedido/{pedidoId}) Busca pedido do Cliente identificado<br>
-✅ (/combo/adicionar) Adiciona combo ao Pedido<br>
-✅ (/pedido/{pedidoId}/combo/{comboId}) Remove combo do pedido<br>
-✅ (/pedido/{pedidoId}/checkout) Fecha pedido: encaminha para Serviço de Pagamento<br>
-✅ (/pagamento/listar-transacoes/{pedidoid}) Busca transação criada e enviada para Serviço de Pagamento<br>
-✅ (/pagamento/webhook) Recebe confirmação de transação e encaminha pedido para Fila de Preparação<br>
-✅ (/preparacao/pedido/proximo) Busca próximo Pedido na fila de preparação<br>
-✅ (/preparacao/pedido/{pedidoId}/iniciar-preparacao) Inicia preparação do pedido<br>
-✅ (/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido<br>
-✅ (/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido<br>
+🔽 (/produto/cadastrar) Cadastra Lanches para serem utilizados nos Combos<br>
+🔽 (/produto/cadastrar) Cadastra Sobremesas para serem utilizados nos Combos<br>
+🔽 (/produto/cadastrar) Cadastra Bebidas para serem utilizados nos Combos<br>
+🔽 (/produto/cadastrar) Cadastra Acompanhamentos para serem utilizados nos Combos<br>
+
+🔽 (/cliente/cadastrar) Cria um Novo Cliente com CPF aleatório<br>
+🔽 (/cliente/buscar/{cpf}) Busca Cliente por CPF<br>
+
+🔽 (/pedido) Cria a etapa inicial do Pedido, cliente identificado<br>
+🔽 (/pedido/{pedidoId}) Busca pedido do Cliente identificado<br>
+🔽 (/combo/adicionar) Adiciona combo ao Pedido<br>
+🔽 (/pedido/{pedidoId}/combo/{comboId}) Remove combo do pedido<br>
+🔽 (/pedido/{pedidoId}/checkout) Fecha pedido: encaminha para Serviço de Pagamento<br>
+
+🔽 (/pagamento/listar-transacoes/{pedidoid}) Busca transação criada e enviada para Serviço de Pagamento<br>
+🔽 (/pagamento/webhook) Recebe confirmação de transação e encaminha pedido para Fila de Preparação<br>
+
+🔽 (/preparacao/pedido/proximo) Busca próximo Pedido na fila de preparação<br>
+🔽 (/preparacao/pedido/{pedidoId}/iniciar-preparacao) Inicia preparação do pedido<br>
+🔽 (/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido<br>
+🔽 (/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido<br>
 
 &nbsp;
 &nbsp;
