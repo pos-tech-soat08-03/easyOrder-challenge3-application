@@ -60,7 +60,7 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
   - Explicação do Teste fim-a-fim com todas as etapas em sequência de execução 
-  - <mark>Detalhamento de cada etapa de execução</mark>
+  - Detalhamento de cada etapa de execução
 
 - <mark>Vídeos demonstrativo da arquitetura e execução do projeto 🚧</mark>
 
@@ -86,7 +86,7 @@ Todas as dependências e pré-requisitos serão atendidos pela execução do doc
 
 Inicializar o Git e Clonar o repositório em uma pasta local, com os comandos:
 
-``` console
+``` bash
 git clone https://github.com/pos-tech-soat08-03/easyOrder-challenge2
 
 cd easyOrder-challenge2/
@@ -97,12 +97,12 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 1. Buildar a aplicação de acordo com o arquivo docker-compose.yml
     
     Windows:
-    ``` console
+    ``` bash
     docker compose up --build
     ```
 
     Linux:
-    ``` console
+    ``` bash
     sudo docker-compose up --build
     ```
 
@@ -135,11 +135,12 @@ Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/d
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
 
 &nbsp;
-### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_)
+
+### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_) e Entendendo o Fluxo de Execução
 
 Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a validação do processo da aplicação. Para executar o teste ponta a ponta, através do ambiente ativo no Docker, rode em um outro terminal (mantenha a aplicação rodando no Docker).
 
-``` console
+``` bash
 docker exec -it easyorder npx jest ./app.e2e.test.ts --verbose true
 ```
 
@@ -169,6 +170,8 @@ Teste Fim-a-fim: Pedido a Produção<br>
 🔽 (/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido<br>
 🔽 (/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido<br>
 
+Caso prefira realizar a execução passo a passo da aplicação, criamos um [Guia de Execução Simplificado](./docs/README-Guia-Execucao-APIs.md)
+
 &nbsp;
 &nbsp;
 # 🛠️ Arquitetura do Sistema
@@ -180,7 +183,9 @@ A arquitetura utilizada no sistema foi a [Arquitetura Limpa / Clean Architecture
 - Adaptadores de interfaces: converte informações de-para camadas internas e externas (gateways e presenters), e orquestram chamadas através de controllers 
 - Frameworks somente podem ser utilizados na camada mais externa de infraestrutura (frameworks e drivers, nesse diagrama)
 
-<img src="./docs/diagrama-clean-arch.png" alt="Clean Architecture" style="width:70%;"/>
+<img src="./docs/diagrama-clean-arch.png" alt="Clean Architecture" style="width:60%;"/>
+
+Uma explicação geral sobre o Fluxo de Execução da Aplicação pode ser encontrado nessa [documentação complementar](./docs/README-Fluxo-Macro-Aplicacao.md).
 
 Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, mas sim como ela foi implementada no nosso projeto.
 
