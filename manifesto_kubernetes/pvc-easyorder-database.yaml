@@ -5,6 +5,10 @@ metadata:
 spec:
   resources:
     requests:
+<<<<<<< Updated upstream
       storage: 1Gi
+=======
+      storage: 20Gi
+>>>>>>> Stashed changes
   accessModes:
     - ReadWriteOnce
