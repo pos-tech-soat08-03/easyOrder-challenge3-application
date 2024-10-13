@@ -110,11 +110,37 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 
 ### 📋 Pré-requisitos
 
-<mark>TODO: adicionar conteúdos 🚨</mark>
+- Docker
+- Kubernetes
+- Minikube para quem usa linux
+- Ativar Kubernetes no Docker Desktop para quem usa Windows
+- Metrics-server ativo 
+
+_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas.
+Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
 
 ### ⚙️ Iniciando Em Modo "Produção"
 
-<mark>TODO: adicionar conteúdos 🚨</mark>
+Inicializar o Git e _Clonar_ o repositório em uma pasta local, com os comandos:
+
+``` bash
+git clone https://github.com/pos-tech-fiap-projects/easyOrder.git
+```
+Escalonando:
+``` bash
+cd easyOrder/manifesto_kubernetes
+kubectl apply -f .
+```
+Desta forma inciará: 
+- configmap/easyorder-configmap
+- configmap/easyorder-database-configmap
+- deployment.apps/easyorder-database-deployment
+- deployment.apps/easyorder-deployment
+- horizontalpodautoscaler.autoscaling/easyorder-hp
+- persistentvolumeclaim/pvc-easyorder-database
+- service/svc-easyorder-database
+- service/svc-easyorder
+
 
 ### ✅ Verificar se está funcionando
 
@@ -122,7 +148,8 @@ Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, b
 
 O endpoint [http://localhost:3000/health](http://localhost:3000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
 
-_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
+_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
+_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
 
 &nbsp;
 ### 💡 Acesso à Documentação do Swagger
@@ -132,16 +159,23 @@ Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/d
 <img src="./docs/image-swagger2.png" alt="easyOrder 2.0 Swagger" style="width:60%;"/>
 
 
-_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._
+_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
+_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
 
 &nbsp;
 
 ### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_) e Entendendo o Fluxo de Execução
 
-Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a validação do processo da aplicação. Para executar o teste ponta a ponta, através do ambiente ativo no Docker, rode em um outro terminal (mantenha a aplicação rodando no Docker).
+Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a validação do processo da aplicação. Para executar o teste ponta a ponta, através do ambiente ativo no Docker, rode em um outro terminal (mantenha a aplicação rodando no Docker e ou Kubernetes).
 
+Docker:
 ``` bash
 docker exec -it easyorder npx jest ./app.e2e.test.ts --verbose true
+```
+Kubernetes:
+``` bash
+kubectl get pod #"Para lista o nome do pod por exemplo: easyorder-deployment-888ffc9c5"
+kubectl exec -it <nome-do-pod> -c easyorder-container -- npx jest ./app.e2e.test.ts --verbose true
 ```
 
 O resultado dos testes Ponta a Ponta apresenta a sugestão de sequência de execução:
