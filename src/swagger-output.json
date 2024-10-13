@@ -288,41 +288,6 @@
         }
       }
     },
-    "/pagamento/webhook/{status}/{transacaoId}": {
-      "put": {
-        "tags": [
-          "Pagamentos"
-        ],
-        "summary": "Retorno de status de transação",
-        "description": "Este Endpoint é utilizado para retorno de status de transação, em modelo simulado (mock)",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "transacaoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/pagamento/webhook/": {
       "put": {
         "tags": [
@@ -1077,29 +1042,19 @@
         }
       }
     },
-    "/produto/remover/{id}": {
-      "delete": {
+    "/produto/listar": {
+      "get": {
         "tags": [
           "Produtos"
         ],
-        "summary": "Remover produto",
-        "description": "Controller para remover um produto",
+        "summary": "Listar todos os produtos",
+        "description": "Controller para listar todos os produtos cadastrados",
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "ID do produto",
-            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
-          }
-        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -1182,6 +1137,57 @@
         }
       }
     },
+    "/produto/listar/{categoria}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
+    "/produto/remover/{id}": {
+      "delete": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Remover produto",
+        "description": "Controller para remover um produto",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do produto",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/produto/cadastrar": {
       "post": {
         "tags": [
@@ -1223,8 +1229,56 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Produto cadastrado com sucesso",
+            "schema": {
+              "properties": {
+                "resultado_cadastro": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "Produto cadastrado com sucesso"
+                },
+                "produto": {
+                  "type": "object",
+                  "properties": {
+                    "nome": {
+                      "type": "string",
+                      "example": "X-Salada"
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "example": "sem salada, sem tomate"
+                    },
+                    "preco": {
+                      "type": "number",
+                      "example": "25"
+                    },
+                    "imagemURL": {
+                      "type": "string",
+                      "example": "xsalada.png"
+                    },
+                    "categoria": {
+                      "type": "string",
+                      "example": "LANCHE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro inesperado",
+            "schema": {
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Erro inesperado: Não foi possivel cadastrar o produto"
+                }
+              }
+            }
           }
         }
       }
@@ -1275,48 +1329,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Produto atualizado com sucesso:",
-            "schema": {
-              "properties": {
-                "resultado_cadastro": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "mensagem": {
-                  "type": "string",
-                  "example": "Produto atualizado com sucesso:"
-                },
-                "produto": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "0eb3a93d-df52-4f04-a463-389105328855"
-                    },
-                    "nome": {
-                      "type": "string",
-                      "example": "X-EGG"
-                    },
-                    "descricao": {
-                      "type": "number",
-                      "example": "Com maionese e muito cheedar"
-                    },
-                    "preco": {
-                      "type": "number",
-                      "example": "30"
-                    },
-                    "categoria": {
-                      "type": "string",
-                      "example": "Lanche"
-                    },
-                    "imagem_url": {
-                      "type": "string",
-                      "example": "x-egg.jpeg"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Produto não encontrado",
@@ -1332,26 +1345,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/produto/listar": {
-      "get": {
-        "tags": [
-          "Produtos"
-        ],
-        "summary": "Listar todos os produtos",
-        "description": "Controller para listar todos os produtos cadastrados",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
           }
         }
       }
