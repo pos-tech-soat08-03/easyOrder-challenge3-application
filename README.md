@@ -143,7 +143,7 @@ cd easyOrder/manifesto_kubernetes
 
 kubectl apply -f .
 ```
-Desta forma iremos subir: 
+Desta forma inciará: 
 - configmap/easyorder-configmap
 - configmap/easyorder-database-configmap
 - deployment.apps/easyorder-database-deployment
