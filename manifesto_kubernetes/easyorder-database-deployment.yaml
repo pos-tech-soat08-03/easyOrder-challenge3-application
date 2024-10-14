@@ -19,17 +19,17 @@ spec:
           resources:
             limits:
               memory: "1000Mi"
-              cpu: "2000m"
+              cpu: "1000m"
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: easyorder-database-persitent-storage
+            - name: easyorder-database-persistent-storage
               mountPath: /var/lib/mysql
           envFrom:
             - configMapRef:
                 name: easyorder-database-configmap
                 optional: true
       volumes:
-        - name: easyorder-database-persitent-storage
+        - name: easyorder-database-persistent-storage
           persistentVolumeClaim:
             claimName: pvc-easyorder-database
