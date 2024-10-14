@@ -233,6 +233,8 @@ Uma explicação geral sobre o Fluxo de Execução da Aplicação pode ser encon
 
 Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, mas sim como ela foi implementada no nosso projeto.
 
+<img src="./docs/easyorder_arquitetura.jpg" alt="EasyOrder Architeture" style="width:80%;">
+
 ## Estrutura de Pastas
     .
     ├── docs                   # Documentos adicionais
