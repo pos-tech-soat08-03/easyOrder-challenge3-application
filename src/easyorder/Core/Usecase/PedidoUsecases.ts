@@ -42,7 +42,6 @@ export class PedidoUsecases {
         limit: number,
         orderField: string,
         orderDirection: string,
-        // ): Promise<PedidoEntity[]> {
     ): Promise<{ pedidos: PedidoEntity[], mensagem: string }> {
         const filter = {
             page: page,
