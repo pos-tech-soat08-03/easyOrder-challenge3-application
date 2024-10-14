@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { TransactionEntity } from "../../Core/Entity/TransactionEntity";
 import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../../Core/Entity/ValueObject/StatusTransacaoValueObject";
 import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
