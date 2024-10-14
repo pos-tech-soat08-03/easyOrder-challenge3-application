@@ -46,9 +46,9 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 
 - Arquitetura da aplicação em Clean Architecture e seguindo padrões Clean Code ✔️
 
-- <mark>Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 🚧
+- Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 
   - Inclui todos so arquivos yaml na pasta [manifesto_kubernetes](./manifesto_kubernetes/)
-  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥</mark>
+  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥
 
 ## Documentações adicionais necessárias para a Fase 2
 
@@ -116,31 +116,41 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 - Ativar Kubernetes no Docker Desktop para quem usa Windows
 - Metrics-server ativo 
 
-_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas.
-Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
+_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas._  
+_Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
 
 ### ⚙️ Iniciando Em Modo "Produção"
 
 Inicializar o Git e _Clonar_ o repositório em uma pasta local, com os comandos:
 
 ``` bash
-git clone https://github.com/pos-tech-fiap-projects/easyOrder.git
+git clone https://github.com/pos-tech-soat08-03/easyOrder-challenge2.git
 ```
 Escalonando:
 ``` bash
 cd easyOrder/manifesto_kubernetes
-kubectl apply -f .
+kubectl apply -f svc-easyorder-database.yaml
+kubectl apply -f pvc-easyorder-database.yaml
+kubectl apply -f easyorder-database-configmap.yaml
+kubectl apply -f easyorder-database-deployment.yaml
+kubectl apply -f svc-easyorder.yaml
+kubectl apply -f easyorder-configmap.yaml
+kubectl apply -f easyorder-deployment.yaml
+kubectl apply -f easyorder-hpa.yaml
 ```
 Desta forma inciará: 
-- configmap/easyorder-configmap
+- service/svc-easyorder-database
 - configmap/easyorder-database-configmap
+- persistentvolumeclaim/pvc-easyorder-database
 - deployment.apps/easyorder-database-deployment
+- service/svc-easyorder
+- configmap/easyorder-configmap
 - deployment.apps/easyorder-deployment
 - horizontalpodautoscaler.autoscaling/easyorder-hp
-- persistentvolumeclaim/pvc-easyorder-database
-- service/svc-easyorder-database
-- service/svc-easyorder
 
+### Arquitetura Kubernetes 
+
+<img src="./docs/arquitetura_kubernetes.jpg" alt="Clean Architecture" style="width:80%;"/>
 
 ### ✅ Verificar se está funcionando
 
