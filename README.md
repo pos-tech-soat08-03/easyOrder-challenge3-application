@@ -25,9 +25,6 @@ Os requisitos adicionais (funcionais, não funcionais e desenhos de arquitetura)
 
 - <mark>Link do Vídeo com a explicação sobre a arquitetura, e demonstração do funcionamento da aplicação: [adicionar o link do video](adicionar a descricao do video) 🚧</mark>
 
-- Miro aberto da Fase 1 para referência: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). 
-
-
 &nbsp;
 
 ## Requisitos Funcionais adicionados na Fase 2
@@ -52,10 +49,11 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 
 ## Documentações adicionais necessárias para a Fase 2
 
-- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./) 🚧</mark>
+- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/docs/arquitetura_kubernetes.jpg) ✔️
+  - Arquivo no formato original do [draw.io](https://app.diagrams.net/#Hpos-tech-soat08-03%2FeasyOrder-challenge2%2Fmain%2Fdocs%2Farquitetura_kubernetes.drawio#%7B%22pageId%22%3A%22f106602c-feb2-e66a-4537-3a34d633f6aa%22%7D)
 
 - Swagger / collection de APIs do Projeto ✔️
-  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:3000/doc/](http://localhost:3000/doc/)
+  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:3000/doc/](http://localhost:30000/doc/)
   - Arquivo de referência pode ser acessada também no [swagger-output.json](./src/swagger-output.json) em formato OpenAPI 2.0
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
@@ -154,9 +152,9 @@ Desta forma inciará:
 
 ### ✅ Verificar se está funcionando
 
-Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, basta acessar a url [http://localhost:3000/](http://localhost:3000/). 
+Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, basta acessar a url [http://localhost:30000/](http://localhost:30000/). 
 
-O endpoint [http://localhost:3000/health](http://localhost:3000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
+O endpoint [http://localhost:30000/health](http://localhost:30000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
 _Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
@@ -164,7 +162,7 @@ _Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a confi
 &nbsp;
 ### 💡 Acesso à Documentação do Swagger
 
-Para acessar a documentação do Swagger, acessar a url [http://localhost:3000/doc/](http://localhost:3000/doc/) - você poderá navegar e testar todos os endpoints, com exemplos disponíveis.
+Para acessar a documentação do Swagger, acessar a url [http://localhost:30000/doc/](http://localhost:30000/doc/) - você poderá navegar e testar todos os endpoints, com exemplos disponíveis.
 
 <img src="./docs/image-swagger2.png" alt="easyOrder 2.0 Swagger" style="width:60%;"/>
 
