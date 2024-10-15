@@ -65,7 +65,7 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
     
     async handlePaymentResponse (payload: string): Promise <PagamentoDTO> {
 
-        const ML_ACCESS_TOKEN = process.env.ML_ACCESS_TOKEN || '';
+        // const ML_ACCESS_TOKEN = process.env.ML_ACCESS_TOKEN || '';
         try {
             payload = JSON.stringify(payload);
             const parsedPayload = JSON.parse(payload);
@@ -80,24 +80,35 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
                         'Authorization': `Bearer APP_USR-3044895488797945-101514-0d9fcdc00bf3a365654b3785654d189e-2018827962`
                     }
                 });
-    
-                const data = await confirmation.json();
-                const transactionId = data.external_reference;
-                const receivedStatus = data.payments[0].status;
+                
+                let data = await confirmation.json();
 
-                let transactionStatus: RetornoPagamentoEnum;
-                
-                if (receivedStatus === "approved") transactionStatus = RetornoPagamentoEnum.APROVADO;
-                else if (receivedStatus === "denied") transactionStatus = RetornoPagamentoEnum.NEGADO;
-                else transactionStatus = RetornoPagamentoEnum.PENDENTE; 
-    
-                const pagamentoDto: PagamentoDTO = {
-                    id: transactionId,
-                    status: transactionStatus,
-                    payload: parsedPayload
-                };
-                
-                return pagamentoDto;
+                console.log("****************************** DATA: ", data);
+
+                const dataTemp = JSON.stringify(data);
+                const parsedData = JSON.parse(dataTemp);
+
+                if (parsedData.order_status !== "payment_required") {
+
+                    const transactionId = parsedData.external_reference;
+                    console.log("****************************** transactionId: ", transactionId);
+                    const receivedStatus = parsedData.payments[0].status;
+                    console.log("****************************** receivedStatus: ", receivedStatus);
+
+                    let transactionStatus: RetornoPagamentoEnum;
+                    
+                    if (receivedStatus === "approved") transactionStatus = RetornoPagamentoEnum.APROVADO;
+                    else if (receivedStatus === "denied") transactionStatus = RetornoPagamentoEnum.NEGADO;
+                    else transactionStatus = RetornoPagamentoEnum.PENDENTE; 
+        
+                    const pagamentoDto: PagamentoDTO = {
+                        id: transactionId,
+                        status: transactionStatus,
+                        payload: parsedPayload
+                    };
+                    
+                    return pagamentoDto;
+                }
             }
 
             const defaultPagamentoDto: PagamentoDTO = {
