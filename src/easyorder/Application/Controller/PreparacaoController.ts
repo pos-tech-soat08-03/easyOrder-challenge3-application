@@ -97,7 +97,7 @@ export class PreparacaoController {
     }
       const pedidoGateway = dbConnection.gateways.pedidoGateway;
       const { pedido, mensagem } =
-        await PreparacaoUseCases.iniciarPreparacaoPedidoUseCase(pedidoGateway, pedidoId);
+        await PreparacaoUseCases.finalizaPreparacaoUseCase(pedidoGateway, pedidoId);
       if (pedido === undefined) {
         return PedidoAdapter.dataNotFound(mensagem);
       }
