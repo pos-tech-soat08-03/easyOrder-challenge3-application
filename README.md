@@ -25,9 +25,6 @@ Os requisitos adicionais (funcionais, não funcionais e desenhos de arquitetura)
 
 - <mark>Link do Vídeo com a explicação sobre a arquitetura, e demonstração do funcionamento da aplicação: [adicionar o link do video](adicionar a descricao do video) 🚧</mark>
 
-- Miro aberto da Fase 1 para referência: [https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493](https://miro.com/app/board/uXjVK4O1cns=/?share_link_id=173867557493). 
-
-
 &nbsp;
 
 ## Requisitos Funcionais adicionados na Fase 2
@@ -46,16 +43,18 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 
 - Arquitetura da aplicação em Clean Architecture e seguindo padrões Clean Code ✔️
 
-- <mark>Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 🚧
+- Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 
   - Inclui todos so arquivos yaml na pasta [manifesto_kubernetes](./manifesto_kubernetes/)
-  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥</mark>
+  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥
 
 ## Documentações adicionais necessárias para a Fase 2
 
-- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./) 🚧</mark>
+- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/arquitetura_kubernetes.jpg) ✔️
+  - Arquivo no formato original do [draw.io](https://app.diagrams.net/#Hpos-tech-soat08-03%2FeasyOrder-challenge2%2Fmain%2Fdocs%2Farquitetura_kubernetes.drawio#%7B%22pageId%22%3A%22f106602c-feb2-e66a-4537-3a34d633f6aa%22%7D)
 
 - Swagger / collection de APIs do Projeto ✔️
-  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:30000/doc/](http://localhost:30000git/doc/)
+  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:30000/doc/](http://localhost:30000/doc/)
+
   - Arquivo de referência pode ser acessada também no [swagger-output.json](./src/swagger-output.json) em formato OpenAPI 2.0
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
@@ -116,31 +115,41 @@ Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar 
 - Ativar Kubernetes no Docker Desktop para quem usa Windows
 - Metrics-server ativo 
 
-_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas.
-Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
+_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas._  
+_Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
 
 ### ⚙️ Iniciando Em Modo "Produção"
 
 Inicializar o Git e _Clonar_ o repositório em uma pasta local, com os comandos:
 
 ``` bash
-git clone https://github.com/pos-tech-fiap-projects/easyOrder.git
+git clone https://github.com/pos-tech-soat08-03/easyOrder-challenge2.git
 ```
 Escalonando:
 ``` bash
 cd easyOrder/manifesto_kubernetes
-kubectl apply -f .
+kubectl apply -f svc-easyorder-database.yaml
+kubectl apply -f pvc-easyorder-database.yaml
+kubectl apply -f easyorder-database-configmap.yaml
+kubectl apply -f easyorder-database-deployment.yaml
+kubectl apply -f svc-easyorder.yaml
+kubectl apply -f easyorder-configmap.yaml
+kubectl apply -f easyorder-deployment.yaml
+kubectl apply -f easyorder-hpa.yaml
 ```
 Desta forma inciará: 
-- configmap/easyorder-configmap
+- service/svc-easyorder-database
 - configmap/easyorder-database-configmap
+- persistentvolumeclaim/pvc-easyorder-database
 - deployment.apps/easyorder-database-deployment
+- service/svc-easyorder
+- configmap/easyorder-configmap
 - deployment.apps/easyorder-deployment
 - horizontalpodautoscaler.autoscaling/easyorder-hp
-- persistentvolumeclaim/pvc-easyorder-database
-- service/svc-easyorder-database
-- service/svc-easyorder
 
+### Arquitetura Kubernetes 
+
+<img src="./docs/arquitetura_kubernetes.jpg" alt="Clean Architecture" style="width:80%;"/>
 
 ### ✅ Verificar se está funcionando
 
@@ -221,6 +230,8 @@ A arquitetura utilizada no sistema foi a [Arquitetura Limpa / Clean Architecture
 Uma explicação geral sobre o Fluxo de Execução da Aplicação pode ser encontrado nessa [documentação complementar](./docs/README-Fluxo-Macro-Aplicacao.md).
 
 Nosso objetivo aqui não é entrar em detalhes de como a arquitetura funciona, mas sim como ela foi implementada no nosso projeto.
+
+<img src="./docs/easyorder_arquitetura.jpg" alt="EasyOrder Architeture" style="width:80%;">
 
 ## Estrutura de Pastas
     .

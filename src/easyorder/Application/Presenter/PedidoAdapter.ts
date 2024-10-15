@@ -7,6 +7,7 @@ export enum PedidoAdapterStatus {
     DATA_NOT_FOUND = "data_not_found",
     SYSTEM_ERROR = "system_error",
     VALIDATE_ERROR = "validate_error",
+    PERSISTENCE_ERROR = "persistence_error"
 }
 
 export class PedidoAdapter {
@@ -99,5 +100,7 @@ export class PedidoAdapter {
             valorTotal: pedido?.getValorTotal()
         };
     }
+
+    
 
 }

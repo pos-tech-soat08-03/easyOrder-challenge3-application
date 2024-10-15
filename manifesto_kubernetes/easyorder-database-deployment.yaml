@@ -18,18 +18,18 @@ spec:
           image: mysql:9.0.1
           resources:
             limits:
-              memory: "500Mi"
-              cpu: "500m"
+              memory: "1000Mi"
+              cpu: "1000m"
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: easyorder-database-persitent-storage
+            - name: easyorder-database-persistent-storage
               mountPath: /var/lib/mysql
           envFrom:
             - configMapRef:
                 name: easyorder-database-configmap
                 optional: true
       volumes:
-        - name: easyorder-database-persitent-storage
+        - name: easyorder-database-persistent-storage
           persistentVolumeClaim:
             claimName: pvc-easyorder-database
