@@ -23,26 +23,44 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
             
             transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.EM_PROCESSAMENTO));
 
-            const response = await fetch(`https://api.mercadopago.com/instore/orders/qr/seller/collectors/${ML_USER_ID}}/pos/${ML_POS_ID}/qrs`, {
+            const bodyChamada = JSON.stringify({
+                external_reference: transaction.getIdTransacao(),
+                title: 'Pagamento pedido: ' + transaction.getIdPedido(),
+                description: 'Pagamento pedido ' + transaction.getIdPedido() + ' no valor de R$ ' + transaction.getValorTransacao() + ' transação ' + transaction.getIdTransacao(),
+                notification_url: "https://e3ca-179-98-8-98.ngrok-free.app/pagamento/webhook/",
+                total_amount: transaction.getValorTransacao(),
+                "items": [
+                    {
+                      "sku_number": "A123K9191938",
+                      "category": "marketplace",
+                      "title": "easyOrder",
+                      "description": "easyOrder",
+                      "unit_price": transaction.getValorTransacao(),
+                      "quantity": 1,
+                      "unit_measure": "unit",
+                      "total_amount": transaction.getValorTransacao()
+                    }
+                  ],
+                  "cash_out": {
+                    "amount": 0
+                  }
+            });
+            console.log("BODY CHAMADA: ", bodyChamada);
+
+            const response = await fetch(`https://api.mercadopago.com/instore/orders/qr/seller/collectors/${ML_USER_ID}/pos/${ML_POS_ID}/qrs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ML_ACCESS_TOKEN}`
                 },
-                body: JSON.stringify({
-                    external_reference: transaction.getIdTransacao(),
-                    title: 'Pagamento pedido: ' + transaction.getIdPedido(),
-                    description: 'Pagamento pedido ' + transaction.getIdPedido() + ' no valor de R$ ' + transaction.getValorTransacao() + ' transação ' + transaction.getIdTransacao(),
-                    notification_url: NGROK_URL,
-                    transaction_amount: transaction.getValorTransacao()
-                })
+                body: bodyChamada
             });
-            if (!response.ok) {
-                throw new Error('Erro na criação do QRCode. Status: ' + response.status);
-            }
+            // if (!response.ok) {
+            //     throw new Error('Erro na criação do QRCode. Status: ' + response.status + ' ' + response.json());
+            // }
             const data = await response.json();
             transaction.setHash_EMVCo(data.qr_code);
-            transaction.setMsgEnvio(JSON.stringify(data));
+            transaction.setMsgEnvio(JSON.stringify(bodyChamada));
         }
         return transaction;
     }
