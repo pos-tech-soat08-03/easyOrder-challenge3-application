@@ -5,7 +5,7 @@
     "description": "Sistema de Gestão de Pedidos - Tech Challenge (2) da Pos Tech SOAT ",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:30000",
   "basePath": "/",
   "schemes": [
     "http"

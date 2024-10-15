@@ -20,8 +20,8 @@ export class DefaultApiEndpoints {
 
     app.get("/", (req, res) => {
       res.status(302).send(
-        `<meta http-equiv="Refresh" content="3;URL=http://localhost:3000/doc/" />Redirecionando para a documentação do Swagger em http://localhost:3000/doc/<BR>\
-        Caso não ocorra automaticamente <A href="http://localhost:3000/doc/">clique aqui</A>`
+        `<meta http-equiv="Refresh" content="3;URL=http://localhost:30000/doc/" />Redirecionando para a documentação do Swagger em http://localhost:30000/doc/<BR>\
+        Caso não ocorra automaticamente <A href="http://localhost:30000/doc/">clique aqui</A>`
       );
     });
 

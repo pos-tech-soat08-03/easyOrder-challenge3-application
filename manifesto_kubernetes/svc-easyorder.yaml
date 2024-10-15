@@ -7,5 +7,5 @@ spec:
   selector:
     app: easyorder
   ports:
-  - port: 3000
+  - port: 30000
     nodePort: 30000 
