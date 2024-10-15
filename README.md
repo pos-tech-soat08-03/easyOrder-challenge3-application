@@ -149,7 +149,6 @@ Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, b
 O endpoint [http://localhost:30000/health](http://localhost:30000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
 
 &nbsp;
 ### 💡 Acesso à Documentação do Swagger
@@ -160,7 +159,7 @@ Para acessar a documentação do Swagger, acessar a url [http://localhost:30000/
 
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
+
 
 &nbsp;
 
