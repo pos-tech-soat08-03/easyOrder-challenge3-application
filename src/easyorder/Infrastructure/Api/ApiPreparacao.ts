@@ -16,8 +16,8 @@ export class ApiPreparacao {
             #swagger.tags = ['Preparação']
             #swagger.path = '/preparacao/pedido/proximo'
             #swagger.method = 'get'
-            #swagger.summary = 'Busca o próximo pedido para preparação'
-            #swagger.description = 'Controller para buscar o próximo pedido para preparação'
+            #swagger.summary = 'Buscar o próximo Pedido'
+            #swagger.description = 'Busca o próximo pedido para preparação'
             #swagger.produces = ["application/json"]
             #swagger.responses[404] = {
                 'description': 'Nenhum pedido encontrado',
@@ -68,10 +68,10 @@ export class ApiPreparacao {
       async (req: Request, res: Response) => {
         /**
             #swagger.tags = ['Preparação']
-            #swagger.path = '/preparacao/pedido/:pedidoId/iniciar-preparacao'
+            #swagger.path = '/preparacao/pedido/{pedidoId}/iniciar-preparacao'
             #swagger.method = 'put'
-            #swagger.summary = 'Iniciar preparação de um pedido'
-            #swagger.description = 'Controller para iniciar a preparação de um pedido'
+            #swagger.summary = 'Iniciar Preparação de Pedido'
+            #swagger.description = 'Inicia a preparação de um pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -131,10 +131,10 @@ export class ApiPreparacao {
       async (req: Request, res: Response) => {
         /**
             #swagger.tags = ['Preparação']
-            #swagger.path = '/preparacao/pedido/:pedidoId/finalizar-preparacao'
+            #swagger.path = '/preparacao/pedido/{pedidoId}/finalizar-preparacao'
             #swagger.method = 'put'
-            #swagger.summary = 'Finalizar preparação de um pedido'
-            #swagger.description = 'Controller para finalizar a preparação de um pedido'
+            #swagger.summary = 'Finalizar Preparação de Pedido'
+            #swagger.description = 'Finaliza a preparação de um pedido'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
@@ -193,10 +193,10 @@ export class ApiPreparacao {
       async (req: Request, res: Response) => {
         /**
             #swagger.tags = ['Preparação']
-            #swagger.path = '/preparacao/pedido/:pedidoId/entregar'
+            #swagger.path = '/preparacao/pedido/{pedidoId}/entregar'
             #swagger.method = 'put'
-            #swagger.summary = 'Entregar um pedido'
-            #swagger.description = 'Controller para entregar um pedido'
+            #swagger.summary = 'Entregar Pedido'
+            #swagger.description = 'Entrega um pedido preparado'
             #swagger.produces = ["application/json"]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',

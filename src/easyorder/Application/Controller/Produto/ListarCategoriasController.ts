@@ -15,14 +15,6 @@ export class ListaCategoriasController {
             #swagger.summary = 'Listar todos as categorias'
             #swagger.description = 'Controller para listar todos as categorias cadastradas'
             #swagger.produces = ["application/json"]  
-        */
-
-    const listaCategoriasUsecase = new ListarCategoriasUsecase();
-
-    try {
-      const result = await listaCategoriasUsecase.execute(req.body);
-
-      /**
                 #swagger.response[200] = {
                 description: 'Categorias listadas com sucesso',
                 schema: {
@@ -43,6 +35,12 @@ export class ListaCategoriasController {
      }
    }
   */
+
+    const listaCategoriasUsecase = new ListarCategoriasUsecase();
+
+    try {
+      const result = await listaCategoriasUsecase.execute(req.body);
+
 
       if (result.categorias.length > 0) {
         res.status(200).json(result);

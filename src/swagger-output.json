@@ -16,8 +16,8 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Cadastro de Novo Cliente",
-        "description": "Este Endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
+        "summary": "Cadastrar Cliente",
+        "description": "Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição. Retorna o Id de Cliente.<br>  Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
         "produces": [
           "application/json"
         ],
@@ -36,19 +36,19 @@
                   "type": "string",
                   "minLength": 11,
                   "maxLength": 11,
-                  "example": "00000000000"
+                  "example": "12345678909"
                 },
                 "nome": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "example": "João da Silva"
+                  "example": "Nome de Teste Sobrenome"
                 },
                 "email": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "example": "teste@teste.com"
+                  "example": "teste.email@email.com"
                 }
               }
             }
@@ -110,8 +110,8 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Atualização de Cliente",
-        "description": "Este Endpoint é utilizado para Atualizar o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição. Utiliza CPF como chave de busca.",
+        "summary": "Atualizar Cliente",
+        "description": "Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>  Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.",
         "produces": [
           "application/json"
         ],
@@ -130,19 +130,19 @@
                   "type": "string",
                   "minLength": 11,
                   "maxLength": 11,
-                  "example": "00000000000"
+                  "example": "12345678909"
                 },
                 "nome": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "example": "João da Silva"
+                  "example": "Nome de Testes Sobrenome Atualizado"
                 },
                 "email": {
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "example": "teste@teste.com"
+                  "example": "teste-email-novo@email.com"
                 }
               }
             }
@@ -204,8 +204,8 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Listar clientes",
-        "description": "Endpoind para listar todos os clientes cadastrados.",
+        "summary": "Listar Clientes",
+        "description": "Lista todos os clientes cadastrados.",
         "produces": [
           "application/json"
         ],
@@ -263,8 +263,8 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Buscar Cliente do Restaurante por CPF.",
-        "description": "A busca de Cliente por CPF permite que o Cliente seja identificado nas próximas etapas por ID.",
+        "summary": "Buscar Cliente",
+        "description": "Busca Cliente por CPF. Retorna detalhe do cadastro, incluindo o Id.",
         "produces": [
           "application/json"
         ],
@@ -293,8 +293,8 @@
         "tags": [
           "Pagamentos"
         ],
-        "summary": "Webhook de retorno de status de transação",
-        "description": "Este Endpoint é utilizado para capturar o retorno de status de transação a partir de webhook do Serviço de Pagamento",
+        "summary": "Webhook - Confirmar Pagamento (Transação)",
+        "description": "Captura o retorno de status de transação a partir de webhook do Serviço de Pagamento.<br>  Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição",
         "produces": [
           "application/json"
         ],
@@ -303,13 +303,23 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
+              "required": [
+                "id",
+                "status"
+              ],
               "properties": {
                 "id": {
-                  "example": "any"
+                  "type": "string",
+                  "minLength": 36,
+                  "maxLength": 36,
+                  "format": "uuid",
+                  "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
                 },
                 "status": {
-                  "example": "any"
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "example": "approved"
                 }
               }
             }
@@ -330,8 +340,8 @@
         "tags": [
           "Pagamentos"
         ],
-        "summary": "Obter lista de transações",
-        "description": "Este Endpoint é utilizado para obter a lista de transações associadas a um pedido",
+        "summary": "Listar Transações",
+        "description": "Obtém a lista de Transações associadas a um id de Pedido.",
         "produces": [
           "application/json"
         ],
@@ -358,8 +368,8 @@
         "tags": [
           "Pedidos"
         ],
-        "summary": "Cadastrar novo pedido",
-        "description": "Endpoint (API) para início de novo Pedido.",
+        "summary": "Cadastrar Pedido",
+        "description": "Início (rascunho) de novo Pedido. Retorna um Id de Pedido.",
         "produces": [
           "application/json"
         ],
@@ -409,17 +419,23 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
-    "/pedido/listar/:statusPedido": {
+    "/pedido/listar/{statusPedido}": {
       "get": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Listar pedidos por status",
-        "description": "Controller para listagem de pedidos por status",
+        "summary": "Listar Pedidos por status",
+        "description": "Lista pedidos por status",
         "produces": [
           "application/json"
         ],
@@ -427,9 +443,9 @@
           {
             "name": "statusPedido",
             "in": "path",
-            "description": "Status do pedido",
             "required": true,
             "type": "string",
+            "description": "Status do pedido",
             "example": "RASCUNHO",
             "enum": [
               "EM_ABERTO",
@@ -503,6 +519,9 @@
               }
             }
           },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
           "404": {
             "description": "Nenhum pedido encontrado",
             "schema": {
@@ -517,17 +536,20 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
-    "/pedido/:pedidoId": {
+    "/pedido/{pedidoId}": {
       "get": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Buscar pedido por ID",
-        "description": "Controller para buscar um pedido por ID",
+        "summary": "Buscar Pedido",
+        "description": "Busca um Pedido por ID",
         "produces": [
           "application/json"
         ],
@@ -535,9 +557,9 @@
           {
             "name": "pedidoId",
             "in": "path",
-            "description": "ID do pedido",
             "required": true,
             "type": "string",
+            "description": "ID do pedido",
             "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
           }
         ],
@@ -577,34 +599,20 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
-    "/pedido/:pedidoId/cancelar": {
+    "/pedido/{pedidoId}/cancelar": {
       "put": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Cancelamento de Pedido",
-        "description": "Endpoint para cancelamento de um Pedido com base no id.",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/pedido/:pedidoId/confirmacao-pagamento": {
-      "put": {
-        "tags": [
-          "Pedidos"
-        ],
-        "summary": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
-        "description": "Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).",
+        "summary": "Cancelar Pedido",
+        "description": "Cancelamento de um Pedido com base no id.",
         "produces": [
           "application/json"
         ],
@@ -612,9 +620,43 @@
           {
             "name": "pedidoId",
             "in": "path",
-            "description": "ID do pedido",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/pedido/{pedidoId}/confirmacao-pagamento": {
+      "put": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Confirmar Pagamento Pedido (deprecated).",
+        "description": "Baixa manual de um pedido pendente de pagamento (deprecated).",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pedidoId",
+            "in": "path",
             "required": true,
             "type": "string",
+            "description": "ID do pedido",
             "example": "29a81eeb-d16d-4d6c-a86c-e13597667307"
           }
         ],
@@ -643,6 +685,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         },
         "deprecated": true
@@ -653,8 +701,8 @@
         "tags": [
           "Pedidos"
         ],
-        "summary": "Checkout pedido",
-        "description": "Endpoint para Checkout de um pedido + envio para serviço de Pagamento",
+        "summary": "Checkout Pedido",
+        "description": "Checkout de um pedido e envio para o serviço de Pagamento",
         "produces": [
           "application/json"
         ],
@@ -693,17 +741,23 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
-    "/pedido/:pedidoId/combo": {
+    "/pedido/{pedidoId}/combo": {
       "post": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Adicionar combo ao pedido",
-        "description": "Controller para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.",
+        "summary": "Adicionar Combo ao Pedido",
+        "description": "Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.",
         "produces": [
           "application/json"
         ],
@@ -711,9 +765,9 @@
           {
             "name": "pedidoId",
             "in": "path",
-            "description": "ID do pedido",
             "required": true,
             "type": "string",
+            "description": "ID do pedido",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
           },
           {
@@ -784,17 +838,23 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
     },
-    "/pedido/:pedidoId/combo/:comboId": {
+    "/pedido/{pedidoId}/combo/{comboId}": {
       "delete": {
         "tags": [
           "Pedidos"
         ],
-        "summary": "Remover combo do pedido",
-        "description": "Controller para remover um combo do pedido",
+        "summary": "Remover Combo do Pedido",
+        "description": "Remove um Combo do Pedido",
         "produces": [
           "application/json"
         ],
@@ -802,17 +862,17 @@
           {
             "name": "pedidoId",
             "in": "path",
-            "description": "ID do pedido",
             "required": true,
             "type": "string",
+            "description": "ID do pedido",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
           },
           {
             "name": "comboId",
             "in": "path",
-            "description": "ID do combo",
             "required": true,
             "type": "string",
+            "description": "ID do combo",
             "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
           }
         ],
@@ -841,6 +901,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -850,8 +916,8 @@
         "tags": [
           "Preparação"
         ],
-        "summary": "Busca o próximo pedido para preparação",
-        "description": "Controller para buscar o próximo pedido para preparação",
+        "summary": "Buscar o próximo Pedido",
+        "description": "Busca o próximo pedido para preparação",
         "produces": [
           "application/json"
         ],
@@ -891,6 +957,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -900,8 +969,8 @@
         "tags": [
           "Preparação"
         ],
-        "summary": "Iniciar preparação de um pedido",
-        "description": "Controller para iniciar a preparação de um pedido",
+        "summary": "Iniciar Preparação de Pedido",
+        "description": "Inicia a preparação de um pedido",
         "produces": [
           "application/json"
         ],
@@ -940,6 +1009,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -949,8 +1024,8 @@
         "tags": [
           "Preparação"
         ],
-        "summary": "Finalizar preparação de um pedido",
-        "description": "Controller para finalizar a preparação de um pedido",
+        "summary": "Finalizar Preparação de Pedido",
+        "description": "Finaliza a preparação de um pedido",
         "produces": [
           "application/json"
         ],
@@ -989,6 +1064,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -998,8 +1079,8 @@
         "tags": [
           "Preparação"
         ],
-        "summary": "Entregar um pedido",
-        "description": "Controller para entregar um pedido",
+        "summary": "Entregar Pedido",
+        "description": "Entrega um pedido preparado",
         "produces": [
           "application/json"
         ],
@@ -1038,6 +1119,12 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Não Encontrado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
           }
         }
       }
@@ -1047,8 +1134,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Listar todos os produtos",
-        "description": "Controller para listar todos os produtos cadastrados",
+        "summary": "Listar Produtos",
+        "description": "Lista todos os produtos cadastrados",
         "produces": [
           "application/json"
         ],
@@ -1064,8 +1151,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Buscar produto por ID.",
-        "description": "Controller para buscar um produto usando o ID.",
+        "summary": "Buscar Produto",
+        "description": "Busca um produto utilizando o Id.",
         "produces": [
           "application/json"
         ],
@@ -1139,13 +1226,22 @@
     },
     "/produto/listar/{categoria}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Listar Produtos por Categoria",
+        "description": "Lista produtos por categoria",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "categoria",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID da Categoria",
+            "example": "LANCHE"
           }
         ],
         "responses": {
@@ -1163,8 +1259,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Remover produto",
-        "description": "Controller para remover um produto",
+        "summary": "Remover Produto",
+        "description": "Remove um produto, por Id.",
         "produces": [
           "application/json"
         ],
@@ -1193,8 +1289,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Cadastro de Novo Produto",
-        "description": "Este Controller é utilizado para realizar o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
+        "summary": "Cadastrar Produto",
+        "description": "Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
         "produces": [
           "application/json"
         ],
@@ -1288,8 +1384,8 @@
         "tags": [
           "Produtos"
         ],
-        "summary": "Atualização de Produto",
-        "description": "Este Controller é utilizado para atualizar o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
+        "summary": "Atualizar Produto",
+        "description": "Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
         "produces": [
           "application/json"
         ],
