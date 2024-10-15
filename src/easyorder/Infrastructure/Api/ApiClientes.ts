@@ -16,8 +16,10 @@ export class ApiClientes {
                     #swagger.tags = ['Clientes']
                     #swagger.path = '/cliente/cadastrar'
                     #swagger.method = 'post'
-                    #swagger.summary = 'Cadastro de Novo Cliente'
-                    #swagger.description = 'Este Endpoint é utilizado para realizar o Cadastro de um Novo Cliente, através dos dados fornecidos no corpo da requisição. Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
+                    #swagger.summary = 'Cadastrar Cliente'
+                    #swagger.description = 'Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição. Retorna o Id de Cliente.<br>
+                                            Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
+
                     #swagger.produces = ["application/json"]  
                     #swagger.parameters['body'] = { 
                         in: 'body', 
@@ -28,19 +30,19 @@ export class ApiClientes {
                                     "type": "string", 
                                     "minLength": 11,
                                     "maxLength": 11,
-                                    "example": "00000000000"
+                                    "example": "12345678909"
                                 },
                                 "nome": { 
                                     "type": "string",
                                     "minLength": 1,
                                     "maxLength": 255,
-                                    "example": "João da Silva"
+                                    "example": "Nome de Teste Sobrenome"
                                 },
                                 "email": { 
                                     "type": "string",
                                     "minLength": 1,
                                     "maxLength": 255,
-                                    "example": "teste@teste.com"
+                                    "example": "teste.email@email.com"
                                 }
                             }
                         }
@@ -114,8 +116,9 @@ export class ApiClientes {
                     #swagger.tags = ['Clientes']
                     #swagger.path = '/cliente/atualizar'
                     #swagger.method = 'put'
-                    #swagger.summary = 'Atualização de Cliente'
-                    #swagger.description = 'Este Endpoint é utilizado para Atualizar o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição. Utiliza CPF como chave de busca.'
+                    #swagger.summary = 'Atualizar Cliente'
+                    #swagger.description = 'Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>
+                                            Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.'
                     #swagger.produces = ["application/json"]  
                     #swagger.parameters['body'] = { 
                         in: 'body', 
@@ -126,19 +129,19 @@ export class ApiClientes {
                                     "type": "string", 
                                     "minLength": 11,
                                     "maxLength": 11,
-                                    "example": "00000000000"
+                                    "example": "12345678909"
                                 },
                                 "nome": { 
                                     "type": "string",
                                     "minLength": 1,
                                     "maxLength": 255,
-                                    "example": "João da Silva"
+                                    "example": "Nome de Testes Sobrenome Atualizado"
                                 },
                                 "email": { 
                                     "type": "string",
                                     "minLength": 1,
                                     "maxLength": 255,
-                                    "example": "teste@teste.com"
+                                    "example": "teste-email-novo@email.com"
                                 }
                             }
                         }
@@ -213,8 +216,8 @@ export class ApiClientes {
                     #swagger.tags = ['Clientes']
                     #swagger.path = '/cliente/listar'
                     #swagger.method = 'get'
-                    #swagger.summary = 'Listar clientes'
-                    #swagger.description = 'Endpoind para listar todos os clientes cadastrados.'
+                    #swagger.summary = 'Listar Clientes'
+                    #swagger.description = 'Lista todos os clientes cadastrados.'
                     #swagger.produces = ["application/json"]  
                     #swagger.responses[200] = {
                         'description': 'Clientes listados com sucesso',
@@ -276,8 +279,8 @@ export class ApiClientes {
             "/cliente/buscar/:cpf", 
             async (req, res) => {
                 /**
-                    #swagger.summary = 'Buscar Cliente do Restaurante por CPF.'
-                    #swagger.description = 'A busca de Cliente por CPF permite que o Cliente seja identificado nas próximas etapas por ID.
+                    #swagger.summary = 'Buscar Cliente'
+                    #swagger.description = 'Busca Cliente por CPF. Retorna detalhe do cadastro, incluindo o Id.
                     #swagger.tags = ['Clientes']
                     #swagger.path = '/cliente/buscar/{cpf}'
                     #swagger.method = 'get'

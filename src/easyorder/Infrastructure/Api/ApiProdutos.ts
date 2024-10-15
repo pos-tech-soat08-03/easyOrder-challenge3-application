@@ -16,8 +16,8 @@ export class ApiProdutos {
         #swagger.tags = ['Produtos']
         #swagger.path = '/produto/listar'
         #swagger.method = 'get'
-        #swagger.summary = 'Listar todos os produtos'
-        #swagger.description = 'Controller para listar todos os produtos cadastrados'
+        #swagger.summary = 'Listar Produtos'
+        #swagger.description = 'Lista todos os produtos cadastrados'
         #swagger.produces = ["application/json"]  
     */
                 /**
@@ -43,8 +43,8 @@ export class ApiProdutos {
             "/produto/buscar/:id",
             async (req: Request<{ id: string }>, res: Response) => {
                 /**
-            #swagger.summary = 'Buscar produto por ID.'
-            #swagger.description = 'Controller para buscar um produto usando o ID.'
+            #swagger.summary = 'Buscar Produto'
+            #swagger.description = 'Busca um produto utilizando o Id.'
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/buscar/{id}'
             #swagger.method = 'get'
@@ -130,6 +130,22 @@ export class ApiProdutos {
 
         app.get(
             "/produto/listar/:categoria",
+                /**
+            #swagger.tags = ['Produtos']
+            #swagger.path = '/produto/listar/{categoria}'
+            #swagger.method = 'get'
+            #swagger.summary = 'Listar Produtos por Categoria'
+            #swagger.description = 'Lista produtos por categoria'
+            #swagger.produces = ["application/json"]
+            #swagger.parameters['categoria'] = {
+                in: 'path',
+                description: 'ID da Categoria',
+                required: true,
+                type: 'string',
+                example: 'LANCHE'
+            }
+            }
+        */  
             async (req: Request<{ categoria: string }>, res: Response) => {
                 try {
                     const categoria: string = req.params.categoria;
@@ -157,8 +173,8 @@ export class ApiProdutos {
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/remover/{id}'
             #swagger.method = 'delete'
-            #swagger.summary = 'Remover produto'
-            #swagger.description = 'Controller para remover um produto'
+            #swagger.summary = 'Remover Produto'
+            #swagger.description = 'Remove um produto, por Id.'
             #swagger.produces = ["application/json"]
             #swagger.parameters['id'] = {
                 in: 'path',
@@ -191,8 +207,8 @@ export class ApiProdutos {
                 #swagger.tags = ['Produtos']
                 #swagger.path = '/produto/cadastrar'
                 #swagger.method = 'post'
-                #swagger.summary = 'Cadastro de Novo Produto'
-                #swagger.description = 'Este Controller é utilizado para realizar o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.'
+                #swagger.summary = 'Cadastrar Produto'
+                #swagger.description = 'Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.'
                 #swagger.produces = ["application/json"]  
                 #swagger.parameters['body'] = { 
                     in: 'body', 
@@ -304,8 +320,8 @@ export class ApiProdutos {
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/atualizar'
             #swagger.method = 'put'
-            #swagger.summary = 'Atualização de Produto'
-            #swagger.description = 'Este Controller é utilizado para atualizar o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.'
+            #swagger.summary = 'Atualizar Produto'
+            #swagger.description = 'Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.'
             #swagger.produces = ["application/json"]  
             #swagger.parameters['body'] = { 
                 in: 'body', 

@@ -17,8 +17,8 @@ export class ApiPedidos {
                 #swagger.tags = ['Pedidos']
                 #swagger.path = '/pedido'
                 #swagger.method = 'post'
-                #swagger.summary = 'Cadastrar novo pedido'
-                #swagger.description = 'Endpoint (API) para início de novo Pedido.' 
+                #swagger.summary = 'Cadastrar Pedido'
+                #swagger.description = 'Início (rascunho) de novo Pedido. Retorna um Id de Pedido.' 
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['body'] = { 
                     in: 'body', 
@@ -79,10 +79,10 @@ export class ApiPedidos {
         app.get("/pedido/listar/:statusPedido", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/listar/:statusPedido'
+                #swagger.path = '/pedido/listar/{statusPedido}'
                 #swagger.method = 'get'
-                #swagger.summary = 'Listar pedidos por status'
-                #swagger.description = 'Controller para listagem de pedidos por status'
+                #swagger.summary = 'Listar Pedidos por status'
+                #swagger.description = 'Lista pedidos por status'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['statusPedido'] = {
                     in: 'path',
@@ -197,10 +197,10 @@ export class ApiPedidos {
         app.get("/pedido/:pedidoId", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId'
+                #swagger.path = '/pedido/{pedidoId}'
                 #swagger.method = 'get'
-                #swagger.summary = 'Buscar pedido por ID'
-                #swagger.description = 'Controller para buscar um pedido por ID'
+                #swagger.summary = 'Buscar Pedido'
+                #swagger.description = 'Busca um Pedido por ID'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -260,10 +260,10 @@ export class ApiPedidos {
         app.put("/pedido/:pedidoId/cancelar", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId/cancelar'
+                #swagger.path = '/pedido/{pedidoId}/cancelar'
                 #swagger.method = 'put'
-                #swagger.summary = 'Cancelamento de Pedido'
-                #swagger.description = 'Endpoint para cancelamento de um Pedido com base no id.'
+                #swagger.summary = 'Cancelar Pedido'
+                #swagger.description = 'Cancelamento de um Pedido com base no id.'
                 #swagger.produces = ["application/json"]
             */
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
@@ -279,11 +279,11 @@ export class ApiPedidos {
         app.put("/pedido/:pedidoId/confirmacao-pagamento", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId/confirmacao-pagamento'
+                #swagger.path = '/pedido/{pedidoId}/confirmacao-pagamento'
                 #swagger.method = 'put'
                 #swagger.deprecated = true
-                #swagger.summary = 'Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).'
-                #swagger.description = 'Endpoint para baixa manual de um pedido pendente de pagamento (deprecated).'
+                #swagger.summary = 'Confirmar Pagamento Pedido (deprecated).'
+                #swagger.description = 'Baixa manual de um pedido pendente de pagamento (deprecated).'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -333,8 +333,9 @@ export class ApiPedidos {
             /**
                 #swagger.method = 'put'
                 #swagger.tags = ['Pedidos']
-                #swagger.summary = 'Checkout pedido'
-                #swagger.description = 'Endpoint para Checkout de um pedido + envio para serviço de Pagamento'
+                #swagger.path = '/pedido/{pedidoId}/checkout'
+                #swagger.summary = 'Checkout Pedido'
+                #swagger.description = 'Checkout de um pedido e envio para o serviço de Pagamento'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -383,10 +384,10 @@ export class ApiPedidos {
         app.post("/pedido/:pedidoId/combo", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId/combo'
+                #swagger.path = '/pedido/{pedidoId}/combo'
                 #swagger.method = 'post'
-                #swagger.summary = 'Adicionar combo ao pedido'
-                #swagger.description = 'Controller para adicionar um combo ao pedido. Não esqueça de adicionar um produto válido ao combo - você também pode consultar os produtos disponíveis.'
+                #swagger.summary = 'Adicionar Combo ao Pedido'
+                #swagger.description = 'Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -487,10 +488,10 @@ export class ApiPedidos {
         app.delete("/pedido/:pedidoId/combo/:comboId", async (req, res) => {
             /**
                 #swagger.tags = ['Pedidos']
-                #swagger.path = '/pedido/:pedidoId/combo/:comboId'
+                #swagger.path = '/pedido/{pedidoId}/combo/{comboId}'
                 #swagger.method = 'delete'
-                #swagger.summary = 'Remover combo do pedido'
-                #swagger.description = 'Controller para remover um combo do pedido'
+                #swagger.summary = 'Remover Combo do Pedido'
+                #swagger.description = 'Remove um Combo do Pedido'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',

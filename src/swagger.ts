@@ -109,7 +109,6 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json';
-// const routes = ['./app.ts', './src/easyorder/Infrastructure/Input/**/*.ts'];
 const routes = ['./app.ts', './easyorder/Infrastructure/Api/*.ts'];
 
 /* NOTE: If you are using the express Router, you must pass in the 'routes' only the 
