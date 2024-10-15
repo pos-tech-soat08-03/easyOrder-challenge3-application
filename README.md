@@ -23,7 +23,9 @@ Os requisitos adicionais (funcionais, não funcionais e desenhos de arquitetura)
 ## Links importantes da Fase 2 🌟
 - Repositório da solução no Github: [https://github.com/pos-tech-soat08-03/easyOrder-challenge2](https://github.com/pos-tech-soat08-03/easyOrder-challenge2) 
 
-- <mark>Link do Vídeo com a explicação sobre a arquitetura, e demonstração do funcionamento da aplicação: [adicionar o link do video](adicionar a descricao do video) 🚧</mark>
+- Link do Vídeo com a explicação sobre a Arquitetura Clean, Kubernetes,  demonstração do Funcionamento da Aplicação e integração com Mercado Pago: [https://youtu.be/um4dOSo5Iuk](https://youtu.be/um4dOSo5Iuk)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/um4dOSo5Iuk?si=xu-pwPyKN1ZbhJuK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 &nbsp;
 
@@ -36,20 +38,20 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 - Webhook de confirmação de pagamento ✔️
 - Lista de pedidos respeitando critérios de ordenacão ✔️
 - Atualização de status de pedido (considerando novo fluxo de pagamento) ✔️
-- <mark>Integração com Serviço de Pagamento Mercado Pago (QRCode) 🚧
-  - Como este requisito depende de etapas adicionais para o teste, está demonstrado somente no vídeo explicativo 🎥</mark>
+- Integração com Serviço de Pagamento Mercado Pago (QRCode) ✔️
+  - Como este requisito depende de etapas adicionais para o teste, está demonstrado somente [no vídeo explicativo](https://youtu.be/um4dOSo5Iuk?si=Sc2hcRRITXkQESCx&t=955) 🎥
 
 ## Requisitos de Arquitetura da Fase 2
 
 - Arquitetura da aplicação em Clean Architecture e seguindo padrões Clean Code ✔️
 
-- Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda 
+- Arquitetura em kubernetes desenhada para atender aos requisitos funcionais, permitindo a escalabilidade de pods conforme demanda ✔️
   - Inclui todos so arquivos yaml na pasta [manifesto_kubernetes](./manifesto_kubernetes/)
-  - Implementação está descrita na documentação mas será explicada detalhadamente no vídeo explicativo  🎥
+  - Implementação está descrita na documentação mas será explicada detalhadamente no [vídeo explicativo](https://youtu.be/um4dOSo5Iuk?si=Leqge3ISml5xnyyv&t=677)  🎥
 
 ## Documentações adicionais necessárias para a Fase 2
 
-- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/arquitetura_kubernetes.jpg) ✔️
+- Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/arquitetura_kubernetes.jpg) ✔️
   - Arquivo no formato original do [draw.io](https://app.diagrams.net/#Hpos-tech-soat08-03%2FeasyOrder-challenge2%2Fmain%2Fdocs%2Farquitetura_kubernetes.drawio#%7B%22pageId%22%3A%22f106602c-feb2-e66a-4537-3a34d633f6aa%22%7D)
 
 - Swagger / collection de APIs do Projeto ✔️
@@ -61,7 +63,7 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
   - Adicional: Explicação do [Teste fim-a-fim](#-rodando-testes-ponta-a-ponta-end-to-end---e2e-e-entendendo-o-fluxo-de-execução) com todas as etapas em sequência de execução 
   - Adicional: Detalhamento de cada [etapa de execução](./docs/README-Guia-Execucao-APIs.md)
 
-- <mark>Vídeos demonstrativo da arquitetura e execução do projeto 🚧</mark>
+- Vídeo demonstrativo [da arquitetura Clean](https://youtu.be/um4dOSo5Iuk?si=eg3LGKf4sARYgEbS&t=308) e da [execução das APIs do Projeto](https://youtu.be/um4dOSo5Iuk?si=xu-pwPyKN1ZbhJuK) 🎥
 
 ## Sobre a aplicação
 
