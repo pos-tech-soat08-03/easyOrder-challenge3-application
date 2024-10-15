@@ -32,7 +32,7 @@ export class ApiPagamentos {
                     if (req.body.status === undefined || req.body.status === "" || req.body.status === null) {
                         throw new Error("Status de Retorno da Transação não informado no body")
                     }
-                    const payload:string = req.body;
+                    const payload = req.body;
                     const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, payload);
                     res.send(pagamentoPayload); 
                 }

@@ -289,7 +289,7 @@
       }
     },
     "/pagamento/webhook/": {
-      "put": {
+      "post": {
         "tags": [
           "Pagamentos"
         ],

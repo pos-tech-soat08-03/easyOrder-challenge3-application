@@ -61,8 +61,9 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
         //   }
 
         try {
+            console.log("PAYLOAD RECEIVED (WEBHOOK): ", JSON.stringify(payload));
+            payload = JSON.stringify(payload);
             const parsedPayload = JSON.parse(payload);
-            console.log("Conteudo recebido do Webhook: "+ parsedPayload);
             
             const transactionId = parsedPayload.id;
             const receivedStatus = parsedPayload.status;

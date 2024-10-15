@@ -3,6 +3,7 @@ import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../../Core/Enti
 import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
 import { PagamentoDTO } from '../../Core/Types/dto/PagamentoDTO';
 import { RetornoPagamentoEnum } from '../../Core/Entity/ValueObject/RetornoPagamentoEnum';
+import { json } from "sequelize";
 
 export class PagamentoServiceMock implements PagamentoServiceInterface {
 
@@ -29,7 +30,11 @@ export class PagamentoServiceMock implements PagamentoServiceInterface {
     
     async handlePaymentResponse (payload: string): Promise <PagamentoDTO> {
         try {
+            
+            console.log("PAYLOAD RECEIVED (WEBHOOK): ", JSON.stringify(payload));
+            payload = JSON.stringify(payload);
             const parsedPayload = JSON.parse(payload);
+
             const transactionId = parsedPayload.id;
             const receivedStatus = parsedPayload.status;
             let transactionStatus: RetornoPagamentoEnum;
@@ -47,7 +52,7 @@ export class PagamentoServiceMock implements PagamentoServiceInterface {
             return pagamentoDto;
         } 
         catch (error: any) {
-            throw new Error("Erro parsing transaction");
+            throw new Error("Erro parsing transaction: "+error.message);
         }
 
     }

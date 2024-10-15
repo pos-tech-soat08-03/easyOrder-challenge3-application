@@ -9,6 +9,7 @@ import { ApiProdutos } from "./easyorder/Infrastructure/Api/ApiProdutos";
 // import { PagamentoServiceMock } from "./easyorder/Infrastructure/Service/PagamentoServiceMock";
 import { ApiPagamentos } from "./easyorder/Infrastructure/Api/ApiPagamentos";
 import { PagamentoServiceML } from "./easyorder/Infrastructure/Service/PagamentoServiceML";
+import { PagamentoServiceMock } from "./easyorder/Infrastructure/Service/PagamentoServiceMock";
 // import { ProdutoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ProdutoGatewayMock';
 // import { ClienteGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/ClienteGatewayMock';
 // import { PedidoGatewayMock } from './easyorder/Infrastructure/Output/Gateway/Mock/PedidoGatewayMock';
@@ -25,8 +26,8 @@ const mysqlConnection = new MySQLConnection({
 });
 
 // Inicialização serviços
-// const servicoPagamento = new PagamentoServiceMock();
-const servicoPagamento = new PagamentoServiceML();
+const servicoPagamento = new PagamentoServiceMock();
+// const servicoPagamento = new PagamentoServiceML();
 
 // Inicialização de framework Express + endpoints default
 const port = Number(process.env.SERVER_PORT || "3000");
