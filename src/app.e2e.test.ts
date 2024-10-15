@@ -296,7 +296,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
 
   test("(/pagamento/webhook) Recebe confirmação de transação e encaminha pedido para Fila de Preparação", async () => {
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `${BASE_URL}/pagamento/webhook/`,
         {
           id: transacaoId,
