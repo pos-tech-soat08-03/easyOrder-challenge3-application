@@ -5,7 +5,7 @@ const doc = {
     title: 'easyOrder 2.0',
     description: 'Sistema de Gestão de Pedidos - Tech Challenge (2) da Pos Tech SOAT ',
   },
-  host: 'localhost:3000',
+  host: 'localhost:30000',
 
   schemes: ['http'],
 

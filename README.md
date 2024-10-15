@@ -53,7 +53,8 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
   - Arquivo no formato original do [draw.io](https://app.diagrams.net/#Hpos-tech-soat08-03%2FeasyOrder-challenge2%2Fmain%2Fdocs%2Farquitetura_kubernetes.drawio#%7B%22pageId%22%3A%22f106602c-feb2-e66a-4537-3a34d633f6aa%22%7D)
 
 - Swagger / collection de APIs do Projeto ✔️
-  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:3000/doc/](http://localhost:30000/doc/)
+  - Documentação completa e navegável do swagger (com exemplos de requisição prontos para execução) pode ser acessada na aplicação via [http://localhost:30000/doc/](http://localhost:30000/doc/)
+
   - Arquivo de referência pode ser acessada também no [swagger-output.json](./src/swagger-output.json) em formato OpenAPI 2.0
   
 - Guia completo de execução do projeto e ordem de execução é apresentado na sequência desse documento ✔️
@@ -157,7 +158,6 @@ Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, b
 O endpoint [http://localhost:30000/health](http://localhost:30000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
 
 &nbsp;
 ### 💡 Acesso à Documentação do Swagger
@@ -168,7 +168,7 @@ Para acessar a documentação do Swagger, acessar a url [http://localhost:30000/
 
 
 _Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-_Caso esteja usando Kubenetes use a porta 30000, trinta mil, e atente-se a configurações de rede do seu ambiente._
+
 
 &nbsp;
 
