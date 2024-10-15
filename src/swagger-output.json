@@ -363,6 +363,19 @@
         }
       }
     },
+    "/pagamento/webhook/ml": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        }
+      }
+    },
     "/pedido": {
       "post": {
         "tags": [

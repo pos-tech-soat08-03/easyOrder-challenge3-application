@@ -3,6 +3,7 @@ import { StatusTransacaoValueObject, StatusTransacaoEnum } from "../../Core/Enti
 import { PagamentoServiceInterface } from "../../Core/Interfaces/Services/PagamentoServiceInterface";
 import { PagamentoDTO } from '../../Core/Types/dto/PagamentoDTO';
 import { RetornoPagamentoEnum } from '../../Core/Entity/ValueObject/RetornoPagamentoEnum';
+import { parse } from "path";
 
 export class PagamentoServiceML implements PagamentoServiceInterface {
 
@@ -27,7 +28,7 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
                 external_reference: transaction.getIdTransacao(),
                 title: 'Pagamento pedido: ' + transaction.getIdPedido(),
                 description: 'Pagamento pedido ' + transaction.getIdPedido() + ' no valor de R$ ' + transaction.getValorTransacao() + ' transação ' + transaction.getIdTransacao(),
-                notification_url: "https://e3ca-179-98-8-98.ngrok-free.app/pagamento/webhook/",
+                notification_url: "https://06cf-179-98-8-98.ngrok-free.app/pagamento/webhook/ml",
                 total_amount: transaction.getValorTransacao(),
                 "items": [
                     {
@@ -45,21 +46,18 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
                     "amount": 0
                   }
             });
-            console.log("BODY CHAMADA: ", bodyChamada);
-
-            const response = await fetch(`https://api.mercadopago.com/instore/orders/qr/seller/collectors/${ML_USER_ID}/pos/${ML_POS_ID}/qrs`, {
+            //console.log("****************************** BODY CHAMADA: ", bodyChamada);
+            const response = await fetch(`https://api.mercadopago.com/instore/orders/qr/seller/collectors/2018827962/pos/SUC001POS001/qrs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ML_ACCESS_TOKEN}`
+                    'Authorization': `Bearer APP_USR-3044895488797945-101514-0d9fcdc00bf3a365654b3785654d189e-2018827962`
                 },
                 body: bodyChamada
             });
-            // if (!response.ok) {
-            //     throw new Error('Erro na criação do QRCode. Status: ' + response.status + ' ' + response.json());
-            // }
             const data = await response.json();
-            transaction.setHash_EMVCo(data.qr_code);
+            // console.log("****************************** DATA: ", data);
+            transaction.setHash_EMVCo(JSON.stringify(data));
             transaction.setMsgEnvio(JSON.stringify(bodyChamada));
         }
         return transaction;
@@ -67,37 +65,48 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
     
     async handlePaymentResponse (payload: string): Promise <PagamentoDTO> {
 
-        // {
-        //     action: "payment.updated",
-        //     api_version: "v1",
-        //     data: {"id":"123456"},
-        //     date_created: "2021-11-01T02:02:02Z",
-        //     id: "123456",
-        //     live_mode: false,
-        //     type: "payment",
-        //     user_id: 79847537
-        //   }
-
+        const ML_ACCESS_TOKEN = process.env.ML_ACCESS_TOKEN || '';
         try {
-            console.log("PAYLOAD RECEIVED (WEBHOOK): ", JSON.stringify(payload));
             payload = JSON.stringify(payload);
             const parsedPayload = JSON.parse(payload);
             
-            const transactionId = parsedPayload.id;
-            const receivedStatus = parsedPayload.status;
-            let transactionStatus: RetornoPagamentoEnum;
+            if (parsedPayload.topic === "merchant_order") {
 
-            if (receivedStatus === "approved") transactionStatus = RetornoPagamentoEnum.APROVADO;
-            else if (receivedStatus === "denied") transactionStatus = RetornoPagamentoEnum.NEGADO;
-            else transactionStatus = RetornoPagamentoEnum.PENDENTE; 
+                const resource = parsedPayload.resource;
+                const confirmation = await fetch(`${resource}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer APP_USR-3044895488797945-101514-0d9fcdc00bf3a365654b3785654d189e-2018827962`
+                    }
+                });
+    
+                const data = await confirmation.json();
+                const transactionId = data.external_reference;
+                const receivedStatus = data.payments[0].status;
 
-            const pagamentoDto: PagamentoDTO = {
-                id: transactionId,
-                status: transactionStatus,
-                payload: parsedPayload
+                let transactionStatus: RetornoPagamentoEnum;
+                
+                if (receivedStatus === "approved") transactionStatus = RetornoPagamentoEnum.APROVADO;
+                else if (receivedStatus === "denied") transactionStatus = RetornoPagamentoEnum.NEGADO;
+                else transactionStatus = RetornoPagamentoEnum.PENDENTE; 
+    
+                const pagamentoDto: PagamentoDTO = {
+                    id: transactionId,
+                    status: transactionStatus,
+                    payload: parsedPayload
+                };
+                
+                return pagamentoDto;
+            }
+
+            const defaultPagamentoDto: PagamentoDTO = {
+                id: "",
+                status: RetornoPagamentoEnum.PENDENTE,
+                payload: ""
             };
-            
-            return pagamentoDto;
+            return defaultPagamentoDto;
+
         } 
         catch (error: any) {
             throw new Error("Erro parsing transaction");

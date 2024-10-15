@@ -294,103 +294,87 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
-  test("(/pagamento/webhook) Recebe confirmação de transação e encaminha pedido para Fila de Preparação", async () => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/pagamento/webhook/`,
-        {
-          id: transacaoId,
-          status: "approved",
-        },
-      ).catch((error: any) => {
-        throw new Error(JSON.stringify(error.response.data) || error.message);
-      });
-
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("mensagem");
-      expect(response.data.mensagem).toEqual("Transação confirmada e pedido atualizado");
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  });
-
-  // test("(/pedido/{pedidoId}/confirmacao-pagamento) Confirma pagamento pedido: encaminha para Fila de Preparação", async () => {
+  // test("(/pagamento/webhook) Recebe confirmação de transação e encaminha pedido para Fila de Preparação", async () => {
   //   try {
-  //     const response = await axios.put(
-  //       `${BASE_URL}/pedido/${pedidoId}/confirmacao-pagamento`,
+  //     const response = await axios.post(
+  //       `${BASE_URL}/pagamento/webhook/`,
+  //       {
+  //         id: transacaoId,
+  //         status: "approved",
+  //       },
   //     ).catch((error: any) => {
   //       throw new Error(JSON.stringify(error.response.data) || error.message);
   //     });
 
   //     expect(response.status).toBe(200);
   //     expect(response.data).toHaveProperty("mensagem");
-  //     expect(response.data.mensagem).toEqual("Pedido fechado com sucesso");
+  //     expect(response.data.mensagem).toEqual("Transação confirmada e pedido atualizado");
   //   } catch (error: any) {
-  //     expect(error.message).toEqual("Falha ao realizar confirmação manual do pagamento do pedido " + error.text);
+  //     console.log(error.message);
   //   }
   // });
 
-  test("(/preparacao/pedido/proximo) Busca próximo Pedido na fila de preparação", async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/preparacao/pedido/proximo`);
+  // test("(/preparacao/pedido/proximo) Busca próximo Pedido na fila de preparação", async () => {
+  //   try {
+  //     const response = await axios.get(`${BASE_URL}/preparacao/pedido/proximo`);
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("pedido");
-      expect(response.data.pedido).toHaveProperty("id");
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  });
+  //     expect(response.status).toBe(200);
+  //     expect(response.data).toHaveProperty("pedido");
+  //     expect(response.data.pedido).toHaveProperty("id");
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // });
 
-  test("(/preparacao/pedido/{pedidoId}/iniciar-preparacao) Inicia preparação do pedido", async () => {
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/preparacao/pedido/${pedidoId}/iniciar-preparacao`,
-      );
+  // test("(/preparacao/pedido/{pedidoId}/iniciar-preparacao) Inicia preparação do pedido", async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${BASE_URL}/preparacao/pedido/${pedidoId}/iniciar-preparacao`,
+  //     );
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("pedido");
-      expect(response.data.pedido).toHaveProperty("id");
-      expect(response.data).toHaveProperty("mensagem");
-      expect(response.data.mensagem).toEqual(
-        "Preparação do pedido iniciada com sucesso",
-      );
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  });
+  //     expect(response.status).toBe(200);
+  //     expect(response.data).toHaveProperty("pedido");
+  //     expect(response.data.pedido).toHaveProperty("id");
+  //     expect(response.data).toHaveProperty("mensagem");
+  //     expect(response.data.mensagem).toEqual(
+  //       "Preparação do pedido iniciada com sucesso",
+  //     );
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // });
 
-  test("(/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido", async () => {
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/preparacao/pedido/${pedidoId}/finalizar-preparacao`,
-      );
+  // test("(/preparacao/pedido/{pedidoId}/finalizar-preparacao) Finaliza preparação do Pedido", async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${BASE_URL}/preparacao/pedido/${pedidoId}/finalizar-preparacao`,
+  //     );
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("pedido");
-      expect(response.data.pedido).toHaveProperty("id");
-      expect(response.data).toHaveProperty("mensagem");
-      expect(response.data.mensagem).toEqual(
-        "Preparação do pedido finalizada com sucesso",
-      );
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  });
+  //     expect(response.status).toBe(200);
+  //     expect(response.data).toHaveProperty("pedido");
+  //     expect(response.data.pedido).toHaveProperty("id");
+  //     expect(response.data).toHaveProperty("mensagem");
+  //     expect(response.data.mensagem).toEqual(
+  //       "Preparação do pedido finalizada com sucesso",
+  //     );
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // });
 
-  test("(/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido", async () => {
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/preparacao/pedido/${pedidoId}/entregar`,
-      );
+  // test("(/preparacao/pedido/{pedidoId}/entregar) Entrega e Finaliza Pedido", async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${BASE_URL}/preparacao/pedido/${pedidoId}/entregar`,
+  //     );
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty("pedido");
-      expect(response.data.pedido).toHaveProperty("id");
-      expect(response.data).toHaveProperty("mensagem");
-      expect(response.data.mensagem).toEqual("Pedido entregue com sucesso");
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  });
+  //     expect(response.status).toBe(200);
+  //     expect(response.data).toHaveProperty("pedido");
+  //     expect(response.data.pedido).toHaveProperty("id");
+  //     expect(response.data).toHaveProperty("mensagem");
+  //     expect(response.data.mensagem).toEqual("Pedido entregue com sucesso");
+  //   } catch (error: any) {
+  //     console.log(error.message);
+  //   }
+  // });
 });

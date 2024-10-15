@@ -34,12 +34,16 @@ export class PagamentoUsecases {
                 return { transacao: undefined, mensagem: "Erro ao salvar a transação." };
             }
             pedido.setStatusPagamento(StatusPagamentoEnum.PAGO);
-            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)); // TODO: confirmar se vamos manter aqui - já envia para preparação
+            pedido.setStatusPedido(new StatusPedidoValueObject(StatusPedidoEnum.RECEBIDO)); 
             await pedidoGateway.salvarPedido(pedido);
             return { transacao:transacaoSalva, mensagem:"Transação confirmada e pedido atualizado" } 
         }
 
-        // TODO: criar os outros casos de tratamento de status de transação - qualquer diferente de approved irá negar
+        if (transactionDTO.status === RetornoPagamentoEnum.PENDENTE) {
+            return { transacao:transaction, mensagem:"Transação sem alterações" } 
+        }
+
+       // TODO: criar os outros casos de tratamento de status de transação - qualquer diferente de approved irá negar
         transaction.setStatusTransacao(new StatusTransacaoValueObject(StatusTransacaoEnum.NEGADO));
         transaction.setMsgRetorno(payload);
         const transacaoSalva = await transactionGateway.atualizarTransactionsPorId(transactionDTO.id, transaction);

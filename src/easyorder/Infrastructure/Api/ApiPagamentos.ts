@@ -12,7 +12,6 @@ export class ApiPagamentos {
         app.use(express.json());
 
         app.post("/pagamento/webhook/", async (req, res) => {
-            // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
             /**
                 #swagger.tags = ['Pagamentos']
                 #swagger.path = '/pagamento/webhook/'
@@ -86,6 +85,22 @@ export class ApiPagamentos {
             }
         });
 
+        app.post("/pagamento/webhook/ml", async (req, res) => {
+            // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
+            try {
+
+                if (req.body === undefined || Object.keys(req.body).length === 0) {
+                    throw new Error("Sem dados de body na requisição")
+                }
+                const payload = req.body;
+                const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, payload);
+                res.send(pagamentoPayload);
+            }
+            catch (error: any) {
+                res.status(400).send(error.message);
+            }
+        });
+        
 
     }
 }
