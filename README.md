@@ -49,7 +49,7 @@ Todos esses requitos foram implementados e estão disponíveis como parte dos te
 
 ## Documentações adicionais necessárias para a Fase 2
 
-- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/docs/arquitetura_kubernetes.jpg) ✔️
+- <mark>Desenho de arquitetura detalhada pode ser [encontrado aqui](./docs/arquitetura_kubernetes.jpg) ✔️
   - Arquivo no formato original do [draw.io](https://app.diagrams.net/#Hpos-tech-soat08-03%2FeasyOrder-challenge2%2Fmain%2Fdocs%2Farquitetura_kubernetes.drawio#%7B%22pageId%22%3A%22f106602c-feb2-e66a-4537-3a34d633f6aa%22%7D)
 
 - Swagger / collection de APIs do Projeto ✔️
