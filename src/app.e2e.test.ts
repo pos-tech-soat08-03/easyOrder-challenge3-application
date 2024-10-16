@@ -30,11 +30,15 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     }
   });
 
+
+  const numero = Math.random() * 10;
+ parseFloat(numero.toFixed(2));
+
   test("(/produto/cadastrar) Cadastra Lanches para serem utilizados nos Combos", async () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Hamburger de Frango",
       descricao: "Hamburger de frango com alface, tomate e maionese",
-      preco: 10.32,
+      preco: parseFloat((Math.random()*15).toFixed(2)),
       categoria: "LANCHE",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -45,7 +49,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Hamburger de Carne",
       descricao: "Hamburger de carne com alface, tomate e maionese",
-      preco: 12.32,
+      preco: parseFloat((Math.random()*15).toFixed(2)),
       categoria: "LANCHE",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -60,7 +64,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Pudim",
       descricao: "Pudim de leite condensado",
-      preco: 5.32,
+      preco: parseFloat((Math.random()*10).toFixed(2)),
       categoria: "SOBREMESA",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -71,7 +75,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Sorvete",
       descricao: "Sorvete de creme",
-      preco: 3.32,
+      preco: parseFloat((Math.random()*10).toFixed(2)),
       categoria: "SOBREMESA",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -86,7 +90,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Refrigerante",
       descricao: "Refrigerante de cola",
-      preco: 4.32,
+      preco: parseFloat((Math.random()*5).toFixed(2)),
       categoria: "BEBIDA",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -97,7 +101,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Suco",
       descricao: "Suco de laranja",
-      preco: 3.32,
+      preco: parseFloat((Math.random()*5).toFixed(2)),
       categoria: "BEBIDA",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -112,7 +116,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     let response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Batata Frita",
       descricao: "Batata frita com sal",
-      preco: 6.32,
+      preco: parseFloat((Math.random()*5).toFixed(2)),
       categoria: "ACOMPANHAMENTO",
       imagemURL: "https://fakeimage.jpg",
     });
@@ -123,7 +127,7 @@ describe("Teste Fim-a-fim: Pedido a Produção", () => {
     response = await axios.post(`${BASE_URL}/produto/cadastrar`, {
       nome: "Onion Rings",
       descricao: "Anéis de cebola empanados",
-      preco: 7.32,
+      preco: parseFloat((Math.random()*5).toFixed(2)),
       categoria: "ACOMPANHAMENTO",
       imagemURL: "https://fakeimage.jpg",
     });
