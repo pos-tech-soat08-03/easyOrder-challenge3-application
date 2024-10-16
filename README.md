@@ -25,7 +25,7 @@ Os requisitos adicionais (funcionais, não funcionais e desenhos de arquitetura)
 
 - Link do Vídeo com a explicação sobre a Arquitetura Clean, Kubernetes,  demonstração do Funcionamento da Aplicação e integração com Mercado Pago: [https://youtu.be/um4dOSo5Iuk](https://youtu.be/um4dOSo5Iuk)
 
-[![Challenge 2 SOAT8 Turma 3](https://img.youtube.com/vi/um4dOSo5Iuk/0.jpg)](https://www.youtube.com/watch?v=um4dOSo5Iuk?si=xu-pwPyKN1ZbhJuK)
+[![Challenge 2 SOAT8 Turma 3](https://img.youtube.com/vi/um4dOSo5Iuk/0.jpg)](https://www.youtube.com/watch?v=um4dOSo5Iuk)
 
 &nbsp;
 
