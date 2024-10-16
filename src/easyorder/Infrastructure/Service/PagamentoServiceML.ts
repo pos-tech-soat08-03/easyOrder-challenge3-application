@@ -83,7 +83,7 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
                 
                 let data = await confirmation.json();
 
-                console.log("****************************** DATA: ", data);
+                // console.log("****************************** DATA: ", data);
 
                 const dataTemp = JSON.stringify(data);
                 const parsedData = JSON.parse(dataTemp);
@@ -91,9 +91,9 @@ export class PagamentoServiceML implements PagamentoServiceInterface {
                 if (parsedData.order_status !== "payment_required") {
 
                     const transactionId = parsedData.external_reference;
-                    console.log("****************************** transactionId: ", transactionId);
+                    // console.log("****************************** transactionId: ", transactionId);
                     const receivedStatus = parsedData.payments[0].status;
-                    console.log("****************************** receivedStatus: ", receivedStatus);
+                    // console.log("****************************** receivedStatus: ", receivedStatus);
 
                     let transactionStatus: RetornoPagamentoEnum;
                     
