@@ -1,9 +1,9 @@
-const swaggerAutogen = require('swagger-autogen')({ language: 'pt-BR' });
+const swaggerAutogen = require('swagger-autogen')({ language: 'pt-BR', openapi: '3.0.0' });
 
 const doc = {
   info: {
-    title: 'easyOrder 2.0',
-    description: 'Sistema de Gestão de Pedidos - Tech Challenge (2) da Pos Tech SOAT ',
+    title: 'easyOrder 3.0',
+    description: 'Sistema de Gestão de Pedidos - Tech Challenge (3) da Pos Tech SOAT ',
   },
   host: 'localhost:30000',
 
