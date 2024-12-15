@@ -17,8 +17,11 @@ export class ApiClientes {
                     #swagger.path = '/cliente/cadastrar'
                     #swagger.method = 'post'
                     #swagger.summary = 'Cadastrar Cliente'
-                    #swagger.description = 'Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição. Retorna o Id de Cliente.<br>
-                                            Não é permitido o cadastro de mais de um cliente com o mesmo CPF.'
+                    #swagger.description = 'Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição.<br>
+                    - Retorna o Id de Cliente como chave para continuidade no Pedido.<br>
+                    - Não é permitido o cadastro de mais de um cliente com o mesmo CPF.<br><br>
+                    [ Endpoint para integração ao sistema de autoatendimento ]
+                    '
 
                     #swagger.produces = ["application/json"]  
                     #swagger.parameters['body'] = { 
@@ -94,6 +97,9 @@ export class ApiClientes {
                             }
                         }
                     }
+                    #swagger.authorization = {
+                        permission: 'public'
+                    }
                 */
                 try {
                     if (req.body === undefined || Object.keys(req.body).length === 0) {
@@ -118,8 +124,12 @@ export class ApiClientes {
                     #swagger.method = 'put'
                     #swagger.summary = 'Atualizar Cliente'
                     #swagger.description = 'Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>
-                                            Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.'
+                    - Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.<br><br>
+                    [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
                     #swagger.produces = ["application/json"]  
+                    #swagger.security = [{
+                        "bearerAuth": []
+                    }]
                     #swagger.parameters['body'] = { 
                         in: 'body', 
                         '@schema': { 
@@ -217,7 +227,11 @@ export class ApiClientes {
                     #swagger.path = '/cliente/listar'
                     #swagger.method = 'get'
                     #swagger.summary = 'Listar Clientes'
-                    #swagger.description = 'Lista todos os clientes cadastrados.'
+                    #swagger.description = 'Lista todos os clientes cadastrados.<br><br>
+                    [ Endpoint para integração ao sistema administrativo ]'
+                    #swagger.security = [{
+                        "bearerAuth": []
+                    }]
                     #swagger.produces = ["application/json"]  
                     #swagger.responses[200] = {
                         'description': 'Clientes listados com sucesso',
@@ -279,8 +293,11 @@ export class ApiClientes {
             "/cliente/buscar/:cpf", 
             async (req, res) => {
                 /**
-                    #swagger.summary = 'Buscar Cliente'
-                    #swagger.description = 'Busca Cliente por CPF. Retorna detalhe do cadastro, incluindo o Id.
+                    #swagger.summary = '[Deprecated] Buscar Cliente'
+                    #swagger.description = 'Busca Cliente por CPF.<br>
+                    - Retorna detalhe do cadastro, incluindo o Id.<br><br>
+                    ! Atenção: Este endpoint foi descontinuado para uso de autenticação via Lambda, no endpoint /cliente/auth/{cpf}<br><br>
+                    [ Endpoint para integração ao sistema de autoatendimento ]'
                     #swagger.tags = ['Clientes']
                     #swagger.path = '/cliente/buscar/{cpf}'
                     #swagger.method = 'get'
@@ -290,8 +307,9 @@ export class ApiClientes {
                         description: 'CPF do Cliente sem pontuação',
                         required: true,
                         type: 'string',
-                        example: '00000000000'
+                        example: '12345678910'
                     }
+                    #swagger.deprecated = true
                 */
                 try {
                     const cpfBusca: string = req.params.cpf;
@@ -307,7 +325,27 @@ export class ApiClientes {
                 }
             }
         );
-        
+
+        /**
+            #swagger.start
+            #swagger.summary = '[Novo] Autenticar Cliente'
+            #swagger.description = 'Autenticar Cliente via CPF.<br>
+            - Retorna o Id do cliente, caso encontrado, como chave para continuidade no Pedido.<br><br>
+            [ Endpoint para integração ao sistema de autoatendimento ]'
+            #swagger.tags = ['Clientes']
+            #swagger.path = '/cliente/auth/{cpf}'
+            #swagger.method = 'get'
+            #swagger.produces = ["application/json"]
+            #swagger.parameters['cpf'] = {
+                in: 'path',
+                description: 'CPF do Cliente sem pontuação',
+                required: true,
+                type: 'string',
+                example: '12345678910'
+            }
+            #swagger.end
+        */
+
     }
 }
 

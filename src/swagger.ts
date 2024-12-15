@@ -9,6 +9,15 @@ const doc = {
 
   schemes: ['http'],
 
+  components: {
+    securitySchemes:{
+        bearerAuth: {
+            type: 'http',
+            scheme: 'bearer'
+        }
+    }
+  },  
+
   '@definitions': {
     ID: {
       type: "string",

@@ -17,7 +17,7 @@
           "Clientes"
         ],
         "summary": "Cadastrar Cliente",
-        "description": "Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição. Retorna o Id de Cliente.<br>  Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
+        "description": "Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição.<br>  - Retorna o Id de Cliente como chave para continuidade no Pedido.<br>  - Não é permitido o cadastro de mais de um cliente com o mesmo CPF.<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]  ",
         "parameters": [
           {
             "name": "body",
@@ -182,7 +182,7 @@
           "Clientes"
         ],
         "summary": "Atualizar Cliente",
-        "description": "Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>  Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.",
+        "description": "Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>  - Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "body",
@@ -319,6 +319,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -347,7 +352,7 @@
           "Clientes"
         ],
         "summary": "Listar Clientes",
-        "description": "Lista todos os clientes cadastrados.",
+        "description": "Lista todos os clientes cadastrados.<br><br>  [ Endpoint para integração ao sistema administrativo ]",
         "responses": {
           "200": {
             "description": "Clientes listados com sucesso",
@@ -445,7 +450,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/cliente/buscar/{cpf}": {
@@ -453,8 +463,8 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Buscar Cliente",
-        "description": "Busca Cliente por CPF. Retorna detalhe do cadastro, incluindo o Id.",
+        "summary": "[Deprecated] Buscar Cliente",
+        "description": "Busca Cliente por CPF.<br>  - Retorna detalhe do cadastro, incluindo o Id.<br><br>  ! Atenção: Este endpoint foi descontinuado para uso de autenticação via Lambda, no endpoint /cliente/auth/{cpf}<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
         "parameters": [
           {
             "name": "cpf",
@@ -464,7 +474,7 @@
               "type": "string"
             },
             "description": "CPF do Cliente sem pontuação",
-            "example": "00000000000"
+            "example": "12345678910"
           }
         ],
         "responses": {
@@ -474,6 +484,33 @@
           "400": {
             "description": "Solicitação Inválida"
           }
+        },
+        "deprecated": true
+      }
+    },
+    "/cliente/auth/{cpf}": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "[Novo] Autenticar Cliente",
+        "description": "Autenticar Cliente via CPF.<br>  - Retorna o Id do cliente, caso encontrado, como chave para continuidade no Pedido.<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "CPF do Cliente sem pontuação",
+            "example": "12345678910"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
         }
       }
     },
@@ -482,8 +519,8 @@
         "tags": [
           "Pagamentos"
         ],
-        "summary": "Webhook - Confirmar Pagamento (Transação)",
-        "description": "Captura o retorno de status de transação a partir de webhook do Serviço de Pagamento.<br>  Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição",
+        "summary": "Webhook para Confirmação de Pagamento (Transação)",
+        "description": "Captura o retorno de status de transação a partir de webhook disparado pelo Serviço de Pagamento.<br>  - Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição<br><br>  [ Endpoint para integração ao gateway de pagamentos - Externo]",
         "parameters": [
           {
             "name": "body",
@@ -556,19 +593,6 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
-          }
-        }
-      }
-    },
-    "/pagamento/webhook/ml": {
-      "post": {
-        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -2276,6 +2300,12 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
     "schemas": {
       "ID": {
         "type": "string",

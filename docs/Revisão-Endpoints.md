@@ -1,16 +1,17 @@
-Clientes
+## Clientes
 
 POST
 /cliente/cadastrar
 Cadastrar Cliente
 - mantém aberto (sem autenticação): uso da aplicação
-- **necessário alterar para não devolver o ID de Cliente
+~~- **necessário alterar para não devolver o ID de Cliente~~
 
 PUT
 /cliente/atualizar
 Atualizar Cliente
-- mantém aberto (sem autenticação): uso da aplicação
-- **necessário alterar para não devolver o ID de Cliente
+~~- mantém aberto (sem autenticação): uso da aplicação~~
+~~ - **necessário alterar para não devolver o ID de Cliente~~
+- adiciona COGNITO - autenticação admin/lojista
 
 GET
 /cliente/listar
@@ -20,7 +21,8 @@ Listar Clientes
 GET
 /cliente/buscar/{cpf}
 Buscar Cliente
--- será removido, substituido pelo auth cliente
+-- será substituido pelo auth cliente
+- indicar como deprecated
 
 GET
 /cliente/auth/{cpf}
@@ -33,7 +35,7 @@ Buscar Cliente
     - Retorna ID único do Cliente ou
       - Retorna inexistência do Cliente
 
-Pagamentos
+## Pagamentos
 
 POST
 /pagamento/webhook/
