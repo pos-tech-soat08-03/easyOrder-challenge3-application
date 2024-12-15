@@ -17,8 +17,12 @@ export class ApiProdutos {
         #swagger.path = '/produto/listar'
         #swagger.method = 'get'
         #swagger.summary = 'Listar Produtos'
-        #swagger.description = 'Lista todos os produtos cadastrados'
+        #swagger.description = 'Lista todos os produtos cadastrados<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
         #swagger.produces = ["application/json"]  
+        #swagger.security = [{
+            "bearerAuth": []
+        }]
     */
                 /**
            #swagger.response[200] = {
@@ -44,11 +48,15 @@ export class ApiProdutos {
             async (req: Request<{ id: string }>, res: Response) => {
                 /**
             #swagger.summary = 'Buscar Produto'
-            #swagger.description = 'Busca um produto utilizando o Id.'
+            #swagger.description = 'Busca um produto utilizando o Id.<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.tags = ['Produtos']
             #swagger.path = '/produto/buscar/{id}'
             #swagger.method = 'get'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['id'] = {
                 in: 'path',
                 description: 'ID do produto',
@@ -135,8 +143,12 @@ export class ApiProdutos {
             #swagger.path = '/produto/listar/{categoria}'
             #swagger.method = 'get'
             #swagger.summary = 'Listar Produtos por Categoria'
-            #swagger.description = 'Lista produtos por categoria'
+            #swagger.description = 'Lista produtos por categoria<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['categoria'] = {
                 in: 'path',
                 description: 'ID da Categoria',
@@ -174,8 +186,12 @@ export class ApiProdutos {
             #swagger.path = '/produto/remover/{id}'
             #swagger.method = 'delete'
             #swagger.summary = 'Remover Produto'
-            #swagger.description = 'Remove um produto, por Id.'
+            #swagger.description = 'Remove um produto, por Id.<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['id'] = {
                 in: 'path',
                 description: 'ID do produto',
@@ -208,8 +224,12 @@ export class ApiProdutos {
                 #swagger.path = '/produto/cadastrar'
                 #swagger.method = 'post'
                 #swagger.summary = 'Cadastrar Produto'
-                #swagger.description = 'Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.'
+                #swagger.description = 'Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
                 #swagger.produces = ["application/json"]  
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
                 #swagger.parameters['body'] = { 
                     in: 'body', 
                     '@schema': {  
@@ -321,8 +341,12 @@ export class ApiProdutos {
             #swagger.path = '/produto/atualizar'
             #swagger.method = 'put'
             #swagger.summary = 'Atualizar Produto'
-            #swagger.description = 'Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.'
+            #swagger.description = 'Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.<br><br>
+        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]  
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['body'] = { 
                 in: 'body', 
                 '@schema': {  

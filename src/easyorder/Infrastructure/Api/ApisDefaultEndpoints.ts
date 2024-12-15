@@ -30,7 +30,8 @@ export class DefaultApiEndpoints {
       /**
         #swagger.tags = ['Outros']
         #swagger.summary = 'Endpoint Temporário - Resultado da Autenticação Cognito'
-      */
+        #swagger.ignore = true
+        */
         const urlFragment = req.originalUrl.split("?")[1];
   
         // Divide os parâmetros no fragmento da URL e transforma em um objeto

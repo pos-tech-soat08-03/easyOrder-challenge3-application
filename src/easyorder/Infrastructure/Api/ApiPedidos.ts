@@ -300,6 +300,7 @@ export class ApiPedidos {
                 #swagger.summary = '[Deprecated] Confirmar Pagamento Pedido'
                 #swagger.description = 'Baixa manual de um pedido pendente de pagamento.<br>
                 - Endpoint exclusivo para testes locais<br><br>
+                ! Atenção: Este endpoint foi descontinuado, sendo substituído por /pagamento/webhook<br><br>
                 [ Endpoint para integração ao gateway de pagamentos - Externo]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
@@ -353,7 +354,7 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/{pedidoId}/checkout'
                 #swagger.summary = 'Checkout Pedido'
                 #swagger.description = 'Checkout de um pedido e envio para o serviço de Pagamento<br><br>
-                [ Endpoint para integração ao sistema de autoatendimento ]'
+                [ Endpoint para integração ao sistema de autoatendimento / PDV ]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',

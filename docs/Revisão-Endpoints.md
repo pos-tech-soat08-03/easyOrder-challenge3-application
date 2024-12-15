@@ -102,7 +102,7 @@ DELETE
 Remover Combo do Pedido
 - mantém aberto (sem autenticação): uso da aplicação
 
-Preparação
+## Preparação
 
 GET
 /preparacao/pedido/proximo
@@ -124,7 +124,7 @@ PUT
 Entregar Pedido
 - adiciona COGNITO - autenticação admin/lojista
 
-Produtos
+## Produtos
 
 GET
 /produto/listar

@@ -17,8 +17,12 @@ export class ApiPreparacao {
             #swagger.path = '/preparacao/pedido/proximo'
             #swagger.method = 'get'
             #swagger.summary = 'Buscar o próximo Pedido'
-            #swagger.description = 'Busca o próximo pedido para preparação'
+            #swagger.description = 'Busca o próximo pedido para preparação<br><br>
+            [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.responses[404] = {
                 'description': 'Nenhum pedido encontrado',
                 '@schema': {
@@ -71,8 +75,12 @@ export class ApiPreparacao {
             #swagger.path = '/preparacao/pedido/{pedidoId}/iniciar-preparacao'
             #swagger.method = 'put'
             #swagger.summary = 'Iniciar Preparação de Pedido'
-            #swagger.description = 'Inicia a preparação de um pedido'
+            #swagger.description = 'Inicia a preparação de um pedido<br><br>
+            [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
                 description: 'ID do pedido',
@@ -134,8 +142,12 @@ export class ApiPreparacao {
             #swagger.path = '/preparacao/pedido/{pedidoId}/finalizar-preparacao'
             #swagger.method = 'put'
             #swagger.summary = 'Finalizar Preparação de Pedido'
-            #swagger.description = 'Finaliza a preparação de um pedido'
+            #swagger.description = 'Finaliza a preparação de um pedido<br><br>
+            [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
                 description: 'ID do pedido',
@@ -196,8 +208,12 @@ export class ApiPreparacao {
             #swagger.path = '/preparacao/pedido/{pedidoId}/entregar'
             #swagger.method = 'put'
             #swagger.summary = 'Entregar Pedido'
-            #swagger.description = 'Entrega um pedido preparado'
+            #swagger.description = 'Entrega um pedido preparado<br><br>
+            [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
             #swagger.produces = ["application/json"]
+            #swagger.security = [{
+                "bearerAuth": []
+            }]
             #swagger.parameters['pedidoId'] = {
                 in: 'path',
                 description: 'ID do pedido',
