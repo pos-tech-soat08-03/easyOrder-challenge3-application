@@ -461,7 +461,7 @@
     "/cliente/buscar/{cpf}": {
       "get": {
         "tags": [
-          "Clientes"
+          "Descontinuadas - Mantidas para Testes Locais"
         ],
         "summary": "[Deprecated] Buscar Cliente",
         "description": "Busca Cliente por CPF.<br>  - Retorna detalhe do cadastro, incluindo o Id.<br><br>  ! Atenção: Este endpoint foi descontinuado para uso de autenticação via Lambda, no endpoint /cliente/auth/{cpf}<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
@@ -582,7 +582,7 @@
           "Pagamentos"
         ],
         "summary": "Listar Transações",
-        "description": "Obtém a lista de Transações associadas a um id de Pedido.",
+        "description": "Obtém a lista de Transações associadas a um id de Pedido.<br>  - Utilizada para fins de simulação e consulta de transações pela adninistração.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -600,7 +600,12 @@
           "400": {
             "description": "Solicitação Inválida"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pedido": {
@@ -2277,7 +2282,7 @@
     "/health": {
       "get": {
         "tags": [
-          "Health"
+          "Outros"
         ],
         "summary": "Health check",
         "description": "",
@@ -2288,12 +2293,26 @@
         }
       }
     },
-    "/": {
+    "/auth-result/{response}": {
       "get": {
+        "tags": [
+          "Outros"
+        ],
+        "summary": "Endpoint Temporário - Resultado da Autenticação Cognito",
         "description": "",
+        "parameters": [
+          {
+            "name": "response",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "302": {
-            "description": "Encontrado"
+          "200": {
+            "description": "OK"
           }
         }
       }

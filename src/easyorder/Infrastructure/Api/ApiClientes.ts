@@ -298,7 +298,7 @@ export class ApiClientes {
                     - Retorna detalhe do cadastro, incluindo o Id.<br><br>
                     ! Atenção: Este endpoint foi descontinuado para uso de autenticação via Lambda, no endpoint /cliente/auth/{cpf}<br><br>
                     [ Endpoint para integração ao sistema de autoatendimento ]'
-                    #swagger.tags = ['Clientes']
+                    #swagger.tags = ['Descontinuadas - Mantidas para Testes Locais']
                     #swagger.path = '/cliente/buscar/{cpf}'
                     #swagger.method = 'get'
                     #swagger.produces = ["application/json"]

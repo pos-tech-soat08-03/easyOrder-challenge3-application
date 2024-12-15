@@ -70,8 +70,13 @@ export class ApiPagamentos {
                 #swagger.path = '/pagamento/listar-transacoes/{pedidoId}'
                 #swagger.method = 'get'
                 #swagger.summary = 'Listar Transações'
-                #swagger.description = 'Obtém a lista de Transações associadas a um id de Pedido.'
+                #swagger.description = 'Obtém a lista de Transações associadas a um id de Pedido.<br>
+                - Utilizada para fins de simulação e consulta de transações pela adninistração.<br><br>
+                [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
                 #swagger.produces = ["application/json"]  
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
             */
             try {
                 if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {

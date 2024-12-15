@@ -18,7 +18,10 @@ export class ApiPedidos {
                 #swagger.path = '/pedido'
                 #swagger.method = 'post'
                 #swagger.summary = 'Cadastrar Pedido'
-                #swagger.description = 'Início (rascunho) de novo Pedido. Retorna um Id de Pedido.' 
+                #swagger.description = 'Início (rascunho) de novo Pedido. Retorna um Id de Pedido.<br>
+                - Pode considerar cliente identificado com ID (cliente já cadastrado) ou<br>
+                - Cliente não identificado (pedido sem associação a cliente)<br><br>
+                [ Endpoint para integração ao sistema de autoatendimento ]' 
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['body'] = { 
                     in: 'body', 
@@ -82,7 +85,11 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/listar/{statusPedido}'
                 #swagger.method = 'get'
                 #swagger.summary = 'Listar Pedidos por status'
-                #swagger.description = 'Lista pedidos por status'
+                #swagger.description = 'Lista pedidos por status<br><br>
+                [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['statusPedido'] = {
                     in: 'path',
@@ -200,7 +207,11 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/{pedidoId}'
                 #swagger.method = 'get'
                 #swagger.summary = 'Buscar Pedido'
-                #swagger.description = 'Busca um Pedido por ID'
+                #swagger.description = 'Busca um Pedido por ID<br><br>
+                [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -263,7 +274,11 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/{pedidoId}/cancelar'
                 #swagger.method = 'put'
                 #swagger.summary = 'Cancelar Pedido'
-                #swagger.description = 'Cancelamento de um Pedido com base no id.'
+                #swagger.description = 'Cancelamento de um Pedido com base no id.<br><br>
+                [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
                 #swagger.produces = ["application/json"]
             */
             if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
@@ -278,12 +293,14 @@ export class ApiPedidos {
 
         app.put("/pedido/:pedidoId/confirmacao-pagamento", async (req, res) => {
             /**
-                #swagger.tags = ['Pedidos']
+                #swagger.tags = ['Descontinuadas - Mantidas para Testes Locais']
                 #swagger.path = '/pedido/{pedidoId}/confirmacao-pagamento'
                 #swagger.method = 'put'
                 #swagger.deprecated = true
-                #swagger.summary = 'Confirmar Pagamento Pedido (deprecated).'
-                #swagger.description = 'Baixa manual de um pedido pendente de pagamento (deprecated).'
+                #swagger.summary = '[Deprecated] Confirmar Pagamento Pedido'
+                #swagger.description = 'Baixa manual de um pedido pendente de pagamento.<br>
+                - Endpoint exclusivo para testes locais<br><br>
+                [ Endpoint para integração ao gateway de pagamentos - Externo]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -335,7 +352,8 @@ export class ApiPedidos {
                 #swagger.tags = ['Pedidos']
                 #swagger.path = '/pedido/{pedidoId}/checkout'
                 #swagger.summary = 'Checkout Pedido'
-                #swagger.description = 'Checkout de um pedido e envio para o serviço de Pagamento'
+                #swagger.description = 'Checkout de um pedido e envio para o serviço de Pagamento<br><br>
+                [ Endpoint para integração ao sistema de autoatendimento ]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -387,7 +405,8 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/{pedidoId}/combo'
                 #swagger.method = 'post'
                 #swagger.summary = 'Adicionar Combo ao Pedido'
-                #swagger.description = 'Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.'
+                #swagger.description = 'Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.<br><br>
+                [ Endpoint para integração ao sistema de autoatendimento ]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
@@ -491,7 +510,8 @@ export class ApiPedidos {
                 #swagger.path = '/pedido/{pedidoId}/combo/{comboId}'
                 #swagger.method = 'delete'
                 #swagger.summary = 'Remover Combo do Pedido'
-                #swagger.description = 'Remove um Combo do Pedido'
+                #swagger.description = 'Remove um Combo do Pedido<br><br>
+                [ Endpoint para integração ao sistema de autoatendimento ]'
                 #swagger.produces = ["application/json"]
                 #swagger.parameters['pedidoId'] = {
                     in: 'path',
