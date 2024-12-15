@@ -10,7 +10,7 @@ export class DefaultApiEndpoints {
 
     app.get("/health", (req, res) => {
       /**
-        #swagger.tags = ['Health']
+        #swagger.tags = ['Outros']
         #swagger.summary = 'Health check'
       */
       res.json({
@@ -19,10 +19,40 @@ export class DefaultApiEndpoints {
     });
 
     app.get("/", (req, res) => {
-      res.status(302).send(
-        `<meta http-equiv="Refresh" content="3;URL=http://localhost:30000/doc/" />Redirecionando para a documentação do Swagger em http://localhost:30000/doc/<BR>\
-        Caso não ocorra automaticamente <A href="http://localhost:30000/doc/">clique aqui</A>`
-      );
+      /**
+        #swagger.tags = ['Outros']
+        #swagger.ignore = true
+      */
+        res.status(200).send(`<h1>EasyOrder API 3.0</h1><br>`)
+    });
+
+    app.get("/auth-result", (req, res) => {
+      /**
+        #swagger.tags = ['Outros']
+        #swagger.summary = 'Endpoint Temporário - Resultado da Autenticação Cognito'
+        #swagger.ignore = true
+        */
+        const urlFragment = req.originalUrl.split("?")[1];
+  
+        // Divide os parâmetros no fragmento da URL e transforma em um objeto
+        const params = new URLSearchParams(urlFragment);
+      
+        // Extrai os tokens
+        const idToken = params.get("id_token");
+        const accessToken = params.get("access_token");
+        const expiresIn = params.get("expires_in");
+        const tokenType = params.get("token_type");
+      
+        // Renderiza os tokens na tela do navegador
+        res.status(200).send(`
+          <h2>Resultado da Autorização</h2>
+          <p><strong>ID Token:</strong> ${idToken}</p>
+          <p><strong>Access Token:</strong> ${accessToken}</p>
+          <p><strong>Expires In:</strong> ${expiresIn}</p>
+          <p><strong>Token Type:</strong> ${tokenType}</p>
+        `);
+
+
     });
 
   }

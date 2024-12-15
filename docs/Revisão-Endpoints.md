@@ -1,16 +1,17 @@
-Clientes
+## Clientes
 
 POST
 /cliente/cadastrar
 Cadastrar Cliente
 - mantém aberto (sem autenticação): uso da aplicação
-- **necessário alterar para não devolver o ID de Cliente
+~~- **necessário alterar para não devolver o ID de Cliente~~
 
 PUT
 /cliente/atualizar
 Atualizar Cliente
-- mantém aberto (sem autenticação): uso da aplicação
-- **necessário alterar para não devolver o ID de Cliente
+~~- mantém aberto (sem autenticação): uso da aplicação~~
+~~ - **necessário alterar para não devolver o ID de Cliente~~
+- adiciona COGNITO - autenticação admin/lojista
 
 GET
 /cliente/listar
@@ -20,7 +21,8 @@ Listar Clientes
 GET
 /cliente/buscar/{cpf}
 Buscar Cliente
--- será removido, substituido pelo auth cliente
+-- será substituido pelo auth cliente
+- indicar como deprecated
 
 GET
 /cliente/auth/{cpf}
@@ -33,21 +35,19 @@ Buscar Cliente
     - Retorna ID único do Cliente ou
       - Retorna inexistência do Cliente
 
-Pagamentos
+## Pagamentos
 
 POST
 /pagamento/webhook/
 Webhook - Confirmar Pagamento (Transação)
-- mantém aberto (sem autenticação): uso do Mercado Pago
-POST
-/pagamento/webhook/ml
-- ** revisar endpoint
 - mantém aberto (sem autenticação): uso do Mercado Pago
 
 GET
 /pagamento/listar-transacoes/{pedidoId}
 Listar Transações
 - adiciona COGNITO - autenticação admin/lojista
+
+## Gerais
 
 GET
 /
@@ -58,14 +58,14 @@ GET
 - mantém aberto (swagger) - rede interna somente, se possível
 
 
-Pedidos
+## Pedidos
 
 POST
 /pedido
 Cadastrar Pedido
 - mantém aberto (sem autenticação): uso da aplicação
-- alterar o endpoint pra aceitar somente DI do Cliente (não aceitar CPF) ou
-  - sem ID, avança com pedido anônimo
+~~- alterar o endpoint pra aceitar somente ID do Cliente (não aceitar CPF)~~
+~~  - sem ID, avança com pedido anônimo~~
 
 GET
 /pedido/listar/{statusPedido}
@@ -102,7 +102,7 @@ DELETE
 Remover Combo do Pedido
 - mantém aberto (sem autenticação): uso da aplicação
 
-Preparação
+## Preparação
 
 GET
 /preparacao/pedido/proximo
@@ -124,7 +124,7 @@ PUT
 Entregar Pedido
 - adiciona COGNITO - autenticação admin/lojista
 
-Produtos
+## Produtos
 
 GET
 /produto/listar
