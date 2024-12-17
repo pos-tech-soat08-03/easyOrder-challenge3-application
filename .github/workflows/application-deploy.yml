@@ -91,21 +91,21 @@ jobs:
         aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ github.event.inputs.aws_region }} 
     
     - name: Gerar arquivo easyorder-configmap.yaml
-    working-directory: src/terraform
-    run: |
-        cat <<EOF > easyorder-configmap.yaml
-        apiVersion: v1
-        kind: ConfigMap
-        metadata:
-          name: easyorder-configmap
-        data:
-          NODE_ENV: development
-          DATABASE_HOST: $RDS_INSTANCE_ADDRESS
-          DATABASE_PORT: $RDS_INSTANCE_PORT
-          DATABASE_NAME: "${{secret.MYSQL_DATABASE}}"
-          DATABASE_USER: "${{secret.MYSQL_USER}}"
-          DATABASE_PASS: "${{secret.MYSQL_USER}}"
-        EOF
+      working-directory: src/terraform
+      run: |
+          cat <<EOF > easyorder-configmap.yaml
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: easyorder-configmap
+          data:
+            NODE_ENV: development
+            DATABASE_HOST: $RDS_INSTANCE_ADDRESS
+            DATABASE_PORT: $RDS_INSTANCE_PORT
+            DATABASE_NAME: "${{secret.MYSQL_DATABASE}}"
+            DATABASE_USER: "${{secret.MYSQL_USER}}"
+            DATABASE_PASS: "${{secret.MYSQL_USER}}"
+          EOF
 
     - name: Deploy no EKS
       working-directory: manifesto_kubernetes/ 
@@ -114,21 +114,21 @@ jobs:
         kubectl apply -f easyorder-configmap.yaml
         kubectl apply -f easyorder-deployment.yaml
         kubectl apply -f easyorder-hpa.yaml
+  
+    - name: Obter Hostname do Load Balancer
+      id: get-load-balancer-hostname
+      run: |
+        HOSTNAME=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        echo "HOSTNAME=$HOSTNAME" >> $GITHUB_ENV
     
-      - name: Obter Hostname do Load Balancer
-        id: get-load-balancer-hostname
-        run: |
-          HOSTNAME=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          echo "HOSTNAME=$HOSTNAME" >> $GITHUB_ENV
-      
-      - name: Obter Porta do Load Balancer
-        id: get-load-balancer-port
-        run: |
-          PORT=$(kubectl get svc svc-easyorder -o jsonpath='{.spec.ports[0].port}')
-          echo "PORT=$PORT" >> $GITHUB_ENV
-      
-      - name: Salvar Informações no S3
-        run: |
-          echo "Load Balancer Hostname: $HOSTNAME" > easyorder_LB.txt
-          echo "Load Balancer Port: $PORT" >> easyorder_LB.txt
-          aws s3 cp easyorder_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder_LB.txt
+    - name: Obter Porta do Load Balancer
+      id: get-load-balancer-port
+      run: |
+        PORT=$(kubectl get svc svc-easyorder -o jsonpath='{.spec.ports[0].port}')
+        echo "PORT=$PORT" >> $GITHUB_ENV
+    
+    - name: Salvar Informações no S3
+      run: |
+        echo "Load Balancer Hostname: $HOSTNAME" > easyorder_LB.txt
+        echo "Load Balancer Port: $PORT" >> easyorder_LB.txt
+        aws s3 cp easyorder_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder_LB.txt
