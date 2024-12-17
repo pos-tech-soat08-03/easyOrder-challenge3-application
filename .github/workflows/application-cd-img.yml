@@ -1,12 +1,6 @@
-name: Docker-ci
+name: Application CD - Deployment da Imagem em Docker Hub
 
 on:
-  push:
-    branches:
-      - "main"
-      - "feature/*"
-      - "hotfix/*"
-      - "chore/*"
   pull_request:    
     branches:
       - "main"        

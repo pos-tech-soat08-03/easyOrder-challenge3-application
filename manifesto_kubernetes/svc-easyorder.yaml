@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: svc-easyorder
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: easyorder
   ports:
-  - port: 30000
-    nodePort: 30000 
+  - port: 80
+    targetPort: 30000
+    protocol: TCP
