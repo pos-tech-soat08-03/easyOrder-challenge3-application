@@ -100,7 +100,7 @@ jobs:
           metadata:
             name: easyorder-configmap
           data:
-            NNODE_ENV: development
+            NODE_ENV: development
             DATABASE_HOST: ${{ steps.extract-rds-info.outputs.RDS_INSTANCE_ADDRESS }}
             DATABASE_PORT: "${{ steps.extract-rds-info.outputs.RDS_INSTANCE_PORT }}"
             DATABASE_NAME: ${{ secrets.MYSQL_DATABASE }}
