@@ -1,4 +1,4 @@
-name: application-cd
+name: Application CD - Deploy no EKS
 
 on: 
   workflow_dispatch:
