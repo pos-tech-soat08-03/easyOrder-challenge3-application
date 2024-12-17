@@ -115,14 +115,11 @@ jobs:
         kubectl apply -f easyorder-deployment.yaml
         kubectl apply -f easyorder-hpa.yaml
     
-      - name: Obter Endereço do Load Balancer
-        id: get-load-balancer-address
+      - name: Obter Hostname do Load Balancer
+        id: get-load-balancer-hostname
         run: |
-          ADDRESS=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-          if [ -z "$ADDRESS" ]; then
-            ADDRESS=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          fi
-          echo "ADDRESS=$ADDRESS" >> $GITHUB_ENV
+          HOSTNAME=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          echo "HOSTNAME=$HOSTNAME" >> $GITHUB_ENV
       
       - name: Obter Porta do Load Balancer
         id: get-load-balancer-port
@@ -132,7 +129,6 @@ jobs:
       
       - name: Salvar Informações no S3
         run: |
-          echo "Load Balancer Address: $ADDRESS" > easyorder_LB.txt
+          echo "Load Balancer Hostname: $HOSTNAME" > easyorder_LB.txt
           echo "Load Balancer Port: $PORT" >> easyorder_LB.txt
-          aws s3 cp lb_info.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder_LB.txt
-      
+          aws s3 cp easyorder_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder_LB.txt
