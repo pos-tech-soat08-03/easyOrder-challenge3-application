@@ -3,10 +3,10 @@ name: Application CD - Deploy no EKS
 on: 
   workflow_dispatch:
     inputs:
-      # environment:
-      #   description: 'Ambiente de deployment (ex.: lab, staging, prod)'
-      #   required: true
-      #   default: 'prod'
+      environment:
+        description: 'Ambiente de deployment (ex.: lab, staging, prod)'
+        required: true
+        default: 'prod'
       aws_access_key_id:
         description: 'AWS Access Key ID'
         required: true
@@ -36,7 +36,11 @@ jobs:
       id-token: write
       contents: read
 
+    # if: github.ref == 'refs/heads/main'
+    # environment: prod      
+  
     steps:
+      
     - name: Checkout Código
       uses: actions/checkout@v3
 
@@ -69,7 +73,7 @@ jobs:
       id: extract-cluster-name
       run: | 
         CLUSTER_NAME=$(jq -r '.outputs.easyorder_cluster_name.value' terraform_infrastructure.json)
-        echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV
+        echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_OUTPUT
 
     - name: Download terraform_RDS_database.json from S3 RDS_database easyorder-database/terraform.tfstate
       run: | 
@@ -80,8 +84,8 @@ jobs:
       run: | 
         RDS_INSTANCE_ADDRESS=$(jq -r '.outputs.rds_instance_address.value' terraform_RDS_database.json) 
         RDS_INSTANCE_PORT=$(jq -r '.outputs.rds_instance_port.value' terraform_RDS_database.json) 
-        echo "RDS_INSTANCE_ADDRESS=$RDS_INSTANCE_ADDRESS" >> $GITHUB_ENV 
-        echo "RDS_INSTANCE_PORT=$RDS_INSTANCE_PORT" >> $GITHUB_ENV
+        echo "RDS_INSTANCE_ADDRESS=$RDS_INSTANCE_ADDRESS" >> $GITHUB_OUTPUT 
+        echo "RDS_INSTANCE_PORT=$RDS_INSTANCE_PORT" >> $GITHUB_OUTPUT
         echo "RDS_INSTANCE_ADDRESS: $RDS_INSTANCE_ADDRESS"
 
     - name: Update kubeconfig 
@@ -117,13 +121,13 @@ jobs:
       id: get-load-balancer-hostname
       run: |
         HOSTNAME=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-        echo "LB_HOSTNAME=$HOSTNAME" >> $GITHUB_ENV
+        echo "LB_HOSTNAME=$HOSTNAME" >> $GITHUB_OUTPUT
     
     - name: Obter Porta do Load Balancer
       id: get-load-balancer-port
       run: |
         PORT=$(kubectl get svc svc-easyorder -o jsonpath='{.spec.ports[0].port}')
-        echo "LB_PORT=$PORT" >> $GITHUB_ENV
+        echo "LB_PORT=$PORT" >> $GITHUB_OUTPUT
     
     - name: Salvar Informações no S3
       run: |
