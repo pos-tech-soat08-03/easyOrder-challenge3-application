@@ -5,11 +5,7 @@
     "description": "Sistema de Gestão de Pedidos - Tech Challenge (3) da Pos Tech SOAT ",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:30000/"
-    }
-  ],
+  "host": "",
   "paths": {
     "/cliente/cadastrar": {
       "post": {
