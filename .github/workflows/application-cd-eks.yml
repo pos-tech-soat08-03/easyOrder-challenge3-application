@@ -86,7 +86,6 @@ jobs:
         RDS_INSTANCE_PORT=$(jq -r '.outputs.rds_instance_port.value' terraform_RDS_database.json) 
         echo "RDS_INSTANCE_ADDRESS=$RDS_INSTANCE_ADDRESS" >> $GITHUB_OUTPUT 
         echo "RDS_INSTANCE_PORT=$RDS_INSTANCE_PORT" >> $GITHUB_OUTPUT
-        echo "RDS_INSTANCE_ADDRESS: $RDS_INSTANCE_ADDRESS"
 
     - name: Update kubeconfig 
       run: | 
@@ -102,8 +101,8 @@ jobs:
             name: easyorder-configmap
           data:
             NODE_ENV: development
-            DATABASE_HOST: $RDS_INSTANCE_ADDRESS
-            DATABASE_PORT: $RDS_INSTANCE_PORT
+            DATABASE_HOST: ${{ steps.extract-rds-info.outputs.RDS_INSTANCE_ADDRESS }}
+            DATABASE_PORT: ${{ steps.extract-rds-info.outputs.RDS_INSTANCE_PORT }}
             DATABASE_NAME: "${{ secrets.MYSQL_DATABASE }}"
             DATABASE_USER: "${{ secrets.MYSQL_USER }}"
             DATABASE_PASS: "${{ secrets.MYSQL_PASSWORD }}"
