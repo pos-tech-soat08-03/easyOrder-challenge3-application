@@ -108,6 +108,10 @@ jobs:
             DATABASE_PASS: ${{ secrets.MYSQL_PASSWORD }}
           EOF
 
+    - name: Mostrar arquivo easyorder-configmap.yaml
+      working-directory: manifesto_kubernetes/
+      run: cat easyorder-configmap.yaml
+
     - name: Deploy no EKS
       working-directory: manifesto_kubernetes/ 
       run: |
