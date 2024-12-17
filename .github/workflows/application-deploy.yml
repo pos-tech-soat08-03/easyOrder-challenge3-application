@@ -29,7 +29,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Deployment
+    name: Application Deployment
     runs-on: ubuntu-latest
 
     permissions:
