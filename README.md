@@ -10,141 +10,69 @@ O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes inte
 - Rafael da Silva Andrade, rafaandrade_@outlook.com, RM357010, @andrade_rafael
 
 &nbsp;
-## Projeto - Descrição e Objetivos - Fase 3
+# Repositório dedicado para Application 
+- Inclui a conteúdo da aplicação, realizando a conexão com o Kubernetes 
+- Utiliza Github Actions para CI/CD
+- Oferece dados para correta configuração do repositório serverless
 
-### EM CONSTRUCAO :warning:
-:construction::construction::construction::construction::construction::construction::construction::construction::construction::construction::construction:
+## Estrutura do Diretório
 
-&nbsp;
-## Como Rodar a Aplicação em Containers	(utilizando o Docker)
-
-### 📋 Pré-requisitos
-
-- Docker e Docker-compose instalados
-- Git (baixar o repositório localmente)
-
-Todas as dependências e pré-requisitos serão atendidos pela execução do docker-compose, conforme explicado abaixo.
-
-### ⚙️ Iniciando Em Modo "Produção"
-
-Inicializar o Git e Clonar o repositório em uma pasta local, com os comandos:
-
-``` bash
-git clone https://github.com/pos-tech-soat08-03/easyOrder-challenge2
-
-cd easyOrder-challenge2/
+```plaintext
+manifesto_kubernetes        
+└── *.yaml                  - arquivos de configuração dos artefatos kubernetes
+docs                        - documentações e guias de implementação
+src                         - diretório principal com arquivos .tf
+└── *.ts                    - código-fonte da aplicação
 ```
 
-Para iniciar o _build_ da aplicação já atendendo aos pré-requisitos e rodar no servidor, podem ser executados os seguintes comandos:
+## Configuração do CI/CD
 
-1. Buildar a aplicação de acordo com o arquivo docker-compose.yml
-    
-    Windows:
-    ``` bash
-    docker compose up --build
-    ```
+O repositório possui um workflow de CI/CD configurado com o Github Actions, que realiza a validação e deploy da application na AWS.
 
-    Linux:
-    ``` bash
-    sudo docker-compose up --build
-    ```
+O workflow de CI é acionado a cada push no repositório, e executa as seguintes etapas:
 
-## Como Rodar a Aplicação em Kubernetes
+![Descrição da Imagem](docs/assets/ci-image.png)
 
-### 📋 Pré-requisitos
+O workflow de CD é dividido em duas partes a primeira acontece ao finalizar o push:
 
-- Docker
-- Kubernetes
-- Minikube para quem usa linux
-- Ativar Kubernetes no Docker Desktop para quem usa Windows
-- Metrics-server ativo 
+![Descrição da Imagem](docs/assets/cd-image1.png)
 
-_Antes de iniciar verifique a configuração do seu ambiente, pois será necessário usar recurso de métricas._  
-_Configurando metretics-server [Windows](https://github.com/kubernetes-sigs/metrics-server) e [Linux](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)_
+Em seguida acontece a parte manual que executa as seguintes etapas:
 
-### ⚙️ Iniciando Em Modo "Produção"
+![Descrição da Imagem](docs/assets/cd-image2.png)
 
-Inicializar o Git e _Clonar_ o repositório em uma pasta local, com os comandos:
+## Subindo a aplicação com o Github Actions (Produção)
 
-``` bash
-git clone https://github.com/pos-tech-soat08-03/easyOrder-challenge2.git
-```
-Escalonando:
-``` bash
-cd easyOrder/manifesto_kubernetes
-kubectl apply -f svc-easyorder-database.yaml
-kubectl apply -f pvc-easyorder-database.yaml
-kubectl apply -f easyorder-database-configmap.yaml
-kubectl apply -f easyorder-database-deployment.yaml
-kubectl apply -f svc-easyorder.yaml
-kubectl apply -f easyorder-configmap.yaml
-kubectl apply -f easyorder-deployment.yaml
-kubectl apply -f easyorder-hpa.yaml
-```
-Desta forma inciará: 
-- service/svc-easyorder-database
-- configmap/easyorder-database-configmap
-- persistentvolumeclaim/pvc-easyorder-database
-- deployment.apps/easyorder-database-deployment
-- service/svc-easyorder
-- configmap/easyorder-configmap
-- deployment.apps/easyorder-deployment
-- horizontalpodautoscaler.autoscaling/easyorder-hp
+Para subir a infraestrutura com o Github Actions, siga os passos abaixo:
 
-### ✅ Verificar se está funcionando
+1. Acesse o repositório do Github e clique na aba `Actions`, ou acesse diretamente o link abaixo:
+ https://github.com/pos-tech-soat08-03/easyOrder-challenge3-application/actions
 
-Neste ponto, o serviço deve estar ativo, para verificar se está funcionando, basta acessar a url [http://localhost:30000/](http://localhost:30000/). 
+2. Clique no workflow `Application CD - Deploy no EKS` e em seguida clique no botão `Run workflow`
 
-O endpoint [http://localhost:30000/health](http://localhost:30000/health) também deve indicar que o servidor está rodando corretamente, com todos os serviços ativos.
+O workflow irá solicitar as chaves de acesso da AWS, que serão obtidas do ambiente do AWS Labs:
 
-_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-
-&nbsp;
-### 💡 Acesso à Documentação do Swagger
-
-Para acessar a documentação do Swagger, acessar a url [http://localhost:30000/doc/](http://localhost:30000/doc/) - você poderá navegar e testar todos os endpoints, com exemplos disponíveis.
-
-_Caso esteja acessando a aplicação de outro host, favor modificar a URL para o endereço correto do seu host._  
-
-
-&nbsp;
-
-### 🔩 Rodando Testes Ponta a Ponta (_End-to-end - E2E_) e Entendendo o Fluxo de Execução
-
-Um roteiro completo de Testes Ponta a Ponta está disponível para facilitar a validação do processo da aplicação. Para executar o teste ponta a ponta, através do ambiente ativo no Docker, rode em um outro terminal (mantenha a aplicação rodando no Docker e ou Kubernetes).
-
-Docker:
-``` bash
-docker exec -it easyorder npx jest ./app.e2e.test.ts --verbose true
-```
-Kubernetes:
-``` bash
-kubectl get pod #"Para lista o nome do pod por exemplo: easyorder-deployment-888ffc9c5"
-kubectl exec -it <nome-do-pod> -c easyorder-container -- npx jest ./app.e2e.test.ts --verbose true
+```plaintext
+environment: <Ambiente de deployment (ex.: lab, staging, prod)>
+aws_access_key_id: <AWS Access Key ID>
+aws_secret_access_key: <AWS Secret Access Key>
+aws_session_token: <AWS Session Token>
+aws_account_id: <AWS Account ID>
+aws_backend_bucket: <AWS S3 Bucket para armazenamento do estado do Terraform>
+aws_region: <AWS Region>
 ```
 
-## Padrões que utilizamos no nosso Desenvolvimento
+Ao final da execução do workflow, a aplicação estará disponível na AWS, e o endpoint será disponibilizado para utilização no API Gateway no repositório serverless
 
-### Nomenclaturas:
-- No final do nome do arquivo, sempre coloque o que é o arquivo (Service, Usecase, Interface, Endpoints, etc.)
-- Variáveis devem começar com minúsculo em camelCase
-- Arquivos e classes devem começar com maiúsculo em camelCase
-- Constantes e variáveis de ambiente devem ser escritas em MAIÚSCULO
+## Subindo a aplicação manualmente (Desenvolvimento)
 
-### Uso do git:
-- Sempre em português
-- Todo commit deve ser bem descritivo do que foi feito
-- Fazer o menor tamanho de commit possívels
-- Sempre em Branches (ramos) e depois fazer o merge
-- No mínimo 1 aprovador de Pull Request
-- Utilizar os seguintes prefixos, quando possível com o número da atividade no projeto:
+Para subir a aplicação manualmente:
 
-    - `Hotfix: {NúmeroTask} - {mensagem}` Para bugs
-    - `Feature: {NúmeroTask} - {mensagem}` Para implementar funcionalidades
-    - `Chore: {NúmeroTask} - {mensagem}` Para alterações que não impactem o uso (débito técnico)
+Utilize as instruções do repositório easyOrder-challenge2(https://github.com/pos-tech-soat08-03/easyOrder-challenge2)
 
-- O nome da branch deve ser igualmente o prefixo + id da atividade. Ex:
+Pois o workflow foi montado para execução integrada com os recursos da AWS
 
-    - `hotfix/99999`
-    - `feature/99999`
-    - `chore/99999`
+## Documentação
+
+Para mais informações sobre a arquitetura, verifique no repositório do desafio 3 (principal do projeto):
+https://github.com/orgs/pos-tech-soat08-03/repositories
