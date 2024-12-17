@@ -68,7 +68,7 @@ jobs:
     - name: Extract EKS Cluster Name 
       id: extract-cluster-name
       run: | 
-        CLUSTER_NAME=$(jq -r '.easyorder_cluster_name.value' terraform_infrastructure.json)
+        CLUSTER_NAME=$(jq -r '.outputs.easyorder_cluster_name.value' terraform_infrastructure.json)
         echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV
 
     - name: Download terraform_RDS_database.json from S3 RDS_database easyorder-database/terraform.tfstate
@@ -78,17 +78,18 @@ jobs:
     - name: Extract RDS Information 
       id: extract-rds-info 
       run: | 
-        RDS_INSTANCE_ADDRESS=$(jq -r '.rds_instance_address.value' terraform_RDS_database.json) 
-        RDS_INSTANCE_PORT=$(jq -r '.rds_instance_port.value' terraform_RDS_database.json) 
+        RDS_INSTANCE_ADDRESS=$(jq -r '.outputs.rds_instance_address.value' terraform_RDS_database.json) 
+        RDS_INSTANCE_PORT=$(jq -r '.outputs.rds_instance_port.value' terraform_RDS_database.json) 
         echo "RDS_INSTANCE_ADDRESS=$RDS_INSTANCE_ADDRESS" >> $GITHUB_ENV 
         echo "RDS_INSTANCE_PORT=$RDS_INSTANCE_PORT" >> $GITHUB_ENV
+        echo "RDS_INSTANCE_ADDRESS: $RDS_INSTANCE_ADDRESS"
 
     - name: Update kubeconfig 
       run: | 
         aws eks update-kubeconfig --name ${{ steps.extract-cluster-name.outputs.CLUSTER_NAME }} --region ${{ github.event.inputs.aws_region }} 
     
     - name: Gerar arquivo easyorder-configmap.yaml
-      working-directory: src/terraform
+      working-directory: manifesto_kubernetes/
       run: |
           cat <<EOF > easyorder-configmap.yaml
           apiVersion: v1
