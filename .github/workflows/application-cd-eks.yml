@@ -61,7 +61,7 @@ jobs:
     - name: Verificar Credenciais AWS
       run: aws sts get-caller-identity
 
-    - name: Download terraform.json from S3 infrastructure
+    - name: Download terraform_infrastructure.json from S3 infrastructure easyorder-infra/terraform.tfstate
       run: | 
         aws s3 cp s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-infra/terraform.tfstate terraform_infrastructure.json 
         
@@ -71,9 +71,9 @@ jobs:
         CLUSTER_NAME=$(jq -r '.easyorder_cluster_name.value' terraform_infrastructure.json)
         echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV
 
-    - name: Download terraform.json from S3 RDS_database 
+    - name: Download terraform_RDS_database.json from S3 RDS_database easyorder-database/terraform.tfstate
       run: | 
-        aws s3 cp s3://terraform-state-easyorder/easyorder-database/terraform.tfstate terraform_RDS_database.json 
+        aws s3 cp s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-database/terraform.tfstate terraform_RDS_database.json 
 
     - name: Extract RDS Information 
       id: extract-rds-info 
