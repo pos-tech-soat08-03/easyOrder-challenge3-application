@@ -1,4 +1,4 @@
-name: Easyorder CD - Deploy in EKS
+name: Easyorder_CD_Deploy_in_EKS
 
 on: 
   workflow_dispatch:
