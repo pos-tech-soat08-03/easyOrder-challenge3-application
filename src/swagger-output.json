@@ -17,7 +17,7 @@
           "Clientes"
         ],
         "summary": "Cadastrar Cliente",
-        "description": "Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição. Retorna o Id de Cliente.<br>  Não é permitido o cadastro de mais de um cliente com o mesmo CPF.",
+        "description": "Realiza o Cadastro de um novo Cliente com dados fornecidos no corpo da requisição.<br>  - Retorna o Id de Cliente como chave para continuidade no Pedido.<br>  - Não é permitido o cadastro de mais de um cliente com o mesmo CPF.<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]  ",
         "parameters": [
           {
             "name": "body",
@@ -182,7 +182,7 @@
           "Clientes"
         ],
         "summary": "Atualizar Cliente",
-        "description": "Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>  Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.",
+        "description": "Atualiza o Cadastro de um Cliente existente, através dos dados fornecidos no corpo da requisição.<br>  - Utiliza CPF como chave de identificação, retorna o detalhe do cadastro e Id do Cliente.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "body",
@@ -319,6 +319,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -347,7 +352,7 @@
           "Clientes"
         ],
         "summary": "Listar Clientes",
-        "description": "Lista todos os clientes cadastrados.",
+        "description": "Lista todos os clientes cadastrados.<br><br>  [ Endpoint para integração ao sistema administrativo ]",
         "responses": {
           "200": {
             "description": "Clientes listados com sucesso",
@@ -445,16 +450,21 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/cliente/buscar/{cpf}": {
       "get": {
         "tags": [
-          "Clientes"
+          "Descontinuadas - Mantidas para Testes Locais"
         ],
-        "summary": "Buscar Cliente",
-        "description": "Busca Cliente por CPF. Retorna detalhe do cadastro, incluindo o Id.",
+        "summary": "[Deprecated] Buscar Cliente",
+        "description": "Busca Cliente por CPF.<br>  - Retorna detalhe do cadastro, incluindo o Id.<br><br>  ! Atenção: Este endpoint foi descontinuado para uso de autenticação via Lambda, no endpoint /cliente/auth/{cpf}<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
         "parameters": [
           {
             "name": "cpf",
@@ -464,7 +474,7 @@
               "type": "string"
             },
             "description": "CPF do Cliente sem pontuação",
-            "example": "00000000000"
+            "example": "12345678910"
           }
         ],
         "responses": {
@@ -474,6 +484,33 @@
           "400": {
             "description": "Solicitação Inválida"
           }
+        },
+        "deprecated": true
+      }
+    },
+    "/cliente/auth/{cpf}": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "[Novo] Autenticar Cliente",
+        "description": "Autenticar Cliente via CPF.<br>  - Retorna o Id do cliente, caso encontrado, como chave para continuidade no Pedido.<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "CPF do Cliente sem pontuação",
+            "example": "12345678910"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
         }
       }
     },
@@ -482,8 +519,8 @@
         "tags": [
           "Pagamentos"
         ],
-        "summary": "Webhook - Confirmar Pagamento (Transação)",
-        "description": "Captura o retorno de status de transação a partir de webhook do Serviço de Pagamento.<br>  Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição",
+        "summary": "Webhook para Confirmação de Pagamento (Transação)",
+        "description": "Captura o retorno de status de transação a partir de webhook disparado pelo Serviço de Pagamento.<br>  - Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição<br><br>  [ Endpoint para integração ao gateway de pagamentos - Externo]",
         "parameters": [
           {
             "name": "body",
@@ -545,7 +582,7 @@
           "Pagamentos"
         ],
         "summary": "Listar Transações",
-        "description": "Obtém a lista de Transações associadas a um id de Pedido.",
+        "description": "Obtém a lista de Transações associadas a um id de Pedido.<br>  - Utilizada para fins de simulação e consulta de transações pela adninistração.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -563,20 +600,12 @@
           "400": {
             "description": "Solicitação Inválida"
           }
-        }
-      }
-    },
-    "/pagamento/webhook/ml": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Solicitação Inválida"
+        },
+        "security": [
+          {
+            "bearerAuth": []
           }
-        }
+        ]
       }
     },
     "/pedido": {
@@ -585,7 +614,7 @@
           "Pedidos"
         ],
         "summary": "Cadastrar Pedido",
-        "description": "Início (rascunho) de novo Pedido. Retorna um Id de Pedido.",
+        "description": "Início (rascunho) de novo Pedido. Retorna um Id de Pedido.<br>  - Pode considerar cliente identificado com ID (cliente já cadastrado) ou<br>  - Cliente não identificado (pedido sem associação a cliente)<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
         "parameters": [
           {
             "name": "body",
@@ -697,7 +726,7 @@
           "Pedidos"
         ],
         "summary": "Listar Pedidos por status",
-        "description": "Lista pedidos por status",
+        "description": "Lista pedidos por status<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "statusPedido",
@@ -847,7 +876,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pedido/{pedidoId}": {
@@ -856,7 +890,7 @@
           "Pedidos"
         ],
         "summary": "Buscar Pedido",
-        "description": "Busca um Pedido por ID",
+        "description": "Busca um Pedido por ID<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -954,7 +988,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pedido/{pedidoId}/cancelar": {
@@ -963,7 +1002,7 @@
           "Pedidos"
         ],
         "summary": "Cancelar Pedido",
-        "description": "Cancelamento de um Pedido com base no id.",
+        "description": "Cancelamento de um Pedido com base no id.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -987,16 +1026,21 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/pedido/{pedidoId}/confirmacao-pagamento": {
       "put": {
         "tags": [
-          "Pedidos"
+          "Descontinuadas - Mantidas para Testes Locais"
         ],
-        "summary": "Confirmar Pagamento Pedido (deprecated).",
-        "description": "Baixa manual de um pedido pendente de pagamento (deprecated).",
+        "summary": "[Deprecated] Confirmar Pagamento Pedido",
+        "description": "Baixa manual de um pedido pendente de pagamento.<br>  - Endpoint exclusivo para testes locais<br><br>  ! Atenção: Este endpoint foi descontinuado, sendo substituído por /pagamento/webhook<br><br>  [ Endpoint para integração ao gateway de pagamentos - Externo]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1082,7 +1126,7 @@
           "Pedidos"
         ],
         "summary": "Checkout Pedido",
-        "description": "Checkout de um pedido e envio para o serviço de Pagamento",
+        "description": "Checkout de um pedido e envio para o serviço de Pagamento<br><br>  [ Endpoint para integração ao sistema de autoatendimento / PDV ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1167,7 +1211,7 @@
           "Pedidos"
         ],
         "summary": "Adicionar Combo ao Pedido",
-        "description": "Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.",
+        "description": "Adiciona um Combo ao Pedido. Precisa de um Produto válido associado ao Combo.<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1318,7 +1362,7 @@
           "Pedidos"
         ],
         "summary": "Remover Combo do Pedido",
-        "description": "Remove um Combo do Pedido",
+        "description": "Remove um Combo do Pedido<br><br>  [ Endpoint para integração ao sistema de autoatendimento ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1413,7 +1457,7 @@
           "Preparação"
         ],
         "summary": "Buscar o próximo Pedido",
-        "description": "Busca o próximo pedido para preparação",
+        "description": "Busca o próximo pedido para preparação<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "responses": {
           "200": {
             "description": "Pedido encontrado",
@@ -1499,7 +1543,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/preparacao/pedido/{pedidoId}/iniciar-preparacao": {
@@ -1508,7 +1557,7 @@
           "Preparação"
         ],
         "summary": "Iniciar Preparação de Pedido",
-        "description": "Inicia a preparação de um pedido",
+        "description": "Inicia a preparação de um pedido<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1584,7 +1633,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/preparacao/pedido/{pedidoId}/finalizar-preparacao": {
@@ -1593,7 +1647,7 @@
           "Preparação"
         ],
         "summary": "Finalizar Preparação de Pedido",
-        "description": "Finaliza a preparação de um pedido",
+        "description": "Finaliza a preparação de um pedido<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1669,7 +1723,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/preparacao/pedido/{pedidoId}/entregar": {
@@ -1678,7 +1737,7 @@
           "Preparação"
         ],
         "summary": "Entregar Pedido",
-        "description": "Entrega um pedido preparado",
+        "description": "Entrega um pedido preparado<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "pedidoId",
@@ -1754,7 +1813,12 @@
           "500": {
             "description": "Erro Interno do Servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/produto/listar": {
@@ -1763,12 +1827,17 @@
           "Produtos"
         ],
         "summary": "Listar Produtos",
-        "description": "Lista todos os produtos cadastrados",
+        "description": "Lista todos os produtos cadastrados<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "responses": {
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/produto/buscar/{id}": {
@@ -1777,7 +1846,7 @@
           "Produtos"
         ],
         "summary": "Buscar Produto",
-        "description": "Busca um produto utilizando o Id.",
+        "description": "Busca um produto utilizando o Id.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "id",
@@ -1902,7 +1971,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/produto/listar/{categoria}": {
@@ -1911,7 +1985,7 @@
           "Produtos"
         ],
         "summary": "Listar Produtos por Categoria",
-        "description": "Lista produtos por categoria",
+        "description": "Lista produtos por categoria<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "categoria",
@@ -1931,7 +2005,12 @@
           "400": {
             "description": "Solicitação Inválida"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/produto/remover/{id}": {
@@ -1940,7 +2019,7 @@
           "Produtos"
         ],
         "summary": "Remover Produto",
-        "description": "Remove um produto, por Id.",
+        "description": "Remove um produto, por Id.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "id",
@@ -1960,7 +2039,12 @@
           "400": {
             "description": "Solicitação Inválida"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/produto/cadastrar": {
@@ -1969,7 +2053,7 @@
           "Produtos"
         ],
         "summary": "Cadastrar Produto",
-        "description": "Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.",
+        "description": "Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "body",
@@ -2111,6 +2195,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2145,7 +2234,7 @@
           "Produtos"
         ],
         "summary": "Atualizar Produto",
-        "description": "Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.",
+        "description": "Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.<br><br>  [ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
         "parameters": [
           {
             "name": "body",
@@ -2219,6 +2308,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2253,7 +2347,7 @@
     "/health": {
       "get": {
         "tags": [
-          "Health"
+          "Outros"
         ],
         "summary": "Health check",
         "description": "",
@@ -2263,19 +2357,15 @@
           }
         }
       }
-    },
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "302": {
-            "description": "Encontrado"
-          }
-        }
-      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
     "schemas": {
       "ID": {
         "type": "string",

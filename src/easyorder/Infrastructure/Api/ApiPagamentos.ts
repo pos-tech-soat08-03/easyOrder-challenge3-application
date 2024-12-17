@@ -16,9 +16,10 @@ export class ApiPagamentos {
                 #swagger.tags = ['Pagamentos']
                 #swagger.path = '/pagamento/webhook/'
                 #swagger.method = 'post'
-                #swagger.summary = 'Webhook - Confirmar Pagamento (Transação)'
-                #swagger.description = 'Captura o retorno de status de transação a partir de webhook do Serviço de Pagamento.<br>
-                                        Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição'
+                #swagger.summary = 'Webhook para Confirmação de Pagamento (Transação)'
+                #swagger.description = 'Captura o retorno de status de transação a partir de webhook disparado pelo Serviço de Pagamento.<br>
+                - Pode ser utilizado para simulação, nesse caso informe o id e status de aprovação no corpo da requisição<br><br>
+                [ Endpoint para integração ao gateway de pagamentos - Externo]'
                 #swagger.produces = ["application/json"]  
                 #swagger.parameters['body'] = { 
                     in: 'body', 
@@ -69,8 +70,13 @@ export class ApiPagamentos {
                 #swagger.path = '/pagamento/listar-transacoes/{pedidoId}'
                 #swagger.method = 'get'
                 #swagger.summary = 'Listar Transações'
-                #swagger.description = 'Obtém a lista de Transações associadas a um id de Pedido.'
+                #swagger.description = 'Obtém a lista de Transações associadas a um id de Pedido.<br>
+                - Utilizada para fins de simulação e consulta de transações pela adninistração.<br><br>
+                [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
                 #swagger.produces = ["application/json"]  
+                #swagger.security = [{
+                    "bearerAuth": []
+                }]
             */
             try {
                 if (req.params.pedidoId === undefined || req.params.pedidoId === "" || req.params.pedidoId === null) {
@@ -85,21 +91,21 @@ export class ApiPagamentos {
             }
         });
 
-        app.post("/pagamento/webhook/ml", async (req, res) => {
-            // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
-            try {
+        // app.post("/pagamento/webhook/ml", async (req, res) => {
+        //     // Referencia de formato de retorno https://www.mercadopago.com.br/developers/en/docs/your-integrations/notifications/webhooks
+        //     try {
 
-                if (req.body === undefined || Object.keys(req.body).length === 0) {
-                    throw new Error("Sem dados de body na requisição")
-                }
-                const payload = req.body;
-                const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, payload);
-                res.send(pagamentoPayload);
-            }
-            catch (error: any) {
-                res.status(400).send(error.message);
-            }
-        });
+        //         if (req.body === undefined || Object.keys(req.body).length === 0) {
+        //             throw new Error("Sem dados de body na requisição")
+        //         }
+        //         const payload = req.body;
+        //         const pagamentoPayload = await PagamentosController.ConfirmarPagamento(dbconnection, servicoPagamento, payload);
+        //         res.send(pagamentoPayload);
+        //     }
+        //     catch (error: any) {
+        //         res.status(400).send(error.message);
+        //     }
+        // });
         
 
     }
