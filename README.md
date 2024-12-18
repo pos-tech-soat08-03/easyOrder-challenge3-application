@@ -23,7 +23,7 @@ Repositório da solução no Github:
  - Application: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-application
  - Serverless: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-serverless
    
-Link do Vídeo com a explicação sobre o projeto: **LINK
+[Link do Vídeo com a explicação sobre o projeto](https://youtu.be/DAt6ONelqlg)
 
 ## Arquitetura AWS
 
