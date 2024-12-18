@@ -16,7 +16,7 @@ uma Infraestrutura com recursos da AWS como EKS, VPC, etc. Um banco de dados aut
 como um lambda para validação de CPF, API Gateway para direcionar o tráfego e o AWS Cognito para validações. Tudo isso criado utilizando
 o Terraform.
 
-## Links importantes da Fase 2 🌟
+## Links importantes da Fase 3 🌟
 Repositório da solução no Github:
  - Infra: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-infrastructure
  - Database: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-database
@@ -24,6 +24,10 @@ Repositório da solução no Github:
  - Serverless: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-serverless
    
 Link do Vídeo com a explicação sobre o projeto: **LINK
+
+## Arquitetura AWS
+
+![Descrição da Imagem](docs/assets/arquitetura_easyOrder_AWS.png)
 
 &nbsp;
 ## Repositório dedicado para Application 
