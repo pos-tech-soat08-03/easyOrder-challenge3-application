@@ -9,8 +9,24 @@ O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes inte
 - Matias Correa Franco de Faria, devmatiascff@gmail.com, RM357411, @matiasf8321
 - Rafael da Silva Andrade, rafaandrade_@outlook.com, RM357010, @andrade_rafael
 
+## Projeto - Descrição e Objetivos - Fase 3
+A aplicação easyOrder 3.0 foi implementada como parte do Tech Challenge da terceira etapa da Pós Tech de
+Arquitetura de Software (Turma SOAT8) da FIAP. Esse desafio focou em criar repositórios com IaC que consigam criar
+uma Infraestrutura com recursos da AWS como EKS, VPC, etc. Um banco de dados auto-gerenciável em RDS, além de outros recursos,
+como um lambda para validação de CPF, API Gateway para direcionar o tráfego e o AWS Cognito para validações. Tudo isso criado utilizando
+o Terraform.
+
+## Links importantes da Fase 2 🌟
+Repositório da solução no Github:
+ - Infra: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-infrastructure
+ - Database: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-database
+ - Application: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-application
+ - Serverless: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-serverless
+   
+Link do Vídeo com a explicação sobre o projeto: **LINK
+
 &nbsp;
-# Repositório dedicado para Application 
+## Repositório dedicado para Application 
 - Inclui a conteúdo da aplicação, realizando a conexão com o Kubernetes 
 - Utiliza Github Actions para CI/CD
 - Oferece dados para correta configuração do repositório serverless
